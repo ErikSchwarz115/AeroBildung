@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elektronik-Quiz Modul 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: eine schmale Spalte auf Karopapier, wie die Notizen selbst. Blaue Tinte, gelber Marker. */
+:root {
+  --paper: #F3F5FA;
+  --card: #FFFFFF;
+  --fg: #1A1F33;
+  --ink: #16256B;
+  --ink-soft: #4F5B8C;
+  --grid: #DCE1EE;
+  --line: #C3CBE0;
+  --marker: #F2F06B;
+  --marker-soft: #F7F59A;
+  --marker-ink: #25260A;
+  --ok: #1B7A4B;
+  --ok-bg: #E2F3EA;
+  --bad: #B3261E;
+  --bad-bg: #FBE8E6;
+  --on-ink: #FFFFFF;
+  --f-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1323; --card: #161D36; --fg: #E6E9F5; --ink: #B3BFFF; --ink-soft: #8E9AD0;
+    --grid: #1B2342; --line: #2B3664; --marker: #E4DE5A; --marker-soft: #55511A; --marker-ink: #1A1A00;
+    --ok: #74D6A3; --ok-bg: #12301F; --bad: #FF9088; --bad-bg: #3A1816; --on-ink: #0E1323;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1323; --card: #161D36; --fg: #E6E9F5; --ink: #B3BFFF; --ink-soft: #8E9AD0;
+  --grid: #1B2342; --line: #2B3664; --marker: #E4DE5A; --marker-soft: #55511A; --marker-ink: #1A1A00;
+  --ok: #74D6A3; --ok-bg: #12301F; --bad: #FF9088; --bad-bg: #3A1816; --on-ink: #0E1323;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-inline: 16px;
+  padding-block: 20px 40px;
+}
+.app { max-width: 640px; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; }
+[hidden] { display: none !important; }
+
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 {
+  font-family: var(--f-display); font-weight: 700; font-size: clamp(2.6rem, 11vw, 3.8rem);
+  line-height: .95; letter-spacing: .01em; text-transform: uppercase; color: var(--ink);
+  margin: 6px 0 10px; text-wrap: balance;
+}
+h1 span { background: linear-gradient(transparent 58%, var(--marker-soft) 58%); padding-inline: 2px; }
+.lead { margin: 0; color: var(--ink-soft); max-width: 52ch; }
+
+.card { background: var(--card); border: 1.5px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+.card h2 { font-family: var(--f-display); font-weight: 600; font-size: 1.35rem; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); margin: 0; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+legend { padding: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip, .seg label { position: relative; display: inline-flex; }
+.chip input, .seg input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.chip span, .seg span {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1.5px solid var(--line);
+  border-radius: 6px; background: var(--card); color: var(--fg); font-size: 14px; font-weight: 500; user-select: none;
+}
+.chip span em, .seg span em { font-style: normal; font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
+.chip input:checked + span, .seg input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.chip input:checked + span em, .seg input:checked + span em { color: var(--on-ink); opacity: .8; }
+.chip input:focus-visible + span, .seg input:focus-visible + span, .opt:focus-visible, .btn:focus-visible, .link:focus-visible {
+  outline: 3px solid var(--ink); outline-offset: 2px;
+}
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.check { display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--ink); margin: 0; }
+
+.btn {
+  font: inherit; font-weight: 600; font-size: 16px; padding: 13px 18px; border-radius: 6px; cursor: pointer;
+  border: 1.5px solid var(--ink); background: var(--ink); color: var(--on-ink);
+}
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn-row .btn { flex: 1 1 180px; }
+.link { font: inherit; background: none; border: 0; color: var(--ink); text-decoration: underline; cursor: pointer; padding: 4px 0; }
+.last { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.last strong { font-family: var(--f-mono); color: var(--fg); font-weight: 500; }
+
+.stat-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-family: var(--f-mono); font-size: 13px; color: var(--ink-soft); }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--ink); transition: width .25s ease; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ref { font-family: var(--f-mono); font-size: 12px; background: var(--marker); color: var(--marker-ink); padding: 3px 8px; border-radius: 3px; }
+.cat { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.q { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0; text-wrap: pretty; }
+
+.opts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  width: 100%; display: flex; gap: 12px; align-items: flex-start; text-align: left; font: inherit; color: var(--fg);
+  background: var(--card); border: 1.5px solid var(--line); border-radius: 6px; padding: 12px 14px; cursor: pointer;
+}
+.opt .key {
+  flex: none; width: 26px; height: 26px; display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 4px;
+  font-family: var(--f-mono); font-size: 13px; color: var(--ink);
+}
+.opt .txt { min-width: 0; padding-top: 2px; overflow-wrap: anywhere; }
+.opt:not(:disabled):hover { border-color: var(--ink); }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-bg); }
+.opt.right .key { background: var(--ok); border-color: var(--ok); color: var(--card); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: var(--card); }
+.opt.dim { opacity: .55; }
+
+.fb { border-top: 1.5px dashed var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.fb .verdict { font-weight: 600; margin: 0; }
+.fb .verdict.ok { color: var(--ok); }
+.fb .verdict.no { color: var(--bad); }
+.fb p { margin: 0; }
+.fb .why { color: var(--ink-soft); font-size: 15px; }
+sub, sup { line-height: 0; }
+
+.score { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.score b { font-family: var(--f-display); font-size: 4.5rem; line-height: 1; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.score span { font-family: var(--f-mono); color: var(--ink-soft); }
+.missed { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.missed li { border-left: 4px solid var(--bad); padding-left: 12px; display: flex; flex-direction: column; gap: 4px; }
+.missed .mq { margin: 0; font-weight: 600; }
+.missed .mw { margin: 0; font-size: 14px; color: var(--bad); }
+.missed .mr { margin: 0; font-size: 14px; color: var(--ok); }
+.foot { font-size: 13px; color: var(--ink-soft); margin: 0; }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+html, body { margin: 0; }
+</style>
+
+</head>
+<body>
+<main class="app">
+  <header>
+    <div class="eyebrow">AERO-Bildung · Modul 3</div>
+    <h1><span>Elektronik</span>-Grundlagen</h1>
+    <p class="lead" id="lead"></p>
+  </header>
+
+  <section id="start" class="card" aria-label="Quiz einrichten">
+    <fieldset>
+      <legend>Themen</legend>
+      <div class="chips" id="chips"></div>
+      <div><button type="button" class="link" id="toggleAll">Alle abwählen</button></div>
+    </fieldset>
+    <fieldset>
+      <legend>Anzahl Fragen</legend>
+      <div class="seg" id="seg">
+        <label><input type="radio" name="count" value="0" checked><span>Alle</span></label>
+        <label><input type="radio" name="count" value="10"><span>10</span></label>
+        <label><input type="radio" name="count" value="20"><span>20</span></label>
+      </div>
+    </fieldset>
+    <label class="check"><input type="checkbox" id="shuffleQ" checked> Fragen mischen</label>
+    <button type="button" class="btn" id="startBtn">Quiz starten</button>
+    <p class="last" id="last" hidden></p>
+  </section>
+
+  <section id="quiz" class="card" hidden aria-label="Frage">
+    <div class="stat-row"><span id="pos"></span><span id="sc"></span></div>
+    <div class="bar" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" id="barWrap"><i id="bar"></i></div>
+    <div class="tags"><span class="ref" id="ref"></span><span class="cat" id="cat"></span></div>
+    <h2 class="q" id="qtext"></h2>
+    <ul class="opts" id="opts"></ul>
+    <div class="fb" id="fb" role="status" hidden>
+      <p class="verdict" id="verdict"></p>
+      <p class="why" id="why"></p>
+    </div>
+    <button type="button" class="btn" id="nextBtn" hidden>Weiter</button>
+  </section>
+
+  <section id="result" class="card" hidden aria-label="Ergebnis">
+    <h2>Ergebnis</h2>
+    <div class="score"><b id="rScore"></b><span id="rPct"></span></div>
+    <p id="rMsg" style="margin:0"></p>
+    <ul class="missed" id="missed"></ul>
+    <div class="btn-row">
+      <button type="button" class="btn" id="retryBtn">Falsche wiederholen</button>
+      <button type="button" class="btn ghost" id="againBtn">Neues Quiz</button>
+    </div>
+  </section>
+
+  <p class="foot">Die Fragen stammen aus deinen Notizen vom 5. bis 9. Oktober 2026. Das gelbe Etikett nennt den Punkt (Notiz 1 bis 34) oder die Seite in deinen Notizen. Tasten 1 bis 4 wählen die Antwort, Pfeil rechts geht weiter.</p>
+</main>
+
+<script>
+(function () {
+  var CATS = {
+    atom: "Atomaufbau",
+    strom: "Spannung & Strom",
+    quellen: "Spannungsquellen",
+    wid: "Widerstand",
+    leist: "Leistung & Arbeit",
+    schalt: "Schaltungen",
+    kond: "Kondensator",
+    mag: "Magnetismus & Spule"
+  };
+
+  // a[0] ist immer die richtige Antwort, die Reihenfolge wird beim Anzeigen gemischt.
+  var Q = [
+    // Atomaufbau
+    { c: "atom", n: 1, q: "Wo befinden sich die freien Elektronen (Ladungsträger) eines Atoms?", a: ["Auf der Valenzschale (äußerste Schale)", "Im Atomkern", "Auf der innersten Schale", "Zwischen den Neutronen"], e: "Der Atomkern besteht aus Protonen und Neutronen. Die freien Elektronen sitzen auf der äußersten Schale, der Valenzschale." },
+    { c: "atom", n: 2, q: "Wie heißt das kleinste positive Elementarteilchen?", a: ["Proton", "Neutron", "Elektron", "Ion"], e: "Das Proton ist das kleinste positive Elementarteilchen." },
+    { c: "atom", n: 2, q: "Wie heißt das kleinste negative Elementarteilchen?", a: ["Elektron", "Neutron", "Proton", "Atomkern"], e: "Das Elektron ist das kleinste negative Elementarteilchen." },
+    { c: "atom", n: 3, q: "In welcher Einheit wird die Ladung Q angegeben?", a: ["Coulomb [C] oder Amperesekunde [As]", "Volt [V]", "Ohm [Ω]", "Watt [W]"], e: "Die Ladung Q wird in Coulomb [C] angegeben. Das ist dasselbe wie Amperesekunde [As]." },
+    { c: "atom", n: 4, q: "Wie viele Valenzelektronen hat ein Halbleiter?", a: ["Vier", "Drei", "Fünf", "Acht"], e: "Halbleiter haben vier Valenzelektronen." },
+    { c: "atom", n: 5, q: "Was gilt für die Leitfähigkeit eines Leiters?", a: ["Je mehr Ladungsträger, desto besser leitet er", "Je mehr Ladungsträger, desto schlechter leitet er", "Sie hängt nur von der Spannung ab", "Sie ist bei allen Stoffen gleich"], e: "Je mehr Ladungsträger vorhanden sind, desto besser leitet ein Leiter." },
+    { c: "atom", n: 6, q: "Wie viele Elektronen passen höchstens auf die äußerste Schale?", a: ["8 (auf der ersten Schale nur 2)", "2 (auf jeder Schale)", "4", "18"], e: "Auf der äußersten Schale sitzen maximal 8 Elektronen. Nur die erste Schale fasst höchstens 2." },
+    { c: "atom", n: 7, q: "Ein Atom gibt ein Elektron ab. Was entsteht?", a: ["Ein positives Ion", "Ein negatives Ion", "Ein zusätzliches Neutron", "Ein neutrales Atom mit mehr Protonen"], e: "Gibt ein Atom ein Elektron ab, überwiegen die Protonen. Es entsteht ein positives Ion." },
+    { c: "atom", n: 7, q: "Ein Atom nimmt ein Elektron auf. Was entsteht?", a: ["Ein negatives Ion", "Ein positives Ion", "Ein zusätzliches Proton", "Ein Isotop"], e: "Nimmt ein Atom ein Elektron auf, überwiegen die Elektronen. Es entsteht ein negatives Ion." },
+    { c: "atom", n: 8, q: "Welche Wertigkeit haben die Fremdatome in der P-Schicht und in der N-Schicht?", a: ["P: dreiwertig, N: fünfwertig", "P: fünfwertig, N: dreiwertig", "P: vierwertig, N: vierwertig", "P: dreiwertig, N: dreiwertig"], e: "Die P-Schicht ist dreiwertig dotiert, die N-Schicht fünfwertig." },
+
+    // Spannung & Strom
+    { c: "strom", n: 9, q: "Was ist elektrische Spannung?", a: ["Potentialdifferenz zwischen zwei Polen, Einheit Volt [V]", "Ladungsmenge pro Sekunde, Einheit Ampere [A]", "Hemmung des Stromflusses, Einheit Ohm [Ω]", "Arbeit pro Zeit, Einheit Watt [W]"], e: "Spannung ist die Potentialdifferenz zwischen zwei Polen und wird in Volt [V] gemessen." },
+    { c: "strom", n: 10, q: "Wie wird eine Spannung gemessen?", a: ["Immer parallel über dem Verbraucher", "In Reihe mit dem Verbraucher", "Nur direkt an der Sicherung", "Nur bei abgeschaltetem Stromkreis"], e: "Spannung misst man immer parallel über dem Verbraucher." },
+    { c: "strom", n: 13, q: "Wie wird ein Strom gemessen?", a: ["In Reihe", "Parallel über dem Verbraucher", "Parallel zur Spannungsquelle", "Gar nicht direkt, nur berechnet"], e: "Die Strommessung erfolgt in Reihe. Der Strom muss durch das Messgerät fließen." },
+    { c: "strom", n: 12, q: "Wie verläuft die technische Stromrichtung?", a: ["Außen von Plus nach Minus, im Erzeuger von Minus nach Plus", "Außen von Minus nach Plus, im Erzeuger von Plus nach Minus", "Immer von Minus nach Plus", "Immer von Plus nach Minus, auch im Erzeuger"], e: "Außen läuft die technische Stromrichtung von + nach −, innen im Erzeuger von − nach +." },
+    { c: "strom", n: 14, q: "Der Querschnitt eines Leiters wird halbiert. Was passiert mit der Stromdichte, wenn der Strom gleich bleibt?", a: ["Sie verdoppelt sich, der Leiter wird wärmer", "Sie halbiert sich", "Sie bleibt gleich", "Sie verdoppelt sich, der Leiter kühlt ab"], e: "Die Stromdichte hängt von Stromstärke und Querschnitt ab. Halber Querschnitt heißt doppelte Dichte und mehr Wärme." },
+    { c: "strom", n: 15, q: "Welche Aufgabe haben Sicherungen?", a: ["Sie schützen das Leitungsnetz", "Sie stabilisieren die Spannung", "Sie erhöhen den Strom", "Sie schalten Verbraucher ein"], e: "Sicherungen schützen das Leitungsnetz vor zu hohen Strömen." },
+    { c: "strom", n: 15, q: "Welchen Maximalstrom hält eine Leitung mit 1,5 mm² Querschnitt laut deinen Notizen beispielsweise aus?", a: ["16 A", "6 A", "32 A", "50 A"], e: "Beispiel aus deinen Notizen: Eine Leitung mit 1,5 mm² hält maximal 16 A aus." },
+
+    // Spannungsquellen
+    { c: "quellen", n: 11, q: "Welche dieser Spannungsquellen liefert Wechselspannung?", a: ["Generator", "Batterie", "Solarzelle (PV)", "Thermoelement"], e: "Der Generator liefert Wechselspannung. Batterie, Piezo, Thermoelement und PV/Solar liefern Gleichspannung." },
+    { c: "quellen", n: 11, q: "Wofür stehen GS und WS?", a: ["GS = Gleichspannung (DC), WS = Wechselspannung (AC)", "GS = Wechselspannung (AC), WS = Gleichspannung (DC)", "GS = Gesamtspannung, WS = Widerstandsspannung", "GS = Gleichstrom (AC), WS = Wechselstrom (DC)"], e: "GS ist Gleichspannung und entspricht DC. WS ist Wechselspannung und entspricht AC." },
+    { c: "quellen", n: 16, q: "Welches Bauteil ist ein galvanisches Element?", a: ["Die Batterie", "Der Generator", "Das Thermoelement", "Das Piezoelement"], e: "Ein galvanisches Element ist eine Batterie." },
+    { c: "quellen", n: 17, q: "Auf welchem Prinzip beruht ein Generator?", a: ["Magnetismus (Induktion)", "Chemische Reaktion", "Lichteinstrahlung", "Temperaturunterschied"], e: "Ein Generator erzeugt Spannung durch Magnetismus, genauer durch Induktion." },
+    { c: "quellen", n: 30, q: "Wann liegt Spannungsanpassung vor?", a: ["R<sub>Last</sub> &gt; R<sub>innen</sub>", "R<sub>Last</sub> &lt; R<sub>innen</sub>", "R<sub>Last</sub> = R<sub>innen</sub>", "R<sub>Last</sub> = 0"], e: "Spannungsanpassung: Der Lastwiderstand ist größer als der Innenwiderstand, die Quellenspannung kommt fast ganz an der Last an." },
+    { c: "quellen", n: 30, q: "Wann liegt Stromanpassung vor?", a: ["R<sub>Last</sub> &lt; R<sub>innen</sub>", "R<sub>Last</sub> &gt; R<sub>innen</sub>", "R<sub>Last</sub> = R<sub>innen</sub>", "R<sub>Last</sub> = unendlich"], e: "Stromanpassung: Der Lastwiderstand ist kleiner als der Innenwiderstand." },
+    { c: "quellen", n: 30, q: "Was gilt bei Leistungsanpassung?", a: ["R<sub>Last</sub> = R<sub>innen</sub>, Wirkungsgrad η = 50 %", "R<sub>Last</sub> &gt; R<sub>innen</sub>, Wirkungsgrad η = 100 %", "R<sub>Last</sub> &lt; R<sub>innen</sub>, Wirkungsgrad η = 50 %", "R<sub>Last</sub> = R<sub>innen</sub>, Wirkungsgrad η = 100 %"], e: "Bei Leistungsanpassung sind Last- und Innenwiderstand gleich. Der Wirkungsgrad beträgt dann 50 %." },
+    { c: "quellen", n: 31, q: "Spannungsquellen werden in Reihe geschaltet. Was passiert?", a: ["Spannung steigt, Kapazität bleibt gleich, Innenwiderstand steigt", "Spannung bleibt gleich, Kapazität steigt, Innenwiderstand sinkt", "Spannung steigt, Kapazität steigt, Innenwiderstand sinkt", "Spannung sinkt, Kapazität bleibt gleich, Innenwiderstand steigt"], e: "Reihenschaltung von Quellen: Die Spannung steigt und der Innenwiderstand steigt. Die Kapazität bleibt gleich." },
+    { c: "quellen", n: 31, q: "Spannungsquellen werden parallel geschaltet. Was passiert?", a: ["Spannung bleibt gleich, Kapazität steigt, Innenwiderstand sinkt", "Spannung steigt, Kapazität bleibt gleich, Innenwiderstand steigt", "Spannung steigt, Kapazität steigt, Innenwiderstand steigt", "Spannung sinkt, Kapazität steigt, Innenwiderstand steigt"], e: "Parallelschaltung von Quellen: Die Spannung bleibt gleich, die Kapazität steigt und der Innenwiderstand sinkt." },
+    { c: "quellen", n: 32, q: "Was kennzeichnet ein Primärelement (Batterie)?", a: ["Es ist nicht wieder aufladbar", "Es ist wieder aufladbar", "Es liefert nur Wechselspannung", "Es hat keinen Innenwiderstand"], e: "Primärelemente (Batterien) sind nicht wieder aufladbar." },
+    { c: "quellen", n: 33, q: "Was kennzeichnet ein Sekundärelement (Akku)?", a: ["Es ist wieder aufladbar", "Es ist nicht wieder aufladbar", "Es liefert nur Wechselspannung", "Es besteht nur aus einem Kondensator"], e: "Sekundärelemente (Akkus) sind wieder aufladbar." },
+
+    // Widerstand
+    { c: "wid", n: 18, q: "Was gilt für den Widerstand eines Leiters?", a: ["Je größer der Widerstand, umso schlechter leitet er", "Je größer der Widerstand, umso besser leitet er", "Der Widerstand hat keinen Einfluss auf die Leitfähigkeit", "Je größer der Widerstand, umso mehr Ladungsträger hat er"], e: "Ein großer Widerstand bedeutet schlechte Leitung." },
+    { c: "wid", n: 19, q: "Wie lautet das Ohmsche Gesetz?", a: ["U = R · I", "U = R / I", "I = U · R", "R = I / U"], e: "U = R · I. Umgestellt: R = U / I und I = U / R." },
+    { c: "wid", n: 19, q: "An einem Widerstand liegen 12 V an, es fließen 3 A. Wie groß ist R?", a: ["4 Ω", "36 Ω", "0,25 Ω", "15 Ω"], e: "R = U / I = 12 V / 3 A = 4 Ω." },
+    { c: "wid", n: 19, q: "Ein Widerstand von 8 Ω liegt an 24 V. Wie groß ist der Strom?", a: ["3 A", "192 A", "0,33 A", "16 A"], e: "I = U / R = 24 V / 8 Ω = 3 A." },
+    { c: "wid", n: 19, q: "Durch eine Last von 5 Ω fließen 2 A. Welche Spannung liegt an?", a: ["10 V", "2,5 V", "7 V", "0,4 V"], e: "U = R · I = 5 Ω · 2 A = 10 V." },
+    { c: "wid", n: 20, q: "Wovon hängt der Widerstand eines Leiters ab?", a: ["Von Material (spez. Widerstand bei 20 °C), Temperatur, Länge und Fläche", "Nur von der Länge", "Nur vom Material", "Von Spannung und Stromstärke"], e: "Der Leiterwiderstand hängt vom Material, der Temperatur, der Länge und der Fläche ab. Der spezifische Widerstand gilt bei 20 °C." },
+    { c: "wid", n: 21, q: "Was ist ein NTC?", a: ["Ein Heißleiter: Temperatur steigt, Widerstand sinkt", "Ein Kaltleiter: Temperatur steigt, Widerstand steigt", "Ein Heißleiter: Temperatur steigt, Widerstand steigt", "Ein Kaltleiter: Temperatur steigt, Widerstand sinkt"], e: "NTC steht für negativen Temperaturbeiwert. Es ist ein Halbleiter (Heißleiter): Temperatur steigt, Widerstand sinkt." },
+    { c: "wid", n: 22, q: "Wie verhält sich ein PTC?", a: ["Temperatur steigt, Widerstand steigt", "Temperatur steigt, Widerstand sinkt", "Temperatur sinkt, Widerstand steigt", "Der Widerstand ist temperaturunabhängig"], e: "PTC steht für positiven Temperaturbeiwert. Es sind Metalle (Kaltleiter): Temperatur steigt, Widerstand steigt." },
+    { c: "wid", n: 22, q: "Welche Stoffgruppe gehört zum NTC, welche zum PTC?", a: ["NTC: Halbleiter, PTC: Metalle", "NTC: Metalle, PTC: Halbleiter", "Beide: Metalle", "Beide: Halbleiter"], e: "NTC sind Halbleiter (Heißleiter), PTC sind Metalle (Kaltleiter)." },
+    { c: "wid", n: 23, q: "Je flacher die Widerstandskennlinie (I über U), …", a: ["desto größer ist der Widerstand", "desto kleiner ist der Widerstand", "desto größer ist die Spannung", "desto höher ist die Leistung"], e: "Bei flacher Kennlinie fließt bei gleicher Spannung weniger Strom. Der Widerstand ist größer." },
+    { c: "wid", n: 24, q: "Welche Widerstandsgruppen nennen deine Notizen?", a: ["Festwiderstände, physikalische Widerstände, mechanisch veränderbare Widerstände", "Kohle-, Metall- und Drahtwiderstände", "Reihen-, Parallel- und Mischwiderstände", "Heiß-, Kalt- und Spannungswiderstände"], e: "Die drei Gruppen sind Festwiderstände, physikalische Widerstände (z. B. NTC, PTC) und mechanisch veränderbare Widerstände." },
+
+    // Leistung & Arbeit
+    { c: "leist", n: 25, q: "Welche Formel gilt für die elektrische Leistung?", a: ["P = U · I", "P = U / I", "P = R / I²", "P = U · t"], e: "P = U · I. Weitere Formen: P = U² / R und P = R · I²." },
+    { c: "leist", n: 25, q: "Welche Formel für die Leistung ist richtig?", a: ["P = U² / R", "P = U / R²", "P = R / U²", "P = U · R²"], e: "P = U² / R. Das folgt aus P = U · I mit I = U / R." },
+    { c: "leist", n: 25, q: "Ein Verbraucher liegt an 12 V und zieht 2 A. Welche Leistung nimmt er auf?", a: ["24 W", "6 W", "14 W", "0,17 W"], e: "P = U · I = 12 V · 2 A = 24 W." },
+    { c: "leist", n: 25, q: "Durch einen Widerstand von 10 Ω fließen 2 A. Wie groß ist die Leistung?", a: ["40 W", "20 W", "5 W", "200 W"], e: "P = R · I² = 10 Ω · (2 A)² = 40 W." },
+    { c: "leist", n: 25, q: "Wie berechnet sich die elektrische Arbeit?", a: ["W = U · I · t", "W = U · I / t", "W = P / t", "W = U / (I · t)"], e: "W = U · I · t. Arbeit ist Leistung mal Zeit." },
+    { c: "leist", n: 26, q: "Was gilt für den Wirkungsgrad η = P<sub>ab</sub> / P<sub>zu</sub>?", a: ["Er ist immer kleiner als 1, wegen Verlusten (z. B. Wärme)", "Er kann größer als 1 sein", "Er ist immer genau 1", "Er ist nur bei Gleichspannung kleiner als 1"], e: "Wegen Verlusten, zum Beispiel Wärme, ist die abgegebene Leistung immer kleiner als die zugeführte. Also gilt η &lt; 1." },
+
+    // Schaltungen
+    { c: "schalt", n: 27, q: "Was gilt in der Reihenschaltung?", a: ["Strom überall gleich, Spannungen und Widerstände addieren sich", "Spannung überall gleich, Ströme addieren sich", "Strom teilt sich auf, Widerstände addieren sich", "Spannung überall gleich, Widerstände addieren sich"], e: "In der Reihenschaltung ist der Strom überall gleich. Widerstände und Spannungen addieren sich." },
+    { c: "schalt", n: 27, q: "Wo fällt in der Reihenschaltung die größte Spannung ab?", a: ["Am größten Widerstand", "Am kleinsten Widerstand", "Gleichmäßig an allen Widerständen", "Am Widerstand direkt am Pluspol"], e: "Am größten Widerstand fällt der größte Teil der Spannung ab." },
+    { c: "schalt", n: 27, q: "Was ist das Problem der Reihenschaltung?", a: ["Fällt ein Verbraucher aus, geht alles aus", "Die Spannung bricht zusammen", "Der Strom teilt sich ungleich auf", "Der Gesamtwiderstand wird zu klein"], e: "Wenn ein Bauteil ausfällt, ist der Stromkreis unterbrochen und alles geht aus." },
+    { c: "schalt", n: 27, q: "Was besagt das 2. Kirchhoffsche Gesetz (Maschenregel)?", a: ["Summe der erzeugten Spannungen = Summe der verbrauchten, die Summe in der Masche ist 0", "Die Summe aller Ströme im Knoten ist 0", "Die Spannung ist proportional zum Strom", "Die Leistung bleibt konstant"], e: "Maschenregel: Summe erzeugt = Summe verbraucht, oder anders gesagt, die Summe aller Spannungen einer Masche ist 0." },
+    { c: "schalt", n: 28, q: "Was gilt in der Parallelschaltung?", a: ["Spannung gleich, Strom teilt sich auf und addiert sich", "Strom gleich, Spannungen addieren sich", "Strom gleich, Widerstände addieren sich", "Spannung teilt sich auf, Strom ist gleich"], e: "In der Parallelschaltung ist die Spannung überall gleich. Der Strom teilt sich auf, die Teilströme addieren sich." },
+    { c: "schalt", n: 28, q: "Was besagt das 1. Kirchhoffsche Gesetz (Knotenregel)?", a: ["Die Summe aller Ströme im Knoten ist null, z. B. I<sub>1</sub> + I<sub>2</sub> = I<sub>3</sub> + I<sub>4</sub>", "Die Summe aller Spannungen in der Masche ist null", "Strom ist Spannung geteilt durch Widerstand", "Zufließende Ströme sind immer größer als abfließende"], e: "Knotenregel: Was in einen Knoten hineinfließt, fließt auch wieder heraus. I<sub>1</sub> + I<sub>2</sub> = I<sub>3</sub> + I<sub>4</sub>." },
+    { c: "schalt", n: 28, q: "Wie verhält sich der Gesamtwiderstand in der Parallelschaltung?", a: ["Er ist kleiner als der kleinste Einzelwiderstand", "Er ist gleich der Summe der Einzelwiderstände", "Er ist gleich dem größten Einzelwiderstand", "Er liegt zwischen dem kleinsten und größten Einzelwiderstand"], e: "Der Gesamtwiderstand ist kleiner als der kleinste Einzelwiderstand." },
+    { c: "schalt", n: 34, q: "Welche Formel gilt für den Gesamtwiderstand bei Parallelschaltung?", a: ["1/R<sub>G</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub>", "R<sub>G</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>", "R<sub>G</sub> = R<sub>1</sub> · R<sub>2</sub> · R<sub>3</sub>", "R<sub>G</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub>"], e: "Parallel addieren sich die Kehrwerte: 1/R<sub>G</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub>. In Reihe addieren sich die Widerstände direkt." },
+    { c: "schalt", n: 34, q: "Drei Widerstände mit 100 Ω, 220 Ω und 330 Ω liegen in Reihe. Wie groß ist R<sub>G</sub>?", a: ["650 Ω", "55 Ω", "550 Ω", "330 Ω"], e: "In Reihe addieren sich die Widerstände: 100 + 220 + 330 = 650 Ω." },
+    { c: "schalt", n: 34, q: "Zwei Widerstände mit je 100 Ω liegen parallel. Wie groß ist R<sub>G</sub>?", a: ["50 Ω", "200 Ω", "100 Ω", "25 Ω"], e: "1/R<sub>G</sub> = 1/100 + 1/100 = 2/100, also R<sub>G</sub> = 50 Ω. Das ist kleiner als jeder Einzelwiderstand." },
+    { c: "schalt", n: 29, q: "Wofür wird eine Wheatstone-Brücke eingesetzt?", a: ["Für Temperaturmessung", "Für Leistungsmessung", "Zur Spannungsstabilisierung", "Zum Laden von Akkus"], e: "Mit der Wheatstone-Brücke, einer Mischschaltung, führt man Temperaturmessungen durch." },
+    { c: "schalt", n: 29, q: "Wann ist eine Wheatstone-Brücke abgeglichen?", a: ["R<sub>1</sub> / R<sub>2</sub> = R<sub>3</sub> / R<sub>4</sub>", "R<sub>1</sub> + R<sub>2</sub> = R<sub>3</sub> + R<sub>4</sub>", "R<sub>1</sub> · R<sub>2</sub> = R<sub>3</sub> · R<sub>4</sub>", "R<sub>1</sub> = R<sub>2</sub> + R<sub>3</sub>"], e: "Abgleichbedingung: R<sub>1</sub> / R<sub>2</sub> = R<sub>3</sub> / R<sub>4</sub>." },
+
+    // Kondensator
+    { c: "kond", n: 34, q: "Wie berechnet sich die Gesamtkapazität bei Parallelschaltung von Kondensatoren?", a: ["C<sub>G</sub> = C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub>", "1/C<sub>G</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub> + 1/C<sub>3</sub>", "C<sub>G</sub> = C<sub>1</sub> · C<sub>2</sub> · C<sub>3</sub>", "C<sub>G</sub> = (C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub>) / 3"], e: "Bei Kondensatoren ist es umgekehrt wie bei Widerständen: Parallel addieren sich die Kapazitäten direkt." },
+    { c: "kond", n: 34, q: "Wie berechnet sich die Gesamtkapazität bei Reihenschaltung von Kondensatoren?", a: ["1/C<sub>G</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub> + 1/C<sub>3</sub>", "C<sub>G</sub> = C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub>", "C<sub>G</sub> = C<sub>1</sub> · C<sub>2</sub> · C<sub>3</sub>", "C<sub>G</sub> = C<sub>1</sub> − C<sub>2</sub> − C<sub>3</sub>"], e: "In Reihe addieren sich die Kehrwerte der Kapazitäten." },
+    { c: "kond", n: 34, q: "Zwei Kondensatoren mit 10 µF und 22 µF liegen parallel. Wie groß ist C<sub>G</sub>?", a: ["32 µF", "6,9 µF", "220 µF", "16 µF"], e: "Parallel addieren sich die Kapazitäten: 10 µF + 22 µF = 32 µF." },
+    { c: "kond", n: 34, q: "Zwei Kondensatoren mit je 10 µF liegen in Reihe. Wie groß ist C<sub>G</sub>?", a: ["5 µF", "20 µF", "10 µF", "100 µF"], e: "1/C<sub>G</sub> = 1/10 + 1/10 = 2/10, also C<sub>G</sub> = 5 µF." },
+    { c: "kond", n: 34, q: "Was passiert beim Laden eines Kondensators über einen Widerstand?", a: ["Der Strom ist anfangs am größten und sinkt dann ab, die Spannung steigt an", "Der Strom steigt langsam an, die Spannung fällt ab", "Strom und Spannung sind sofort konstant", "Der Strom bleibt konstant, die Spannung springt auf den Endwert"], e: "In deiner Skizze fällt der Strom I mit der Zeit ab, während die Spannung u am Kondensator ansteigt." },
+
+    // Seite 13: Spannungsquellen
+    { c: "quellen", n: "Seite 13", q: "Drei Batterien mit je 1,5 V und 100 mAh werden in Reihe geschaltet. Welche Werte hat die Schaltung?", a: ["4,5 V und 100 mAh", "1,5 V und 300 mAh", "4,5 V und 300 mAh", "1,5 V und 100 mAh"], e: "In Reihe addieren sich die Spannungen: 3 · 1,5 V = 4,5 V. Die Kapazität bleibt bei 100 mAh, der Innenwiderstand steigt." },
+    { c: "quellen", n: "Seite 13", q: "Drei Batterien mit je 1,5 V und 100 mAh werden parallel geschaltet. Welche Werte hat die Schaltung?", a: ["1,5 V und 300 mAh", "4,5 V und 100 mAh", "4,5 V und 300 mAh", "1,5 V und 100 mAh"], e: "Parallel bleibt die Spannung bei 1,5 V. Die Kapazität addiert sich auf 3 · 100 mAh = 300 mAh, der Innenwiderstand sinkt. Die Skizze in deinen Notizen zeigt unten 100 mAh. Das passt nicht zu „K steigt“, richtig sind 300 mAh." },
+    { c: "quellen", n: "Seite 13", q: "Was gilt, wenn Spannungsquellen zusammengeschaltet werden?", a: ["Sie sollten immer die gleiche Spannung haben", "Sie sollten immer unterschiedliche Spannungen haben", "Die Spannung ist egal, nur die Kapazität zählt", "Sie müssen immer verschiedene Typen sein"], e: "Spannungsquellen immer mit der gleichen Spannung zusammenschalten. Bei unterschiedlichen Spannungen fließen Ausgleichsströme zwischen den Quellen." },
+    { c: "quellen", n: "Seite 13", q: "Welche Aussage über Primär- und Sekundärelement ist richtig?", a: ["Primärelement = Batterie, nicht wieder aufladbar. Sekundärelement = Akkumulator, wieder aufladbar", "Primärelement = Akkumulator, nicht wieder aufladbar. Sekundärelement = Batterie, wieder aufladbar", "Primärelement = Batterie, wieder aufladbar. Sekundärelement = Akkumulator, nicht wieder aufladbar", "Primärelement = Akkumulator, wieder aufladbar. Sekundärelement = Batterie, nicht wieder aufladbar"], e: "Das Primärelement ist die Batterie und lässt sich nicht wieder aufladen. Das Sekundärelement ist der Akkumulator und lässt sich wieder aufladen." },
+
+    // Seite 14: Kondensator
+    { c: "kond", n: "Seite 14", q: "Wie ist die Kapazität C definiert?", a: ["C = Q / U, Einheit As/V = Farad [F]", "C = U / Q, Einheit V/As", "C = Q · U, Einheit As · V", "C = U · I, Einheit Watt"], e: "Kapazität ist Ladung geteilt durch Spannung. Die Einheit As/V heißt Farad [F]." },
+    { c: "kond", n: "Seite 14", q: "Wovon hängt die Kapazität eines Plattenkondensators ab?", a: ["Von Plattenfläche A, Plattenabstand d und Dielektrikum ε<sub>r</sub>", "Nur von der angelegten Spannung", "Nur vom Strom beim Laden", "Von Spannung und Widerstand R"], e: "Die Kapazität wird durch die Fläche, den Abstand der Platten und das Dielektrikum bestimmt. Die angelegte Spannung ändert sie nicht." },
+    { c: "kond", n: "Seite 14", q: "Welche Formel gilt für die Kapazität eines Plattenkondensators (Fläche A, Plattenabstand d)?", a: ["C = ε<sub>0</sub> · ε<sub>r</sub> · A / d", "C = ε<sub>0</sub> · ε<sub>r</sub> · d / A", "C = ε<sub>0</sub> · A / (ε<sub>r</sub> · d)", "C = A · d / (ε<sub>0</sub> · ε<sub>r</sub>)"], e: "C = ε<sub>0</sub> · ε<sub>r</sub> · A / d. Eine größere Fläche oder ein besseres Dielektrikum erhöht C, ein größerer Abstand verkleinert C. In deinen Notizen heißt der Abstand l." },
+    { c: "kond", n: "Seite 14", q: "Der Plattenabstand eines Kondensators wird verdoppelt. Was passiert mit der Kapazität?", a: ["Sie halbiert sich", "Sie verdoppelt sich", "Sie bleibt gleich", "Sie vervierfacht sich"], e: "C ist umgekehrt proportional zum Plattenabstand. Doppelter Abstand bedeutet halbe Kapazität." },
+    { c: "kond", n: "Seite 14", q: "Was bedeuten ε, ε<sub>0</sub> und ε<sub>r</sub>?", a: ["ε = Permittivität, ε<sub>0</sub> = Feldkonstante, ε<sub>r</sub> = Permittivitätszahl", "ε = Feldkonstante, ε<sub>0</sub> = Permittivität, ε<sub>r</sub> = Permittivitätszahl", "ε = Permittivitätszahl, ε<sub>0</sub> = Permittivität, ε<sub>r</sub> = Feldkonstante", "ε = Dielektrikum, ε<sub>0</sub> = Spannung, ε<sub>r</sub> = Ladung"], e: "Es gilt ε = ε<sub>0</sub> · ε<sub>r</sub>. ε ist die Permittivität, ε<sub>0</sub> die (elektrische) Feldkonstante und ε<sub>r</sub> die Permittivitätszahl des Dielektrikums." },
+    { c: "kond", n: "Seite 14", q: "Welchen Wert hat ε<sub>r</sub> bei Luft?", a: ["1", "0", "10", "81"], e: "Für Luft gilt ε<sub>r</sub> = 1 (genauer: etwa 1,0006). Andere Dielektrika haben größere Werte und erhöhen die Kapazität." },
+    { c: "kond", n: "Seite 14", q: "Was ist die Zeitkonstante τ (Tau) eines RC-Glieds?", a: ["τ = R · C", "τ = R / C", "τ = C / R", "τ = 1 / (R · C)"], e: "Die Zeitkonstante τ = R · C gibt an, wie schnell ein Kondensator über einen Widerstand geladen oder entladen wird." },
+    { c: "kond", n: "Seite 14", q: "Ein Widerstand mit 100 Ω und ein Kondensator mit 0,1 F bilden ein RC-Glied. Wie groß ist τ?", a: ["10 s", "1000 s", "0,001 s", "100,1 s"], e: "τ = R · C = 100 Ω · 0,1 F = 10 s." },
+    { c: "kond", n: "Seite 14", q: "Ein RC-Glied hat R = 10 kΩ und C = 100 µF. Wie groß ist τ?", a: ["1 s", "10 s", "0,1 s", "1000 s"], e: "τ = R · C = 10 000 Ω · 0,0001 F = 1 s." },
+    { c: "kond", n: "Seite 14", q: "Wie viel Prozent der Endspannung hat ein Kondensator nach 1 τ beim Laden erreicht?", a: ["63 %", "50 %", "37 %", "99 %"], e: "Nach 1 τ sind es immer rund 63 % (genau 63,2 %). Beim Entladen bleiben nach 1 τ noch rund 37 % übrig." },
+    { c: "kond", n: "Seite 14", q: "Nach welcher Zeit gilt ein Kondensator als vollständig geladen?", a: ["Nach etwa 5 τ", "Nach etwa 1 τ", "Nach etwa 2 τ", "Nach genau 10 τ"], e: "t<sub>c</sub> ≈ 5 τ. Dann sind über 99 % der Endspannung erreicht." },
+    { c: "kond", n: "Seite 14", q: "Was passiert beim Entladen eines Kondensators über einen Widerstand?", a: ["Die Spannung fällt ab, der Strom fließt in umgekehrter Richtung und klingt ab", "Die Spannung steigt, der Strom verhält sich wie beim Laden", "Die Spannung bleibt konstant, der Strom fällt", "Der Strom bleibt konstant, die Spannung fällt linear"], e: "Beim Entladen sinkt die Spannung am Kondensator. Der Strom fließt in die Gegenrichtung und klingt ebenfalls ab. Deshalb liegt die Stromkurve in deiner Skizze nach 5 τ im negativen Bereich." },
+    { c: "kond", n: "Seite 14", q: "Ein Kondensator ist an 12 V vollständig geladen. Welche Spannung liegt am Kondensator?", a: ["12 V", "0 V", "6 V", "63 V"], e: "Voll geladen liegt am Kondensator die Quellenspannung an, hier 12 V. Der Ladestrom ist dann null." },
+    { c: "kond", n: "Seite 14", q: "Ein Kondensator mit 100 µF liegt an 12 V. Welche Ladung speichert er?", a: ["1,2 mC", "8,3 µC", "12 mC", "0,12 mC"], e: "Aus C = Q / U folgt Q = C · U = 100 µF · 12 V = 1200 µC = 1,2 mC." },
+    { c: "kond", n: "Seite 14", q: "Auf einem Kondensator steht „2 µF, 33 V“. Was bedeutet die Angabe 33 V?", a: ["Die höchste zulässige Spannung (Nennspannung)", "Die Spannung, die er immer liefert", "Die Spannung nach 1 τ", "Seine Zeitkonstante"], e: "2 µF ist die Kapazität. 33 V ist die Nennspannung, also die höchste Spannung, an der der Kondensator betrieben werden darf." },
+
+    // Seite 15: ELKO, Reihen- und Parallelschaltung
+    { c: "kond", n: "Seite 15", q: "Was ist ein ELKO?", a: ["Ein Elektrolytkondensator, im Gleichstrom verwendbar", "Ein Elektrokondensator für reinen Wechselstrom", "Ein ungepolter Keramikkondensator", "Ein veränderbarer Widerstand"], e: "ELKO steht für Elektrolytkondensator. Er ist gepolt (+ und −) und wird im Gleichstrom verwendet." },
+    { c: "kond", n: "Seite 15", q: "Worauf muss man beim Einbau eines ELKOs achten?", a: ["Auf die richtige Polung (+ und −)", "Auf nichts, er lässt sich beliebig einbauen", "Dass er an Wechselspannung liegt", "Dass er parallel zu einer Spule liegt"], e: "Ein ELKO ist gepolt. Falsch herum eingebaut oder an Wechselspannung kann er zerstört werden." },
+    { c: "kond", n: "Seite 15", q: "Drei Kondensatoren mit 30 µF, 60 µF und 60 µF liegen in Reihe. Wie groß ist C<sub>G</sub>?", a: ["15 µF", "150 µF", "30 µF", "4 µF"], e: "1/C<sub>G</sub> = 1/30 + 1/60 + 1/60 = 4/60, also C<sub>G</sub> = 15 µF." },
+    { c: "kond", n: "Seite 15", q: "Drei Kondensatoren mit 10 µF, 22 µF und 47 µF liegen parallel. Wie groß ist C<sub>G</sub>?", a: ["79 µF", "6 µF", "7,9 µF", "47 µF"], e: "Parallel addieren sich die Kapazitäten: 10 + 22 + 47 = 79 µF. Die Kapazität steigt." },
+    { c: "kond", n: "Seite 15", q: "Wie verhält sich die Gesamtkapazität bei der Reihenschaltung von Kondensatoren?", a: ["Sie ist kleiner als die kleinste Einzelkapazität", "Sie ist größer als die größte Einzelkapazität", "Sie ist gleich der Summe der Einzelkapazitäten", "Sie ist gleich der größten Einzelkapazität"], e: "In Reihe addieren sich die Kehrwerte. Das Ergebnis ist kleiner als die kleinste Einzelkapazität, so wie bei parallelen Widerständen." },
+
+    // Seite 16: Magnetismus, Elektromagnetismus, Spule
+    { c: "mag", n: "Seite 16", q: "Wie verlaufen die Magnetfeldlinien eines Stabmagneten?", a: ["Außen von N nach S, innen von S nach N", "Außen von S nach N, innen von N nach S", "Immer von N nach S, auch im Inneren", "Nur im Inneren des Magneten"], e: "Magnetfeldlinien sind in sich geschlossen. Außen verlaufen sie von Nord nach Süd, innen von Süd nach Nord." },
+    { c: "mag", n: "Seite 16", q: "Wie sieht das Magnetfeld um einen stromdurchflossenen Leiter aus?", a: ["Kreisförmig um den Leiter", "Parallel zum Leiter", "Nur an den Enden des Leiters", "Es entsteht kein Magnetfeld"], e: "Das Magnetfeld geht kreisförmig um den Leiter." },
+    { c: "mag", n: "Seite 16", q: "Mit welcher Regel bestimmt man die Richtung des Magnetfelds um einen Leiter?", a: ["Rechte-Hand-Regel (Schraubenregel)", "Maschenregel", "Knotenregel", "Spannungsteilerregel"], e: "Die Richtung des Magnetfelds um einen stromdurchflossenen Leiter gibt die Rechte-Hand-Regel an, auch Schraubenregel genannt." },
+    { c: "mag", n: "Seite 16", q: "Was passiert mit dem Magnetfeld um einen Leiter, wenn der Strom größer wird?", a: ["Es wird stärker", "Es wird schwächer", "Es bleibt gleich", "Es kehrt sich um"], e: "Je mehr Strom, desto stärker das Magnetfeld." },
+    { c: "mag", n: "Seite 16", q: "Zwei Leiter liegen nebeneinander und führen Strom in derselben Richtung. Was geschieht?", a: ["Sie ziehen sich an", "Sie stoßen sich ab", "Es passiert nichts", "Sie drehen sich um 90°"], e: "Zwei Leiter mit gleicher Stromrichtung ziehen sich an." },
+    { c: "mag", n: "Seite 16", q: "Zwei Leiter liegen nebeneinander und führen Strom in entgegengesetzter Richtung. Was geschieht?", a: ["Sie stoßen sich ab", "Sie ziehen sich an", "Es passiert nichts", "Sie erwärmen sich nicht"], e: "Zwei Leiter mit entgegengesetzter Stromrichtung stoßen sich ab." },
+    { c: "mag", n: "Seite 16", q: "Wodurch wird das Magnetfeld einer Spule stärker?", a: ["Mehr Windungen und mehr Strom", "Weniger Windungen und mehr Strom", "Mehr Windungen und weniger Strom", "Weniger Windungen und weniger Strom"], e: "Die Stärke der Spule steigt mit mehr Wicklungen und mehr Strom." },
+    { c: "mag", n: "Seite 16", q: "Wie verlaufen die Feldlinien einer stromdurchflossenen Spule?", a: ["Wie bei einem Stabmagneten: außen von N nach S, innen von S nach N", "Außen von S nach N, innen von N nach S", "Parallel zur Spulenachse und nie geschlossen", "Nur innerhalb der Spule"], e: "Eine Spule verhält sich wie ein Stabmagnet. Die Feldlinien verlaufen außen von N nach S und innen von S nach N." },
+
+    // Seite 17: magnetische Größen
+    { c: "mag", n: "Seite 17", q: "Wie heißt die Summe aller magnetischen Feldlinien, und welche Einheit hat sie?", a: ["Magnetischer Fluss Φ, Weber [Wb]", "Magnetische Flussdichte B, Tesla [T]", "Magnetische Feldstärke H, A/m", "Durchflutung Θ, Ampere [A]"], e: "Der magnetische Fluss Φ ist die Summe aller magnetischen Feldlinien. Die Einheit ist Weber [Wb]." },
+    { c: "mag", n: "Seite 17", q: "Wie berechnet sich die Durchflutung Θ?", a: ["Θ = I · N (Stromstärke mal Windungszahl)", "Θ = I / N", "Θ = U · N", "Θ = Φ · A"], e: "Θ = I · N, die Summe der Ströme durch die Leiter. Die Einheit ist Ampere. In deinen Notizen heißt sie elektrische Durchflutung, in anderen Büchern magnetische Durchflutung." },
+    { c: "mag", n: "Seite 17", q: "Eine Spule hat 500 Windungen und führt 2 A. Wie groß ist die Durchflutung Θ?", a: ["1000 A", "250 A", "1002 A", "4 A"], e: "Θ = I · N = 2 A · 500 = 1000 A." },
+    { c: "mag", n: "Seite 17", q: "Wie berechnet sich die magnetische Feldstärke H?", a: ["H = Θ / l<sub>m</sub> = I · N / l<sub>m</sub>, Einheit A/m", "H = Θ · l<sub>m</sub>, Einheit A · m", "H = Φ / A, Einheit T", "H = I / N, Einheit A"], e: "H ist die Durchflutung pro mittlerer Feldlinienlänge oder Spulenlänge. Die Einheit ist A/m." },
+    { c: "mag", n: "Seite 17", q: "Eine Spule hat 500 Windungen, führt 2 A und ist 0,2 m lang. Wie groß ist die Feldstärke H?", a: ["5000 A/m", "200 A/m", "100 A/m", "1000 A/m"], e: "H = I · N / l = 2 A · 500 / 0,2 m = 5000 A/m." },
+    { c: "mag", n: "Seite 17", q: "Wie berechnet sich die magnetische Flussdichte B?", a: ["B = Φ / A, Einheit Wb/m² = Tesla [T]", "B = Φ · A, Einheit Wb · m²", "B = I · N / l, Einheit A/m", "B = Θ / A, Einheit Tesla"], e: "Die Flussdichte ist der Fluss pro Fläche: B = Φ / A. Die Einheit Wb/m² heißt Tesla [T]." },
+    { c: "mag", n: "Seite 17", q: "Ein magnetischer Fluss von 0,004 Wb durchsetzt eine Fläche von 0,02 m². Wie groß ist die Flussdichte B?", a: ["0,2 T", "5 T", "0,00008 T", "0,02 T"], e: "B = Φ / A = 0,004 Wb / 0,02 m² = 0,2 T." },
+    { c: "mag", n: "Seite 17", q: "Welche Einheit gehört zu welcher Größe?", a: ["Φ: Weber, H: A/m, B: Tesla", "Φ: Tesla, H: A/m, B: Weber", "Φ: A/m, H: Weber, B: Tesla", "Φ: Weber, H: Tesla, B: A/m"], e: "Magnetischer Fluss Φ in Weber [Wb], Feldstärke H in A/m, Flussdichte B in Tesla [T]." }
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var deck = [], idx = 0, score = 0, locked = false, missed = [], current = null;
+
+  function shuffle(a) {
+    a = a.slice();
+    for (var k = a.length - 1; k > 0; k--) {
+      var j = Math.floor(Math.random() * (k + 1));
+      var t = a[k]; a[k] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function show(id) {
+    ["start", "quiz", "result"].forEach(function (s) { $(s).hidden = s !== id; });
+    window.scrollTo(0, 0);
+  }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function strip(h) { return h.replace(/<[^>]+>/g, "").replace(/&gt;/g, ">").replace(/&lt;/g, "<"); }
+
+  $("lead").textContent = Q.length + " Fragen mit je vier Antworten. Nach jeder Antwort siehst du die Erklärung.";
+
+  // Themen-Chips
+  var chips = $("chips");
+  Object.keys(CATS).forEach(function (k) {
+    var count = Q.filter(function (q) { return q.c === k; }).length;
+    var lab = document.createElement("label");
+    lab.className = "chip";
+    lab.innerHTML = '<input type="checkbox" value="' + k + '" checked><span>' + CATS[k] + ' <em>' + count + '</em></span>';
+    chips.appendChild(lab);
+  });
+  function selectedCats() {
+    return Array.prototype.map.call(chips.querySelectorAll("input:checked"), function (i) { return i.value; });
+  }
+  function refreshStart() {
+    var n = selectedCats().length;
+    $("startBtn").disabled = n === 0;
+    var all = n === Object.keys(CATS).length;
+    $("toggleAll").textContent = all ? "Alle abwählen" : "Alle auswählen";
+  }
+  chips.addEventListener("change", refreshStart);
+  $("toggleAll").addEventListener("click", function () {
+    var all = selectedCats().length === Object.keys(CATS).length;
+    chips.querySelectorAll("input").forEach(function (i) { i.checked = !all; });
+    refreshStart();
+  });
+  refreshStart();
+
+  function showLast() {
+    var raw = lsGet("elq-last");
+    if (!raw) return;
+    try {
+      var r = JSON.parse(raw);
+      var el = $("last");
+      el.innerHTML = 'Letztes Ergebnis: <strong>' + r.s + ' von ' + r.n + ' (' + Math.round(100 * r.s / r.n) + ' %)</strong>';
+      el.hidden = false;
+    } catch (e) {}
+  }
+  showLast();
+
+  function start(list) {
+    deck = list; idx = 0; score = 0; missed = [];
+    show("quiz");
+    render();
+  }
+  $("startBtn").addEventListener("click", function () {
+    var cats = selectedCats();
+    var pool = Q.filter(function (q) { return cats.indexOf(q.c) > -1; });
+    if ($("shuffleQ").checked) pool = shuffle(pool);
+    var want = parseInt(document.querySelector('input[name="count"]:checked').value, 10);
+    if (want > 0 && want < pool.length) pool = pool.slice(0, want);
+    start(pool);
+  });
+
+  function render() {
+    current = deck[idx];
+    locked = false;
+    $("pos").textContent = "Frage " + (idx + 1) + " von " + deck.length;
+    $("sc").textContent = "Richtig: " + score;
+    var pct = Math.round(100 * idx / deck.length);
+    $("bar").style.width = pct + "%";
+    $("barWrap").setAttribute("aria-valuenow", String(pct));
+    $("ref").textContent = (typeof current.n === "number" ? "Notiz " : "") + current.n;
+    $("cat").textContent = CATS[current.c];
+    $("qtext").innerHTML = current.q;
+    var opts = shuffle(current.a.map(function (t, i) { return { t: t, ok: i === 0 }; }));
+    current.order = opts;
+    var ul = $("opts");
+    ul.innerHTML = "";
+    opts.forEach(function (o, i) {
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.innerHTML = '<span class="key">' + "ABCD".charAt(i) + '</span><span class="txt">' + o.t + '</span>';
+      b.addEventListener("click", function () { pick(i); });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    $("fb").hidden = true;
+    $("nextBtn").hidden = true;
+  }
+
+  function pick(i) {
+    if (locked) return;
+    locked = true;
+    var btns = $("opts").querySelectorAll(".opt");
+    var o = current.order[i];
+    var rightIdx = 0;
+    current.order.forEach(function (x, k) { if (x.ok) rightIdx = k; });
+    btns.forEach(function (b, k) {
+      b.disabled = true;
+      if (k === rightIdx) b.classList.add("right");
+      else if (k === i) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    var v = $("verdict");
+    if (o.ok) {
+      score++;
+      v.className = "verdict ok";
+      v.textContent = "Richtig.";
+    } else {
+      missed.push({ q: current, chosen: o.t });
+      v.className = "verdict no";
+      v.innerHTML = "Nicht ganz. Richtig ist: " + current.order[rightIdx].t;
+    }
+    $("why").innerHTML = current.e;
+    $("fb").hidden = false;
+    $("sc").textContent = "Richtig: " + score;
+    var last = idx === deck.length - 1;
+    var nb = $("nextBtn");
+    nb.textContent = last ? "Ergebnis anzeigen" : "Weiter";
+    nb.hidden = false;
+    nb.focus({ preventScroll: false });
+  }
+
+  function next() {
+    if (!locked) return;
+    idx++;
+    if (idx >= deck.length) finish(); else render();
+  }
+  $("nextBtn").addEventListener("click", next);
+
+  function finish() {
+    show("result");
+    var n = deck.length;
+    var pct = Math.round(100 * score / n);
+    $("rScore").textContent = score + " / " + n;
+    $("rPct").textContent = pct + " % richtig";
+    var msg = pct >= 90 ? "Sehr sicher. Der Stoff sitzt."
+      : pct >= 70 ? "Solide, ein paar Lücken sind noch offen."
+      : pct >= 50 ? "Die Hälfte sitzt. Wiederhole die falschen Fragen."
+      : "Noch viel offen. Lies die Notizen nochmal und starte neu.";
+    $("rMsg").textContent = msg;
+    lsSet("elq-last", JSON.stringify({ s: score, n: n }));
+    showLast();
+    var ul = $("missed");
+    ul.innerHTML = "";
+    missed.forEach(function (m) {
+      var li = document.createElement("li");
+      li.innerHTML = '<p class="mq">' + m.q.q + '</p><p class="mw">Deine Antwort: ' + m.chosen + '</p><p class="mr">Richtig: ' + m.q.a[0] + '</p>';
+      ul.appendChild(li);
+    });
+    $("retryBtn").hidden = missed.length === 0;
+  }
+
+  $("retryBtn").addEventListener("click", function () {
+    start(shuffle(missed.map(function (m) { return m.q; })));
+  });
+  $("againBtn").addEventListener("click", function () { show("start"); });
+
+  document.addEventListener("keydown", function (e) {
+    if ($("quiz").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
+    var n = "1234".indexOf(e.key);
+    if (n > -1 && !locked) { pick(n); }
+    else if (e.key === "ArrowRight" && locked) { next(); }
+  });
+})();
+</script>
+
+</body>
+</html>
