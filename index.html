@@ -1,9 +1,5 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elektronik-Quiz Modul 3</title>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Elektronik-Quiz Modul 3 & 4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -149,36 +145,111 @@ sub, sup { line-height: 0; }
 .missed .mw { margin: 0; font-size: 14px; color: var(--bad); }
 .missed .mr { margin: 0; font-size: 14px; color: var(--ok); }
 .foot { font-size: 13px; color: var(--ink-soft); margin: 0; }
-@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
-html, body { margin: 0; }
+/* Karteikarten */
+.flash {
+  width: 100%; min-height: 15rem; display: flex; flex-direction: column; gap: 14px; text-align: left;
+  font: inherit; color: var(--fg); background: var(--card); border: 1.5px solid var(--line); border-radius: 8px;
+  padding: 18px; cursor: pointer; box-shadow: 0 3px 0 var(--line); -webkit-tap-highlight-color: transparent;
+}
+.flash:hover { border-color: var(--ink); }
+.flash:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.flash.is-flipped { border-color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+.flash-q { display: block; font-size: 1.2rem; font-weight: 600; line-height: 1.35; text-wrap: pretty; overflow-wrap: anywhere; }
+.flash-back { display: flex; flex-direction: column; gap: 8px; border-top: 1.5px dashed var(--line); padding-top: 14px; animation: reveal .2s ease-out; }
+.flash-a { display: block; font-weight: 600; font-size: 1.08rem; color: var(--ok); overflow-wrap: anywhere; }
+.flash-q { font-family: var(--f-display); font-weight: 700; font-size: 1.6rem; line-height: 1.12; letter-spacing: .01em; color: var(--ink); overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
+.flash-a { color: var(--fg); font-size: 1.1rem; line-height: 1.4; }
+.flash-e { display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--fg); overflow-wrap: anywhere; }
+.flash-e .li { display: block; position: relative; padding-left: 16px; }
+.flash-e .li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 6px; height: 6px; border-radius: 1px; background: var(--ink); }
+.flash-e .merk { display: block; margin-top: 4px; padding: 6px 10px; background: var(--marker-soft); color: var(--fg); border-radius: 3px; font-weight: 600; }
+.flash-hint { margin-top: auto; font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.rate { flex-wrap: nowrap; }
+.rate .btn { flex: 1 1 0; min-width: 0; }
+.btn.again { background: transparent; color: var(--bad); border-color: var(--bad); }
+.btn.knew { background: var(--ok); border-color: var(--ok); color: var(--card); }
+.reset-row { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.modsw { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden; background: var(--card); }
+.modsw label { position: relative; display: flex; }
+.modsw input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.modsw span { flex: 1; text-align: center; padding: 12px 8px; font-family: var(--f-display); font-weight: 700; font-size: 1.3rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); user-select: none; }
+.modsw label + label span { border-left: 1.5px solid var(--ink); }
+.modsw input:checked + span { background: var(--ink); color: var(--on-ink); }
+.modsw input:focus-visible + span { outline: 3px solid var(--marker); outline-offset: -4px; }
+@keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } .flash-back { animation: none; } }
 </style>
 
-</head>
-<body>
-<main class="app">
+<main class="app" lang="de">
   <header>
-    <div class="eyebrow">AERO-Bildung · Modul 3</div>
-    <h1><span>Elektronik</span>-Grundlagen</h1>
+    <div class="eyebrow" id="eyebrow">AERO-Bildung · Modul 3</div>
+    <h1 id="title"><span>Elektronik</span>-Grundlagen</h1>
     <p class="lead" id="lead"></p>
   </header>
 
-  <section id="start" class="card" aria-label="Quiz einrichten">
+  <nav class="modsw" id="modSeg" aria-label="Modul wählen">
+    <label><input type="radio" name="mod" value="3" checked><span>Modul 3</span></label>
+    <label><input type="radio" name="mod" value="4"><span>Modul 4</span></label>
+  </nav>
+
+  <section id="start" class="card" aria-label="Lernen einrichten">
+    <fieldset>
+      <legend>Modus</legend>
+      <div class="seg" id="modeSeg">
+        <label><input type="radio" name="mode" value="quiz" id="modeQuiz" checked><span>Quiz</span></label>
+        <label><input type="radio" name="mode" value="cards" id="modeCards"><span>Karteikarten</span></label>
+      </div>
+    </fieldset>
     <fieldset>
       <legend>Themen</legend>
       <div class="chips" id="chips"></div>
       <div><button type="button" class="link" id="toggleAll">Alle abwählen</button></div>
     </fieldset>
     <fieldset>
-      <legend>Anzahl Fragen</legend>
+      <legend id="countLegend">Anzahl Fragen</legend>
       <div class="seg" id="seg">
         <label><input type="radio" name="count" value="0" checked><span>Alle</span></label>
         <label><input type="radio" name="count" value="10"><span>10</span></label>
         <label><input type="radio" name="count" value="20"><span>20</span></label>
       </div>
     </fieldset>
-    <label class="check"><input type="checkbox" id="shuffleQ" checked> Fragen mischen</label>
+    <label class="check"><input type="checkbox" id="shuffleQ" checked> Mischen</label>
+    <label class="check" id="skipWrap" hidden><input type="checkbox" id="skipKnown" checked> Gewusste Karten überspringen</label>
     <button type="button" class="btn" id="startBtn">Quiz starten</button>
     <p class="last" id="last" hidden></p>
+    <div class="reset-row" id="cardInfo" hidden>
+      <p class="last" id="cardStat"></p>
+      <button type="button" class="link" id="resetCards">Fortschritt zurücksetzen</button>
+    </div>
+  </section>
+
+  <section id="cards" class="card" hidden aria-label="Karteikarte">
+    <div class="stat-row"><span id="cPos"></span><span id="cOpen"></span></div>
+    <div class="bar" role="progressbar" aria-label="Gewusste Karten" aria-valuemin="0" aria-valuemax="100" id="cBarWrap"><i id="cBar"></i></div>
+    <button type="button" class="flash" id="flash" aria-describedby="cHint">
+      <span class="tags"><span class="ref" id="cRef"></span><span class="cat" id="cCat"></span></span>
+      <span class="flash-q" id="cQ"></span>
+      <span class="flash-back" id="cBack" hidden>
+        <span class="flash-a" id="cA"></span>
+        <span class="flash-e" id="cE"></span>
+      </span>
+      <span class="flash-hint" id="cHint">Tippen zum Umdrehen</span>
+    </button>
+    <div class="btn-row rate" id="cRate" hidden>
+      <button type="button" class="btn again" id="againCard">Nochmal</button>
+      <button type="button" class="btn knew" id="knewCard">Gewusst</button>
+    </div>
+    <div><button type="button" class="link" id="cStop">Runde beenden</button></div>
+  </section>
+
+  <section id="cardsDone" class="card" hidden aria-label="Runde beendet">
+    <h2>Runde geschafft</h2>
+    <div class="score"><b id="cdScore"></b><span id="cdSub"></span></div>
+    <p id="cdMsg" style="margin:0"></p>
+    <div class="btn-row">
+      <button type="button" class="btn" id="cdAgain">Nochmal-Karten wiederholen</button>
+      <button type="button" class="btn ghost" id="cdBack">Zur Auswahl</button>
+    </div>
   </section>
 
   <section id="quiz" class="card" hidden aria-label="Frage">
@@ -205,7 +276,7 @@ html, body { margin: 0; }
     </div>
   </section>
 
-  <p class="foot">Die Fragen stammen aus deinen Notizen vom 5. bis 12. Oktober 2026. Das gelbe Etikett nennt den Punkt (Notiz 1 bis 34) oder die Seite in den Notizen. Tasten 1 bis 4 wählen die Antwort, Pfeil rechts geht weiter.</p>
+  <p class="foot" id="foot">Die Fragen stammen aus deinen Notizen vom 5. bis 12. Oktober 2026. Das gelbe Etikett nennt den Punkt (Notiz 1 bis 34) oder die Seite in den Notizen. Am Computer: Im Quiz wählen die Tasten 1 bis 4 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt der Karteikarten wird nur in diesem Browser gespeichert.</p>
 </main>
 
 <script>
@@ -463,6 +534,203 @@ html, body { margin: 0; }
     { c: "wechsel", n: "Seite 22", q: "Was gilt bei einer symmetrischen Rechteckspannung für den Effektivwert?", a: ["U<sub>eff</sub> entspricht dem Spitzenwert U<sub>s</sub>", "U<sub>eff</sub> = 0,707 · U<sub>s</sub>", "U<sub>eff</sub> = 1,41 · U<sub>s</sub>", "U<sub>eff</sub> ist immer null"], e: "Eine Rechteckspannung hat ständig den vollen Betrag. Deshalb entspricht ihr Effektivwert dem Spitzenwert. Der Faktor 0,707 gilt nur für Sinus." }
   ];
 
+  // Lernkarten: f = Vorderseite, a = Kernaussage, d = Details, m = Merksatz
+  var CARDS = [
+    // Atomaufbau
+    { c: "atom", n: 1, f: "Aufbau eines Atoms", a: "Atomkern aus Protonen (+) und Neutronen (ungeladen), Hülle aus Elektronen (−).", d: ["Die Elektronen der äußersten Schale heißen Valenzelektronen (Valenzschale).", "Sie sind am schwächsten gebunden und können zu freien Ladungsträgern werden."] },
+    { c: "atom", n: 2, f: "Welche Teilchen tragen die Elementarladung?", a: "Proton: kleinste positive Ladung. Elektron: kleinste negative Ladung.", d: ["Neutronen sind ungeladen."] },
+    { c: "atom", n: 3, f: "Elektrische Ladung Q: Einheit", a: "Coulomb [C] = Amperesekunde [As].", d: ["Q = I · t"] },
+    { c: "atom", n: 4, f: "Valenzelektronen eines Halbleiters", a: "Vier Valenzelektronen, zum Beispiel bei Silizium und Germanium." },
+    { c: "atom", n: 5, f: "Leitfähigkeit und Ladungsträger", a: "Je mehr freie Ladungsträger, desto besser leitet ein Stoff.", d: ["Je größer der Widerstand, desto schlechter leitet er (Notiz 18)."] },
+    { c: "atom", n: 6, f: "Besetzung der Elektronen&shy;schalen", a: "Auf der äußersten Schale sitzen höchstens 8 Elektronen, auf der ersten Schale höchstens 2.", d: ["Allgemein fasst die Schale n höchstens 2n² Elektronen: 2, 8, 18, 32."] },
+    { c: "atom", n: 7, f: "Wie entstehen positive und negative Ionen?", a: "Gibt ein Atom ein Elektron ab, entsteht ein positives Ion. Nimmt es eines auf, entsteht ein negatives Ion." },
+    { c: "atom", n: 8, f: "P- und N-Schicht eines Halbleiters", a: "P-Schicht: mit dreiwertigen Fremdatomen dotiert. N-Schicht: mit fünfwertigen Fremdatomen dotiert.", d: ["P: Elektronenmangel, „Löcher“ sind die Ladungsträger.", "N: Elektronenüberschuss, freie Elektronen sind die Ladungsträger."] },
+
+    // Spannung & Strom
+    { c: "strom", n: 9, f: "Was ist elektrische Spannung?", a: "Die Potentialdifferenz zwischen zwei Polen. Einheit Volt [V]." },
+    { c: "strom", n: 10, f: "Wie misst man Spannung und Strom?", a: "Spannung parallel zum Verbraucher, Strom in Reihe.", d: ["Beim Messen des Stroms muss der Strom durch das Messgerät fließen (Notiz 13)."] },
+    { c: "strom", n: 12, f: "Technische Stromrichtung", a: "Außen von + nach −, innen im Erzeuger von − nach +.", d: ["Die Elektronen fließen tatsächlich andersherum: außen von − nach +."] },
+    { c: "strom", n: 14, f: "Stromdichte", a: "Stromstärke pro Querschnitt: J = I / A.", d: ["Halber Querschnitt bei gleichem Strom ergibt doppelte Stromdichte und damit mehr Wärme."] },
+    { c: "strom", n: 15, f: "Aufgabe einer Sicherung", a: "Sie schützt das Leitungsnetz vor zu hohem Strom.", d: ["Beispiel: Eine Leitung mit 1,5 mm² wird üblicherweise mit 16 A abgesichert."] },
+
+    // Spannungsquellen
+    { c: "quellen", n: 11, f: "Spannungsquellen und ihre Spannungsart", a: "Generator: Wechselspannung (WS, AC). Batterie, Thermoelement, Solarzelle: Gleichspannung (GS, DC).", d: ["Piezoelement: erzeugt Spannung durch Druck. Sie folgt der Belastungsänderung."] },
+    { c: "quellen", n: 16, f: "Galvanisches Element", a: "Eine Zelle aus zwei unterschiedlichen Elektroden in einem Elektrolyten. Sie erzeugt Spannung durch eine chemische Reaktion.", d: ["Das ist das Prinzip der Batterie. Mehrere Zellen zusammen bilden eine Batterie."] },
+    { c: "quellen", n: 17, f: "Wie erzeugt ein Generator Spannung?", a: "Durch Magnetismus, genauer durch Induktion." },
+    { c: "quellen", n: 32, f: "Primär- und Sekundärelement", a: "Primärelement = Batterie, nicht wieder aufladbar. Sekundärelement = Akkumulator, wieder aufladbar." },
+    { c: "quellen", n: "Seite 13", f: "Spannungsquellen in Reihe", a: "Spannung steigt, Kapazität bleibt gleich, Innenwiderstand steigt.", d: ["Beispiel: 3 × 1,5 V / 100 mAh ergibt 4,5 V / 100 mAh."] },
+    { c: "quellen", n: "Seite 13", f: "Spannungsquellen parallel", a: "Spannung bleibt gleich, Kapazität steigt, Innenwiderstand sinkt.", d: ["Beispiel: 3 × 1,5 V / 100 mAh ergibt 1,5 V / 300 mAh.", "Nur Quellen mit gleicher Spannung parallel schalten, sonst fließen Ausgleichsströme."] },
+    { c: "quellen", n: 30, f: "Spannungs-, Strom- und Leistungs&shy;anpassung", a: "Spannungsanpassung: R<sub>Last</sub> ≫ R<sub>i</sub>. Stromanpassung: R<sub>Last</sub> ≪ R<sub>i</sub>. Leistungsanpassung: R<sub>Last</sub> = R<sub>i</sub>.", d: ["Bei Leistungsanpassung gibt die Quelle die größte Leistung ab, der Wirkungsgrad beträgt nur 50 %."] },
+
+    // Widerstand
+    { c: "wid", n: 19, f: "Ohmsches Gesetz", a: "U = R · I", d: ["Umgestellt: R = U / I und I = U / R.", "Merkdreieck: U oben, R und I unten."] },
+    { c: "wid", n: 20, f: "Wovon hängt der Widerstand eines Leiters ab?", a: "Vom Material (spezifischer Widerstand bei 20 °C), von der Temperatur, der Länge und dem Querschnitt.", d: ["R = ρ · l / A: längerer Leiter, größerer Widerstand. Dickerer Leiter, kleinerer Widerstand."] },
+    { c: "wid", n: 21, f: "NTC", a: "Negativer Temperaturbeiwert, Heißleiter: Temperatur steigt, Widerstand sinkt.", d: ["Typisch: Halbleiter."] },
+    { c: "wid", n: 22, f: "PTC", a: "Positiver Temperaturbeiwert, Kaltleiter: Temperatur steigt, Widerstand steigt.", d: ["Typisch: Metalle. Technische Kaltleiter (PTC-Thermistoren) bestehen oft aus Keramik."] },
+    { c: "wid", n: 23, f: "Widerstands&shy;kennlinie (I über U)", a: "Je flacher die Kennlinie, desto größer der Widerstand.", d: ["Bei gleicher Spannung fließt dann weniger Strom."] },
+    { c: "wid", n: 24, f: "Widerstandsgruppen", a: "Festwiderstände, physikalische Widerstände (z. B. NTC, PTC) und mechanisch veränderbare Widerstände (z. B. Potentiometer)." },
+
+    // Leistung & Arbeit
+    { c: "leist", n: 25, f: "Formeln für die elektrische Leistung", a: "P = U · I, Einheit Watt [W].", d: ["P = U² / R", "P = R · I²"] },
+    { c: "leist", n: 25, f: "Elektrische Arbeit", a: "W = U · I · t = P · t", d: ["Einheit Wattsekunde [Ws], im Alltag Kilowattstunde [kWh]."] },
+    { c: "leist", n: 26, f: "Wirkungsgrad η", a: "η = P<sub>ab</sub> / P<sub>zu</sub>, immer kleiner als 1.", d: ["Grund sind Verluste, zum Beispiel Wärme."] },
+
+    // Schaltungen
+    { c: "schalt", n: 27, f: "Reihen&shy;schaltung von Widerständen", a: "Strom überall gleich. Spannungen und Widerstände addieren sich: R<sub>G</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>.", d: ["Am größten Widerstand fällt die größte Spannung ab.", "Nachteil: Fällt ein Bauteil aus, geht alles aus."] },
+    { c: "schalt", n: 28, f: "Parallel&shy;schaltung von Widerständen", a: "Spannung überall gleich. Der Strom teilt sich auf: 1/R<sub>G</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub>.", d: ["Der Gesamtwiderstand ist kleiner als der kleinste Einzelwiderstand.", "Zwei gleiche Widerstände parallel: R<sub>G</sub> = R / 2."] },
+    { c: "schalt", n: 28, f: "1. Kirchhoff&shy;sches Gesetz (Knotenregel)", a: "In einem Knoten ist die Summe der zufließenden Ströme gleich der Summe der abfließenden Ströme.", d: ["Beispiel: I<sub>1</sub> + I<sub>2</sub> = I<sub>3</sub> + I<sub>4</sub>. Mit Vorzeichen ist die Summe null."] },
+    { c: "schalt", n: 27, f: "2. Kirchhoff&shy;sches Gesetz (Maschenregel)", a: "In einer Masche ist die Summe der Quellenspannungen gleich der Summe der Spannungsfälle.", d: ["Mit Vorzeichen ist die Summe aller Spannungen in der Masche null."] },
+    { c: "schalt", n: 29, f: "Wheatstone-Brücke", a: "Brückenschaltung zur genauen Widerstandsmessung, zum Beispiel für Temperaturmessung mit einem temperaturabhängigen Widerstand.", d: ["Abgeglichen, wenn R<sub>1</sub> / R<sub>2</sub> = R<sub>3</sub> / R<sub>4</sub>. Dann fließt kein Strom durch die Brücke."] },
+
+    // Kondensator
+    { c: "kond", n: "Seite 14", f: "Kapazität: Definition und Einheit", a: "C = Q / U, Einheit Farad [F] = As/V." },
+    { c: "kond", n: "Seite 14", f: "Plattenkondensator: Wovon hängt C ab?", a: "C = ε<sub>0</sub> · ε<sub>r</sub> · A / d", d: ["Größere Plattenfläche A: größere Kapazität.", "Größerer Plattenabstand d: kleinere Kapazität.", "Besseres Dielektrikum (größeres ε<sub>r</sub>): größere Kapazität."] },
+    { c: "kond", n: "Seite 14", f: "ε, ε<sub>0</sub> und ε<sub>r</sub>", a: "ε = ε<sub>0</sub> · ε<sub>r</sub>", d: ["ε: Permittivität", "ε<sub>0</sub>: elektrische Feldkonstante", "ε<sub>r</sub>: Permittivitätszahl des Dielektrikums, im Vakuum genau 1, bei Luft ≈ 1", "ε<sub>0</sub> ≈ 8,85 · 10⁻¹² As/(Vm)"] },
+    { c: "kond", n: "Seite 14", f: "Zeitkonstante τ beim Kondensator", a: "τ = R · C", d: ["Nach 1 τ ist der Kondensator zu 63 % geladen.", "Nach 5 τ ist er praktisch voll (über 99 %).", "Beispiel: 100 Ω · 0,1 F = 10 s."] },
+    { c: "kond", n: "Seite 14", f: "Laden und Entladen eines Kondensators", a: "Laden: Der Strom ist zu Beginn am größten und fällt ab. Die Spannung steigt bis zur Quellenspannung.", d: ["Entladen: Die Spannung fällt ab, der Strom fließt in Gegenrichtung und klingt ab."] },
+    { c: "kond", n: "Seite 14", f: "Angabe „2 µF / 33 V“ auf einem Kondensator", a: "2 µF ist die Kapazität, 33 V die höchste zulässige Spannung (Nennspannung)." },
+    { c: "kond", n: "Seite 15", f: "ELKO", a: "Elektrolytkondensator: gepolt (+ und −), nur an Gleichspannung verwendbar.", d: ["Falsch gepolt oder an Wechselspannung kann er zerstört werden."] },
+    { c: "kond", n: "Seite 15", f: "Kondensatoren in Reihe und parallel", a: "Reihe: 1/C<sub>G</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub> + 1/C<sub>3</sub>. Parallel: C<sub>G</sub> = C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub>.", d: ["Genau umgekehrt wie bei Widerständen.", "Parallel steigt die Kapazität, in Reihe ist sie kleiner als die kleinste Einzelkapazität."] },
+
+    // Magnetismus & Spule
+    { c: "mag", n: "Seite 16", f: "Feldlinien eines Stabmagneten", a: "Außen von N nach S, innen von S nach N.", d: ["Magnetfeldlinien sind immer geschlossen."] },
+    { c: "mag", n: "Seite 16", f: "Magnetfeld um einen strom&shy;durchflossenen Leiter", a: "Es verläuft kreisförmig um den Leiter. Je mehr Strom, desto stärker das Feld.", d: ["Die Richtung gibt die Rechte-Hand-Regel (Schraubenregel) an."] },
+    { c: "mag", n: "Seite 16", f: "Zwei parallele strom&shy;durchflossene Leiter", a: "Gleiche Stromrichtung: Sie ziehen sich an. Entgegengesetzte Stromrichtung: Sie stoßen sich ab." },
+    { c: "mag", n: "Seite 16", f: "Wodurch wird das Feld einer Spule stärker?", a: "Durch mehr Windungen und mehr Strom.", d: ["Ein Eisenkern verstärkt das Feld zusätzlich.", "Eine Spule verhält sich wie ein Stabmagnet."] },
+    { c: "mag", n: "Seite 17", f: "Magnetischer Fluss Φ", a: "Die Gesamtheit aller magnetischen Feldlinien. Einheit Weber [Wb].", d: ["Φ = B · A"] },
+    { c: "mag", n: "Seite 17", f: "Durchflutung Θ", a: "Θ = I · N (Strom mal Windungszahl). Einheit Ampere [A].", d: ["Die Summe der Ströme durch alle Leiter."] },
+    { c: "mag", n: "Seite 17", f: "Magnetische Feldstärke H", a: "H = Θ / l<sub>m</sub> = I · N / l<sub>m</sub>, Einheit A/m.", d: ["l<sub>m</sub>: mittlere Feldlinienlänge oder Spulenlänge."] },
+    { c: "mag", n: "Seite 17", f: "Magnetische Flussdichte B", a: "B = Φ / A, Einheit Tesla [T] = Wb/m²." },
+    { c: "mag", n: "Seite 18", f: "Permeabilität μ", a: "μ = B / H = μ<sub>0</sub> · μ<sub>r</sub>", d: ["μ<sub>0</sub>: magnetische Feldkonstante", "μ<sub>r</sub>: Permeabilitätszahl", "Luft: μ<sub>r</sub> ≈ 1. Eisen: μ<sub>r</sub> sehr groß, die B-H-Kurve geht in die Sättigung."] },
+    { c: "mag", n: "Seite 18", f: "Ferro-, para- und dia&shy;magnetische Werkstoffe", a: "Ferromagnetisch: μ<sub>r</sub> ≫ 1 (z. B. Eisen). Paramagnetisch: μ<sub>r</sub> &gt; 1. Diamagnetisch: μ<sub>r</sub> &lt; 1." },
+
+    // Motor, Generator & Trafo
+    { c: "motor", n: "Seite 19", f: "Linke-Hand-Regel (Motor)", a: "Finger: technische Stromrichtung (+ nach −). Das Magnetfeld tritt in die Handfläche ein. Daumen: Bewegungsrichtung." },
+    { c: "motor", n: "Seite 19", f: "Kraft auf einen Leiter im Magnetfeld", a: "F = B · I · l · z", d: ["B: Flussdichte, I: Strom, l: wirksame Leiterlänge, z: Anzahl der Leiter.", "Die Formel gilt, wenn Feld und Leiter senkrecht zueinander stehen."] },
+    { c: "motor", n: "Seite 19", f: "Kommutator", a: "Stromwender, ein mechanischer Gleichrichter.", d: ["Im Motor kehrt er die Stromrichtung in der Spule im richtigen Moment um, damit sie sich weiterdreht.", "Im Generator macht er aus der Wechselspannung eine pulsierende Gleichspannung."] },
+    { c: "motor", n: "Seite 20", f: "Induktionsspannung", a: "U<sub>i</sub> = B · l · v · z", d: ["v: Geschwindigkeit des Leiters.", "Sie entsteht, wenn ein Leiter quer zu den Feldlinien bewegt wird oder sich das Magnetfeld ändert.", "Allgemein: U<sub>i</sub> = N · ΔΦ / Δt. Nach der Lenzschen Regel wirkt die induzierte Spannung ihrer Ursache entgegen."] },
+    { c: "motor", n: "Seite 20", f: "Handregeln für Generator und Motor", a: "Generator: rechte Hand. Motor: linke Hand." },
+    { c: "motor", n: "Seite 20", f: "Gleichstromgenerator", a: "Ein Generator mit Kommutator. Er liefert pulsierende Gleichspannung.", d: ["Ohne Kommutator liefert der Generator Wechselspannung."] },
+    { c: "motor", n: "Seite 21", f: "Transformator: Aufbau und Funktion", a: "Primärspule (N<sub>p</sub>) und Sekundärspule (N<sub>s</sub>) auf einem gemeinsamen Kern. Er transformiert Wechselspannung herauf oder herunter.", d: ["Er funktioniert nur mit Wechselspannung, weil nur ein sich änderndes Magnetfeld eine Spannung induziert."] },
+    { c: "motor", n: "Seite 21", f: "Übersetzungs&shy;verhältnis des Transformators", a: "N<sub>p</sub> / N<sub>s</sub> = U<sub>p</sub> / U<sub>s</sub>", d: ["Gleichbedeutend: U<sub>p</sub> / N<sub>p</sub> = U<sub>s</sub> / N<sub>s</sub>.", "Mehr Windungen auf der Sekundärseite ergeben eine höhere Spannung.", "Beispiel: 230 V bei 1000 : 50 Windungen ergibt 11,5 V.", "Ströme umgekehrt: I<sub>p</sub> / I<sub>s</sub> = N<sub>s</sub> / N<sub>p</sub>. Beim idealen Trafo gilt U<sub>p</sub> · I<sub>p</sub> = U<sub>s</sub> · I<sub>s</sub>: hohe Spannung, kleiner Strom."] },
+
+    // Induktivität
+    { c: "induk", n: "Seite 21", f: "Induktivität einer Spule", a: "L = N² · μ · A / l, Einheit Henry [H].", d: ["Doppelte Windungszahl ergibt vierfache Induktivität.", "Ein Eisenkern (großes μ) erhöht die Induktivität."] },
+    { c: "induk", n: "Seite 21", f: "Zeitkonstante τ bei der Spule", a: "τ = L / R", d: ["Einschalten: Der Strom steigt langsam an, nach 1 τ auf 63 %, nach 5 τ praktisch auf den Endwert.", "Die Induktionsspannung ist beim Einschalten am größten und sinkt dann ab."] },
+    { c: "induk", n: "Seite 21", f: "Ausschalten einer Spule", a: "Die Induktionsspannung kehrt ihre Richtung um. Der Strom klingt ab, wenn er weiterfließen kann (z. B. über eine Freilaufdiode).", d: ["Der Strom fließt in derselben Richtung weiter und wird dabei kleiner.", "Ohne Strompfad entsteht eine hohe Spannungsspitze."] },
+    { c: "induk", n: "Seite 21", f: "Spulen in Reihe und parallel", a: "Reihe: L<sub>G</sub> = L<sub>1</sub> + L<sub>2</sub> + L<sub>3</sub>. Parallel: 1/L<sub>G</sub> = 1/L<sub>1</sub> + 1/L<sub>2</sub> + 1/L<sub>3</sub>.", d: ["Wie bei Widerständen.", "n gleiche Spulen parallel: L<sub>G</sub> = L / n."] },
+
+    // Wechselstrom
+    { c: "wechsel", n: "Seite 22", f: "Sinusspannung: Periode, Amplitude, Spitzenwerte", a: "Periode: eine volle Schwingung (0° bis 360°). Amplitude (Scheitelwert): vom Nullpunkt bis zum Maximum.", d: ["+U<sub>s</sub>: positiver Spitzenwert bei 90°, −U<sub>s</sub>: negativer Spitzenwert bei 270°.", "U<sub>ss</sub>: Spitze-Spitze-Wert, U<sub>ss</sub> = 2 · U<sub>s</sub>."] },
+    { c: "wechsel", n: "Seite 22", f: "Frequenz und Periodendauer", a: "f = 1 / T, Einheit Hertz [Hz]: Schwingungen pro Sekunde.", d: ["50 Hz: T = 20 ms.", "400 Hz (Bordnetz): T = 2,5 ms.", "Längere Periodendauer bedeutet kleinere Frequenz."] },
+    { c: "wechsel", n: "Seite 22", f: "Frequenz eines Generators", a: "f = p · n", d: ["p: Polpaarzahl, n: Drehzahl in Umdrehungen pro Sekunde.", "Mit n in Umdrehungen pro Minute: f = p · n / 60."] },
+    { c: "wechsel", n: "Seite 22", f: "Effektivwert einer Sinusspannung", a: "U<sub>eff</sub> = 0,707 · U<sub>s</sub>, umgekehrt U<sub>s</sub> = 1,41 · U<sub>eff</sub>.", d: ["Die 230 V im Hausnetz sind der Effektivwert. Der Spitzenwert liegt bei etwa 325 V.", "Bei einer Rechteckspannung gilt U<sub>eff</sub> = U<sub>s</sub>."] },
+    { c: "wechsel", n: "Seite 23", f: "Widerstand R im Wechsel&shy;stromkreis", a: "Strom und Spannung sind in Phase, es gibt keine Phasenverschiebung.", d: ["R ist frequenzunabhängig."] },
+    { c: "wechsel", n: "Seite 23", f: "Kondensator im Wechsel&shy;stromkreis", a: "Der Strom eilt der Spannung um 90° voraus.", d: ["Kapazitiver Blindwiderstand: X<sub>C</sub> = 1 / (2π · f · C).", "X<sub>C</sub> sinkt mit steigender Frequenz."] },
+    { c: "wechsel", n: "Seite 24", f: "Spule im Wechsel&shy;stromkreis", a: "Die Spannung eilt dem Strom um 90° voraus.", d: ["Induktiver Blindwiderstand: X<sub>L</sub> = 2π · f · L.", "X<sub>L</sub> steigt linear mit der Frequenz."], m: "Bei Induktivitäten verspäten sich die Ströme." },
+    { c: "wechsel", n: "Seite 24", f: "Welches Bauteil sperrt welche Frequenzen?", a: "Der Kondensator sperrt tiefe Frequenzen, die Spule sperrt hohe Frequenzen.", d: ["Grund: X<sub>C</sub> sinkt mit der Frequenz, X<sub>L</sub> steigt."] },
+    { c: "wechsel", n: "Seite 23", f: "Wirk-, Blind- und Scheinleistung", a: "P = Wirkleistung in Watt [W], Q = Blindleistung in VAR, S = Scheinleistung in VA.", d: ["Leistungsdreieck: S = √(P² + Q²).", "S ist nicht das Produkt aus P und Q.", "Leistungsfaktor: cos φ = P / S, also P = S · cos φ und Q = S · sin φ."] },
+    { c: "wechsel", n: "Seite 25", f: "Impedanz Z", a: "Der Gesamtwiderstand bei Spulen und Kondensatoren (Scheinwiderstand).", d: ["R und C in Reihe: Z = √(R² + X<sub>C</sub>²).", "R und L in Reihe: Z = √(R² + X<sub>L</sub>²).", "Beispiel: R = 30 Ω und X<sub>C</sub> = 40 Ω ergeben Z = 50 Ω.", "R, L und C in Reihe: Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²)."] },
+    { c: "wechsel", n: "Seite 25", f: "Gesamtspannung bei R und C in Reihe", a: "U<sub>G</sub> = √(U<sub>R</sub>² + U<sub>C</sub>²)", d: ["Die Teilspannungen sind um 90° verschoben und dürfen nicht einfach addiert werden.", "Beispiel: 6 V und 8 V ergeben 10 V."] },
+    { c: "wechsel", n: "Seite 26", f: "Tiefpass und Hochpass", a: "Tiefpass: lässt niedrige Frequenzen durch. Hochpass: lässt hohe Frequenzen durch.", d: ["RC-Tiefpass: Widerstand vorgeschaltet, Ausgang am Kondensator.", "RC-Hochpass: Kondensator vorgeschaltet, Ausgang am Widerstand."] },
+
+    // Drehstrom & Generator
+    { c: "dreh", n: "Seite 27", f: "Außenpol- und Innenpol&shy;maschine", a: "Außenpol: Erregerwicklung im Stator. Innenpol: Erregerwicklung im Rotor (Polrad).", d: ["Bei der Innenpolmaschine wird die Spannung in den Statorwicklungen induziert (Ankerwicklung)."] },
+    { c: "dreh", n: "Seite 27", f: "Drehstrom: Phasenlage", a: "Drei Phasen A, B und C, jeweils um 120° gegeneinander verschoben.", d: ["Vertauscht man zwei Phasen, ändert sich die Drehrichtung."] },
+    { c: "dreh", n: "Seite 27", f: "Stern- und Dreieckschaltung", a: "Stern: Die Wicklungen sind im Sternpunkt verbunden, ein Neutralleiter N ist möglich. Dreieck: kein Neutralleiter.", d: ["Bei Generatoren, zum Beispiel im Flugzeug, wird die Sternschaltung wegen des Neutralleiters bevorzugt.", "Im Flugzeug: 115 V zwischen Phase und N, 200 V zwischen zwei Phasen.", "Stern: Leiterspannung = √3 · Strangspannung (115 V · √3 ≈ 200 V). Dreieck: Leiterspannung = Strangspannung, Leiterstrom = √3 · Strangstrom."] }
+  ];
+
+  var CATS4 = {
+    pn: "PN-Übergang",
+    richt: "Sperr- & Durchlassrichtung",
+    diode: "Halbleiterdiode",
+    anw: "Anwendungen",
+    kenn: "Diodenkennlinie",
+    arten: "Z-, Foto- & LED-Diode",
+    bez: "Bezeichnung"
+  };
+
+  var Q4 = [
+    // PN-Übergang
+    { c: "pn", n: "Seite 1", q: "Womit wird Silizium dotiert, damit ein P-Leiter entsteht?", a: ["Mit einem Werkstoff mit 3 Valenzelektronen (z. B. Aluminium)", "Mit einem Werkstoff mit 5 Valenzelektronen (z. B. Phosphor)", "Mit einem Werkstoff mit 4 Valenzelektronen", "Mit Kupfer"], e: "P-Leiter: dreiwertiger Fremdstoff wie Aluminium. Es fehlt ein Elektron für die Bindung, so entsteht ein Loch." },
+    { c: "pn", n: "Seite 1", q: "Womit wird Silizium dotiert, damit ein N-Leiter entsteht?", a: ["Mit einem Werkstoff mit 5 Valenzelektronen (z. B. Phosphor)", "Mit einem Werkstoff mit 3 Valenzelektronen (z. B. Aluminium)", "Mit Germanium", "Mit einem Werkstoff ohne Valenzelektronen"], e: "N-Leiter: fünfwertiger Fremdstoff wie Phosphor. Das fünfte Elektron ist frei beweglich." },
+    { c: "pn", n: "Seite 1", q: "Wie viele Valenzelektronen hat Silizium?", a: ["4", "3", "5", "8"], e: "Silizium ist vierwertig, es hat 4 Valenzelektronen." },
+    { c: "pn", n: "Seite 1", q: "Welche Ladungsträger überwiegen im P-Leiter?", a: ["Löcher", "Freie Elektronen", "Neutronen", "Protonen"], e: "Im P-Leiter fehlen Elektronen, es gibt Löcher als bewegliche positive Ladungsträger." },
+    { c: "pn", n: "Seite 1", q: "Wo finden Diffusion und Rekombination statt?", a: ["Nur am Grenzübergang zwischen N- und P-Leiter", "Im ganzen Kristall gleichmäßig", "Nur an den Anschlussdrähten", "Nur im P-Leiter"], e: "Diffusion und Rekombination passieren nur am Grenzübergang." },
+    { c: "pn", n: "Seite 1", q: "In welche Richtung fließen Elektronen und Löcher bei der Diffusion?", a: ["Elektronen von N nach P, Löcher von P nach N", "Elektronen von P nach N, Löcher von N nach P", "Beide von N nach P", "Beide von P nach N"], e: "Elektronenfluss von N-Leiter zu P-Leiter, Löcherfluss von P-Leiter zu N-Leiter." },
+    { c: "pn", n: "Seite 1", q: "Wie ist der N-Leiter am Grenzübergang nach der Diffusion geladen?", a: ["Positiv (positiv ionisiert)", "Negativ (negativ ionisiert)", "Neutral", "Wechselnd positiv und negativ"], e: "Der N-Leiter hat Elektronen abgegeben und wird am Grenzübergang positiv, der P-Leiter negativ." },
+    { c: "pn", n: "Seite 1", q: "Wie dick ist die Sperrschicht ohne äußere Spannung ungefähr?", a: ["Etwa 1 µm", "Etwa 1 mm", "Etwa 1 cm", "Etwa 1 nm"], e: "Die Sperrschicht ist etwa 1 µm dick." },
+    { c: "pn", n: "Seite 1", q: "Wie heißt die Spannung, die sich ohne äußere Spannung am PN-Übergang aufbaut?", a: ["Diffusionsspannung", "Durchbruchspannung", "Sperrspannung", "Netzspannung"], e: "Durch die ionisierten Atome entsteht am Übergang die Diffusionsspannung." },
+    // Richtung
+    { c: "richt", n: "Seite 2", q: "Wie muss die Spannung für Durchlassrichtung angeschlossen werden?", a: ["Plus an P, Minus an N", "Plus an N, Minus an P", "Beide Pole an P", "Egal, die Diode leitet immer"], e: "+ an P, dann fließt Strom." },
+    { c: "richt", n: "Seite 2", q: "Was passiert mit der Sperrschicht in Sperrrichtung?", a: ["Sie wird breiter, es fließt praktisch kein Strom (nur ein sehr kleiner Sperrstrom)", "Sie wird schmaler, Strom fließt", "Sie verschwindet ganz", "Sie bleibt gleich, Strom fließt"], e: "In Sperrrichtung wird die Sperrschicht breiter und es fließt (praktisch) kein Strom." },
+    { c: "richt", n: "Seite 2", q: "Was passiert mit der Sperrschicht in Durchlassrichtung?", a: ["Ihre Breite wird deutlich reduziert, Strom fließt", "Sie wird breiter", "Sie bleibt unverändert", "Sie wird zum Isolator"], e: "In Durchlassrichtung wird die Sperrschichtbreite deutlich reduziert. Merklicher Strom fließt ab der Schleusenspannung (Si ≈ 0,7 V, Ge ≈ 0,3 V)." },
+    { c: "richt", n: "Seite 2", q: "Wofür stehen die Bezeichnungen U<sub>F</sub> und U<sub>R</sub>?", a: ["U<sub>F</sub>: Durchlassspannung (forward), U<sub>R</sub>: Sperrspannung (reverse)", "U<sub>F</sub>: Sperrspannung, U<sub>R</sub>: Durchlassspannung", "U<sub>F</sub>: Frequenz, U<sub>R</sub>: Widerstand", "Beide bezeichnen die Netzspannung"], e: "F = forward (Durchlass), R = reverse (Sperr)." },
+    { c: "richt", n: "Seite 2", q: "Welche Schwellspannung hat eine Germaniumdiode?", a: ["0,3 V", "0,7 V", "1,5 V", "3 V"], e: "Germanium: 0,3 V. Silizium: 0,7 V. Schwellspannung und Schleusenspannung meinen dasselbe." },
+    { c: "richt", n: "Seite 2", q: "Ein Pluspol liegt am N-Leiter. In welcher Richtung betreibst du die Diode?", a: ["Sperrrichtung", "Durchlassrichtung", "Gar keine, sie ist kurzgeschlossen", "Abwechselnd beides"], e: "N-Leiter (Kathode) an Pluspol bedeutet Sperrrichtung." },
+    // Diode
+    { c: "diode", n: "Seite 3", q: "Welche Schicht einer Diode ist die Anode?", a: ["Der P-Leiter", "Der N-Leiter", "Die Sperrschicht", "Das Gehäuse"], e: "P-Leiter = Anode, N-Leiter = Kathode." },
+    { c: "diode", n: "Seite 3", q: "Woran erkennst du an einer Diode die Kathode?", a: ["Am Ring (Strich) auf dem Gehäuse", "Am längeren Anschlussdraht", "An der roten Markierung", "An der Gehäusefarbe"], e: "Die Kathode liegt immer auf der Seite des Rings. In deiner Notiz ist er schwarz. Bei schwarzem Gehäuse ist der Ring meist hell (grau, weiß, silbern)." },
+    { c: "diode", n: "Seite 3", q: "Zeigt im Schaltzeichen das Dreieck in Stromrichtung, wie ist die Diode betrieben?", a: ["In Durchlassrichtung", "In Sperrrichtung", "Gar nicht", "Als Z-Diode"], e: "Die Pfeilspitze zeigt die Durchlassrichtung (von Anode zu Kathode, technische Stromrichtung)." },
+    // Anwendungen
+    { c: "anw", n: "Seite 3", q: "Wozu dient eine Freilaufdiode parallel zu einer Relaisspule?", a: ["Sie bietet dem Spulenstrom beim Abschalten einen Freilaufpfad, begrenzt so die Spannungsspitze und schützt den Transistor", "Sie erhöht die Spannung an der Spule", "Sie lässt das Relais schneller anziehen", "Sie richtet Wechselstrom gleich"], e: "Beim Abschalten will die Spule den Strom aufrechterhalten, ihre Spannung kehrt sich um. Die Freilaufdiode wird leitend und der Strom kreist durch Spule und Diode, bis die Energie des Magnetfelds abgebaut ist. Am Transistor liegt dann nur etwa 0,7 V mehr als die Betriebsspannung." },
+    { c: "anw", n: "Seite 3", q: "Wie ist die Freilaufdiode im Normalbetrieb (Transistor EIN) gepolt?", a: ["In Sperrrichtung, sie leitet nur beim Abschalten", "In Durchlassrichtung, sie leitet immer", "Sie ist in Reihe zur Spule", "Sie ist kurzgeschlossen"], e: "Im Betrieb sperrt sie. Erst die umgekehrte Induktionsspannung beim Abschalten polt sie in Durchlass." },
+    { c: "anw", n: "Seite 4", q: "Welche Aufgabe hat eine Entkopplungsdiode?", a: ["Sie trennt Stromkreise, damit Strom nur in eine Richtung fließt und kein Rückfluss entsteht", "Sie verstärkt Signale", "Sie speichert Ladung", "Sie begrenzt die Frequenz"], e: "Im Beispiel schaltet S2 über zwei Dioden beide Relais. S1 bzw. S3 schalten nur ihr eigenes Relais, weil die Dioden einen Rückfluss sperren." },
+    { c: "anw", n: "Seite 4", q: "In der Entkopplungsschaltung wird S1 geschlossen. Welches Relais zieht an?", a: ["Nur R1, die Diode zur S2-Seite sperrt", "R1 und R2", "Nur R2", "Keines"], e: "S1 versorgt R1 direkt. Die Diode zwischen R1-Zweig und S2 sperrt, deshalb kommt kein Strom zu R2." },
+    { c: "anw", n: "Seite 4", q: "In der Entkopplungsschaltung wird S2 geschlossen. Welches Relais zieht an?", a: ["R1 und R2, über je eine Diode", "Nur R1", "Nur R2", "Keines"], e: "S2 liegt zwischen den beiden Dioden. Beide Dioden sind in Durchlassrichtung, also ziehen R1 und R2 an." },
+    { c: "anw", n: "Seite 4", q: "Was macht eine Diode als Spannungsbegrenzer?", a: ["Sie schneidet Spannungsspitzen oberhalb von U<sub>D</sub> ab", "Sie verdoppelt die Spannung", "Sie hebt die Spannung auf U<sub>D</sub> an", "Sie wandelt Gleich- in Wechselspannung"], e: "Alles, was über U<sub>D</sub> liegt (schraffiert), wird abgeschnitten." },
+    // Kennlinie
+    { c: "kenn", n: "Seite 5", q: "Wie heißt die Spannung, ab der eine Diode in Durchlassrichtung deutlich leitet?", a: ["Schleusenspannung", "Diffusionsspannung", "Maximale Sperrspannung", "Netzspannung"], e: "Ab der Schleusenspannung steigt I<sub>F</sub> steil an." },
+    { c: "kenn", n: "Seite 5", q: "Wie groß ist die Schleusenspannung einer Siliziumdiode?", a: ["0,7 V", "0,3 V", "1,4 V", "5 V"], e: "Schleusenspannung Siliziumdiode: 0,7 V!" },
+    { c: "kenn", n: "Seite 5", q: "Was passiert, wenn die maximale Sperrspannung überschritten wird?", a: ["Die Diode bricht durch, der Sperrstrom steigt stark an", "Die Diode sperrt noch stärker", "Die Schleusenspannung sinkt auf 0 V", "Nichts, der Strom bleibt null"], e: "Ab der maximalen Sperrspannung steigt I<sub>R</sub> steil an (Durchbruch). Eine normale Diode kann dabei zerstört werden." },
+    { c: "kenn", n: "Seite 5", q: "Was bedeutet P<sub>tot</sub> und was gilt dafür?", a: ["Höchstzulässige Verlustleistung, sie darf nicht überschritten werden", "Mindestleistung, die erreicht werden muss", "Leistung der Spannungsquelle", "Leistung bei 0 V"], e: "P<sub>tot</sub> ist die höchstzulässige Gesamtverlustleistung (P ≈ U<sub>F</sub> · I<sub>F</sub>). Ein Überschreiten überhitzt und zerstört die Diode. Die Notiz „P<sub>tot</sub> ⇒ vermeiden“ meint das Überschreiten." },
+    { c: "kenn", n: "Seite 5", q: "In welchen Einheiten sind I<sub>F</sub> und U<sub>F</sub> in der Kennlinie angegeben?", a: ["I<sub>F</sub> in mA, U<sub>F</sub> in V", "I<sub>F</sub> in A, U<sub>F</sub> in kV", "I<sub>F</sub> in V, U<sub>F</sub> in mA", "Beide in Watt"], e: "Kennlinie: I<sub>F</sub> [mA] über U<sub>F</sub> [V]." },
+    // Arten
+    { c: "arten", n: "Seite 5", q: "In welcher Richtung wird eine Z-Diode betrieben?", a: ["In Sperrrichtung", "In Durchlassrichtung", "Abwechselnd", "Ohne Spannung"], e: "Die Z-Diode wird in Sperrrichtung betrieben und nutzt den Durchbruch gezielt." },
+    { c: "arten", n: "Seite 5", q: "Was zeichnet die Kennlinie einer Z-Diode aus?", a: ["Ein sehr steiler Durchbruch im Sperrbereich bei der Z-Spannung U<sub>Z</sub>", "Eine flache Kennlinie ohne Knick", "Sie leitet in keiner Richtung", "Sie hat keine Sperrspannung"], e: "Im Sperrbereich knickt die Kennlinie bei U<sub>Z</sub> scharf ab, die Flanke ist steiler als bei einer normalen Diode. Der Durchbruch wird gezielt genutzt und zerstört nichts, solange der Strom begrenzt ist (Vorwiderstand, P<sub>tot</sub>)." },
+    { c: "arten", n: "Seite 5", q: "Wie verhält sich eine Fotodiode bei zunehmender Beleuchtungsstärke?", a: ["Sie wird leitender, der Strom wächst", "Sie sperrt stärker", "Sie leuchtet heller", "Ihr Strom sinkt auf null"], e: "Die Fotodiode wird in Sperrrichtung betrieben und mit zunehmender Beleuchtungsstärke leitend." },
+    { c: "arten", n: "Seite 5", q: "In welcher Richtung wird eine Fotodiode betrieben?", a: ["In Sperrrichtung", "In Durchlassrichtung", "Ohne Spannung", "Nur an Wechselspannung"], e: "Fotodiode: Sperrrichtung, Licht erhöht den Sperrstrom." },
+    { c: "arten", n: "Seite 5", q: "Woran unterscheidest du im Schaltzeichen Fotodiode und LED?", a: ["Fotodiode: Pfeile zur Diode hin. LED: Pfeile von der Diode weg", "Fotodiode: Pfeile von der Diode weg. LED: Pfeile zur Diode hin", "Beide haben keine Pfeile", "Nur an der Farbe des Symbols"], e: "Bei der Fotodiode fällt Licht ein, die Pfeile zeigen hin. Bei der LED tritt Licht aus, die Pfeile zeigen weg." },
+    { c: "arten", n: "Seite 5", q: "Woran erkennst du das Schaltzeichen einer Z-Diode?", a: ["Am abgeknickten Kathodenstrich", "An zwei Pfeilen zur Diode hin", "An einem Kreis um das Symbol", "Am fehlenden Dreieck"], e: "Die Z-Diode hat einen Kathodenstrich mit abgewinkeltem Ende (wie ein Z)." },
+    { c: "diode", n: "Seite 3", q: "Wie werden Strom- und Spannungsmesser zur Messung an einer Diode angeschlossen?", a: ["Strommesser in Reihe, Spannungsmesser parallel zur Diode", "Strommesser parallel, Spannungsmesser in Reihe", "Beide in Reihe", "Beide parallel"], e: "Wie immer: Strom in Reihe messen, Spannung parallel." },
+    { c: "arten", n: "Seite 5", q: "In welcher Richtung wird eine LED betrieben?", a: ["In Durchlassrichtung", "In Sperrrichtung", "Nur im Durchbruch", "Ohne Spannung"], e: "Die LED leuchtet in Durchlassrichtung." },
+    { c: "arten", n: "Seite 5", q: "Wovon hängt die Lichtfarbe (Wellenlänge) einer LED ab?", a: ["Vom Halbleiterkristall und der Dotierung", "Nur von der Gehäusefarbe", "Von der Länge der Anschlussdrähte", "Von der Sperrspannung"], e: "Die Farbe hängt vom Halbleiterkristall und der Dotierung ab, ebenso die nötige Spannung." },
+    // Bezeichnung
+    { c: "bez", n: "Seite 4", q: "Was bedeutet der erste Buchstabe in der Halbleiterbezeichnung?", a: ["Den Halbleiterwerkstoff", "Die Art des Bauelements", "Die Gehäuseform", "Den Hersteller"], e: "Erster Buchstabe: Werkstoff. Zweiter Buchstabe: Art des Bauelements." },
+    { c: "bez", n: "Seite 4", q: "Ein Bauteil beginnt mit „B“. Welcher Werkstoff ist es?", a: ["Silizium", "Germanium", "Gallium-Arsenid", "Kupfer"], e: "A = Germanium, B = Silizium, C = Gallium-Arsenid." },
+    { c: "bez", n: "Seite 4", q: "Was bedeutet „AA“?", a: ["Germanium-Diode", "Silizium-Diode", "Germanium-Kapazitätsdiode", "Silizium-NF-Transistor"], e: "Erstes A = Germanium, zweites A = Diode." },
+    { c: "bez", n: "Seite 4", q: "Was bedeutet „BC“?", a: ["Silizium-NF-Transistor", "Germanium-Diode", "Silizium-Kapazitätsdiode", "Gallium-Arsenid-Diode"], e: "B = Silizium, C = NF-Transistor." },
+    { c: "bez", n: "Seite 4", q: "Wofür steht der zweite Buchstabe „B“?", a: ["Kapazitätsdiode", "Diode", "NF-Transistor", "Silizium"], e: "Zweiter Buchstabe: A = Diode, B = Kapazitätsdiode, C = NF-Transistor." }
+  ];
+
+  var CARDS4 = [
+    { c: "pn", n: "Seite 1", f: "P-Leiter und N-Leiter", a: "P: dotiert mit 3 Valenzelektronen (Aluminium), Löcher. N: dotiert mit 5 Valenzelektronen (Phosphor), freie Elektronen.", d: ["Grundstoff Silizium hat 4 Valenzelektronen."], m: "P = 3 = Loch, N = 5 = Elektron" },
+    { c: "pn", n: "Seite 1", f: "Diffusion am PN-Übergang", a: "Elektronen fließen von N nach P, Löcher von P nach N und rekombinieren.", d: ["Passiert nur am Grenzübergang.", "Es entsteht eine Sperrschicht von etwa 1 µm."] },
+    { c: "pn", n: "Seite 1", f: "Ladung nach der Diffusion", a: "N-Leiter am Grenzübergang positiv ionisiert, P-Leiter negativ ionisiert.", d: ["Dadurch entsteht die Diffusionsspannung.", "Diese Spannung verhindert weitere Diffusion, deshalb kommt der Vorgang zum Stillstand.", "Gilt ohne äußere Spannung."] },
+    { c: "richt", n: "Seite 2", f: "Sperrrichtung", a: "Plus an N (Kathode), Minus an P (Anode). Sperrschicht wird breiter, es fließt praktisch kein Strom (nur ein sehr kleiner Sperrstrom I<sub>R</sub>).", d: ["Spannung heißt U<sub>R</sub> (reverse)."] },
+    { c: "richt", n: "Seite 2", f: "Durchlassrichtung", a: "Plus an P (Anode), Minus an N (Kathode). Sperrschicht wird deutlich schmaler, Strom fließt.", d: ["Spannung heißt U<sub>F</sub> (forward).", "Merklicher Strom erst ab der Schleusenspannung (Si ≈ 0,7 V, Ge ≈ 0,3 V)."], m: "+ an P, dann fließt Strom" },
+    { c: "richt", n: "Seite 2", f: "Schwellspannungen", a: "Silizium 0,7 V, Germanium 0,3 V." },
+    { c: "diode", n: "Seite 3", f: "Anode und Kathode", a: "P-Leiter = Anode, N-Leiter = Kathode.", d: ["Die Kathode liegt immer auf der Seite des Rings (bei hellem Gehäuse meist schwarz, bei schwarzem Gehäuse meist hell)."] },
+    { c: "anw", n: "Seite 3", f: "Freilaufdiode", a: "Parallel zur Relaisspule: Kathode an Plus, Anode an Spule und Transistor. Im Betrieb gesperrt. Beim Abschalten polt die Induktionsspannung sie in Durchlass, der Spulenstrom fließt über die Diode weiter, bis er abgeklungen ist.", d: ["Schützt den schaltenden Transistor vor der Spannungsspitze des Magnetfelds."] },
+    { c: "anw", n: "Seite 4", f: "Entkopplungsdiode", a: "Trennt Stromkreise: Strom kann nur in eine Richtung, kein Rückfluss.", d: ["Beispiel: S2 schaltet R1 und R2, S1 nur R1, S3 nur R2."] },
+    { c: "anw", n: "Seite 4", f: "Spannungsbegrenzer", a: "Die Diode schneidet alle Spannungsanteile über U<sub>D</sub> ab." },
+    { c: "anw", n: "Seite 3–4", f: "Anwendungsfälle der Diode", a: "1) Freilaufdiode, 2) Entkopplungsdiode, 3) Spannungsbegrenzer." },
+    { c: "diode", n: "Seite 3", f: "Messschaltung an der Diode", a: "Strommesser (A) in Reihe, Spannungsmesser (V) parallel zur Diode.", d: ["Durchlass: I<sub>F</sub>, U<sub>F</sub>, Plus an Anode.", "Sperr: I<sub>R</sub>, U<sub>R</sub>, Plus an Kathode."] },
+    { c: "arten", n: "Seite 5", f: "Schaltzeichen: Z-, Foto-, LED", a: "Z-Diode: abgeknickter Kathodenstrich. Fotodiode: Pfeile zeigen zur Diode hin. LED: Pfeile zeigen von der Diode weg." },
+    { c: "kenn", n: "Seite 5", f: "Diodenkennlinie", a: "Durchlass: kaum Strom bis zur Schleusenspannung, dann steiler Anstieg. Sperr: fast kein Strom bis zur max. Sperrspannung, dann Durchbruch.", d: ["Achsen: I<sub>F</sub> [mA] / U<sub>F</sub> [V], I<sub>R</sub> / U<sub>R</sub>."], m: "Schleusenspannung Siliziumdiode 0,7 V!" },
+    { c: "kenn", n: "Seite 5", f: "P<sub>tot</sub>", a: "Höchstzulässige Verlustleistung der Diode, darf nicht überschritten werden.", d: ["Notiz: „P<sub>tot</sub> ⇒ vermeiden“ bedeutet: Überschreiten vermeiden."] },
+    { c: "arten", n: "Seite 5", f: "Z-Diode", a: "Betrieb in Sperrrichtung. Kennlinie mit sehr steilem Durchbruch im Sperrbereich bei der Z-Spannung U<sub>Z</sub>.", d: ["Strom I<sub>Z</sub> (I<sub>R</sub>), Spannung U<sub>Z</sub> (U<sub>R</sub>)."] },
+    { c: "arten", n: "Seite 5", f: "Fotodiode", a: "Betrieb in Sperrrichtung. Mit zunehmender Beleuchtungsstärke leitend, der Strom wächst." },
+    { c: "arten", n: "Seite 5", f: "LED", a: "Betrieb in Durchlassrichtung. Farbe (Wellenlänge) hängt von Halbleiterkristall und Dotierung ab, ebenso die Spannung." },
+    { c: "bez", n: "Seite 4", f: "Halbleiterbezeichnung: erster Buchstabe", a: "Werkstoff: A = Germanium, B = Silizium, C = Gallium-Arsenid." },
+    { c: "bez", n: "Seite 4", f: "Halbleiterbezeichnung: zweiter Buchstabe", a: "Bauelement: A = Diode, B = Kapazitätsdiode, C = NF-Transistor.", d: ["Beispiel: BA = Silizium-Diode, BC = Silizium-NF-Transistor."] }
+  ];
+
+  var MODS = {
+    "3": { cats: CATS, q: Q, cards: CARDS, eyebrow: "AERO-Bildung · Modul 3", title: "<span>Elektronik</span>-Grundlagen", kc: "elq-cards", kl: "elq-last", foot: null },
+    "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 5). Das gelbe Etikett nennt die Seite. Am Computer: Im Quiz wählen die Tasten 1 bis 4 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
+  };
+  var MOD = MODS["3"];
   var $ = function (id) { return document.getElementById(id); };
   var deck = [], idx = 0, score = 0, locked = false, missed = [], current = null;
 
@@ -475,17 +743,28 @@ html, body { margin: 0; }
     return a;
   }
   function show(id) {
-    ["start", "quiz", "result"].forEach(function (s) { $(s).hidden = s !== id; });
+    ["start", "quiz", "result", "cards", "cardsDone"].forEach(function (s) { $(s).hidden = s !== id; });
     window.scrollTo(0, 0);
   }
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function strip(h) { return h.replace(/<[^>]+>/g, "").replace(/&gt;/g, ">").replace(/&lt;/g, "<"); }
 
-  $("lead").textContent = Q.length + " Fragen mit je vier Antworten. Nach jeder Antwort siehst du die Erklärung.";
+  function setLead() { $("lead").textContent = Q.length + " Quizfragen und " + CARDS.length + " Lernkarten aus deinen Notizen. Im Quiz kreuzt du an, mit den Lernkarten wiederholst du das Wissen selbst."; }
+
+  // Stabile Kennung je Karte, damit der Fortschritt auch nach Updates erhalten bleibt
+  function hid(s) { var h = 5381; for (var i = 0; i < s.length; i++) { h = ((h << 5) + h + s.charCodeAt(i)) | 0; } return "k" + (h >>> 0).toString(36); }
+  [CARDS, CARDS4].forEach(function (L) { L.forEach(function (c) { c.id = hid(c.f); }); });
+  var known = {};
+  function loadKnown() { try { known = JSON.parse(lsGet(MOD.kc) || "{}") || {}; } catch (e) { known = {}; } }
+  function saveKnown() { lsSet(MOD.kc, JSON.stringify(known)); }
+  function mode() { return $("modeCards").checked ? "cards" : "quiz"; }
+  function source() { return mode() === "cards" ? CARDS : Q; }
 
   // Themen-Chips
   var chips = $("chips");
+  function buildChips() {
+  chips.innerHTML = "";
   Object.keys(CATS).forEach(function (k) {
     var count = Q.filter(function (q) { return q.c === k; }).length;
     var lab = document.createElement("label");
@@ -493,34 +772,77 @@ html, body { margin: 0; }
     lab.innerHTML = '<input type="checkbox" value="' + k + '" checked><span>' + CATS[k] + ' <em>' + count + '</em></span>';
     chips.appendChild(lab);
   });
+  }
   function selectedCats() {
     return Array.prototype.map.call(chips.querySelectorAll("input:checked"), function (i) { return i.value; });
   }
+  var resetArmed = false;
   function refreshStart() {
     var n = selectedCats().length;
     $("startBtn").disabled = n === 0;
     var all = n === Object.keys(CATS).length;
     $("toggleAll").textContent = all ? "Alle abwählen" : "Alle auswählen";
+    var cards = mode() === "cards";
+    chips.querySelectorAll("label").forEach(function (lab) {
+      var key = lab.querySelector("input").value;
+      lab.querySelector("em").textContent = source().filter(function (q) { return q.c === key; }).length;
+    });
+    $("startBtn").textContent = cards ? "Lernkarten starten" : "Quiz starten";
+    $("countLegend").textContent = cards ? "Anzahl Karten" : "Anzahl Fragen";
+    $("skipWrap").hidden = !cards;
+    $("cardInfo").hidden = !cards;
+    $("last").hidden = cards || !lsGet(MOD.kl);
+    if (cards) {
+      var cats = selectedCats();
+      var pool = CARDS.filter(function (q) { return cats.indexOf(q.c) > -1; });
+      var k = pool.filter(function (q) { return known[q.id]; }).length;
+      $("cardStat").innerHTML = 'Gewusst: <strong>' + k + ' von ' + pool.length + '</strong> Lernkarten der gewählten Themen';
+    }
+    resetArmed = false;
+    $("resetCards").textContent = "Fortschritt zurücksetzen";
   }
   chips.addEventListener("change", refreshStart);
+  $("modeSeg").addEventListener("change", refreshStart);
+  $("resetCards").addEventListener("click", function () {
+    if (!resetArmed) {
+      resetArmed = true;
+      $("resetCards").textContent = "Wirklich alles zurücksetzen? Nochmal tippen";
+      return;
+    }
+    known = {}; saveKnown(); refreshStart();
+    $("cardStat").innerHTML += ' · Zurückgesetzt';
+  });
   $("toggleAll").addEventListener("click", function () {
     var all = selectedCats().length === Object.keys(CATS).length;
     chips.querySelectorAll("input").forEach(function (i) { i.checked = !all; });
     refreshStart();
   });
-  refreshStart();
+  var foot3 = $("foot").innerHTML;
+  function applyMod(key) {
+    MOD = MODS[key]; CATS = MOD.cats; Q = MOD.q; CARDS = MOD.cards;
+    $("eyebrow").textContent = MOD.eyebrow;
+    $("title").innerHTML = MOD.title;
+    $("foot").innerHTML = MOD.foot || foot3;
+    document.title = "Elektronik-Quiz Modul " + key;
+    loadKnown(); setLead(); buildChips(); refreshStart(); showLast();
+    show("start");
+    lsSet("elq-mod", key);
+  }
+  $("modSeg").addEventListener("change", function (e) { applyMod(e.target.value); });
 
   function showLast() {
-    var raw = lsGet("elq-last");
+    var raw = lsGet(MOD.kl);
     if (!raw) return;
     try {
       var r = JSON.parse(raw);
       var el = $("last");
-      el.innerHTML = 'Letztes Ergebnis: <strong>' + r.s + ' von ' + r.n + ' (' + Math.round(100 * r.s / r.n) + ' %)</strong>';
-      el.hidden = false;
+      el.innerHTML = 'Letztes Quiz-Ergebnis: <strong>' + r.s + ' von ' + r.n + ' (' + Math.round(100 * r.s / r.n) + ' %)</strong>';
+      el.hidden = mode() === "cards";
     } catch (e) {}
   }
-  showLast();
+  var startMod = lsGet("elq-mod") === "4" ? "4" : "3";
+  document.querySelector('input[name="mod"][value="' + startMod + '"]').checked = true;
+  applyMod(startMod);
 
   function start(list) {
     deck = list; idx = 0; score = 0; missed = [];
@@ -529,11 +851,97 @@ html, body { margin: 0; }
   }
   $("startBtn").addEventListener("click", function () {
     var cats = selectedCats();
-    var pool = Q.filter(function (q) { return cats.indexOf(q.c) > -1; });
+    var pool = source().filter(function (q) { return cats.indexOf(q.c) > -1; });
+    var cards = mode() === "cards";
+    if (cards && $("skipKnown").checked) {
+      pool = pool.filter(function (q) { return !known[q.id]; });
+      if (pool.length === 0) {
+        $("cardStat").innerHTML = '<strong>Alle Karten dieser Themen sitzen.</strong> Nimm den Haken bei „Gewusste Karten überspringen“ heraus, um sie trotzdem zu wiederholen.';
+        return;
+      }
+    }
     if ($("shuffleQ").checked) pool = shuffle(pool);
     var want = parseInt(document.querySelector('input[name="count"]:checked').value, 10);
     if (want > 0 && want < pool.length) pool = pool.slice(0, want);
-    start(pool);
+    if (cards) startCards(pool); else start(pool);
+  });
+
+  // ---------- Karteikarten ----------
+  var cQueue = [], cTotal = 0, cKnown = 0, cFirst = 0, cAgain = {}, cCur = null, cFlipped = false;
+  function startCards(list) {
+    cQueue = list.slice(); cTotal = list.length; cKnown = 0; cFirst = 0; cAgain = {};
+    show("cards");
+    renderCard();
+  }
+  function renderCard() {
+    cCur = cQueue[0];
+    cFlipped = false;
+    $("flash").classList.remove("is-flipped");
+    $("flash").setAttribute("aria-expanded", "false");
+    $("cRef").textContent = (typeof cCur.n === "number" ? "Notiz " : "") + cCur.n;
+    $("cCat").textContent = CATS[cCur.c];
+    $("cQ").innerHTML = cCur.f;
+    $("cA").innerHTML = cCur.a;
+    $("cE").innerHTML = (cCur.d || []).map(function (x) { return '<span class="li">' + x + '</span>'; }).join("")
+      + (cCur.m ? '<span class="merk">Merksatz: ' + cCur.m + '</span>' : "");
+    $("cBack").hidden = true;
+    $("cHint").textContent = "Erst selbst erklären, dann tippen zum Umdrehen";
+    $("cRate").hidden = true;
+    $("cPos").textContent = "Gewusst: " + cKnown + " von " + cTotal;
+    $("cOpen").textContent = "Noch offen: " + cQueue.length;
+    var pct = Math.round(100 * cKnown / cTotal);
+    $("cBar").style.width = pct + "%";
+    $("cBarWrap").setAttribute("aria-valuenow", String(pct));
+    try { $("flash").focus({ preventScroll: true }); } catch (e) { $("flash").focus(); }
+  }
+  function flip() {
+    cFlipped = !cFlipped;
+    $("flash").classList.toggle("is-flipped", cFlipped);
+    $("flash").setAttribute("aria-expanded", String(cFlipped));
+    $("cBack").hidden = !cFlipped;
+    $("cRate").hidden = !cFlipped;
+    $("cHint").textContent = cFlipped ? "Wusstest du es? Bewerte dich unten." : "Erst selbst erklären, dann tippen zum Umdrehen";
+  }
+  function rateKnew() {
+    if (!cFlipped) return;
+    known[cCur.id] = 1; saveKnown();
+    if (!cAgain[cCur.id]) cFirst++;
+    cKnown++;
+    cQueue.shift();
+    if (cQueue.length === 0) finishCards(); else renderCard();
+  }
+  function rateAgain() {
+    if (!cFlipped) return;
+    delete known[cCur.id]; saveKnown();
+    cAgain[cCur.id] = cCur;
+    var c = cQueue.shift();
+    cQueue.splice(Math.min(3, cQueue.length), 0, c);
+    renderCard();
+  }
+  function finishCards() {
+    show("cardsDone");
+    $("cdScore").textContent = cFirst + " / " + cTotal;
+    $("cdSub").textContent = "beim ersten Mal gewusst";
+    var again = Object.keys(cAgain).length;
+    $("cdMsg").textContent = again === 0
+      ? "Alle Karten saßen auf Anhieb."
+      : again + (again === 1 ? " Karte musstest" : " Karten musstest") + " du wiederholen. Bis zum Ende der Runde hast du alle gewusst.";
+    $("cdAgain").hidden = again === 0;
+  }
+  $("flash").addEventListener("click", flip);
+  $("knewCard").addEventListener("click", rateKnew);
+  $("againCard").addEventListener("click", rateAgain);
+  $("cStop").addEventListener("click", function () { show("start"); refreshStart(); });
+  $("cdBack").addEventListener("click", function () { show("start"); refreshStart(); });
+  $("cdAgain").addEventListener("click", function () {
+    var list = Object.keys(cAgain).map(function (k) { return cAgain[k]; });
+    startCards(shuffle(list));
+  });
+  document.addEventListener("keydown", function (e) {
+    if ($("cards").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === " " && e.target.tagName !== "BUTTON") { e.preventDefault(); flip(); }
+    else if (e.key === "ArrowRight") { rateKnew(); }
+    else if (e.key === "ArrowLeft") { rateAgain(); }
   });
 
   function render() {
@@ -616,7 +1024,7 @@ html, body { margin: 0; }
       : pct >= 50 ? "Die Hälfte sitzt. Wiederhole die falschen Fragen."
       : "Noch viel offen. Lies die Notizen nochmal und starte neu.";
     $("rMsg").textContent = msg;
-    lsSet("elq-last", JSON.stringify({ s: score, n: n }));
+    lsSet(MOD.kl, JSON.stringify({ s: score, n: n }));
     showLast();
     var ul = $("missed");
     ul.innerHTML = "";
@@ -631,7 +1039,7 @@ html, body { margin: 0; }
   $("retryBtn").addEventListener("click", function () {
     start(shuffle(missed.map(function (m) { return m.q; })));
   });
-  $("againBtn").addEventListener("click", function () { show("start"); });
+  $("againBtn").addEventListener("click", function () { show("start"); refreshStart(); });
 
   document.addEventListener("keydown", function (e) {
     if ($("quiz").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -642,5 +1050,4 @@ html, body { margin: 0; }
 })();
 </script>
 
-</body>
-</html>
+</body></html>
