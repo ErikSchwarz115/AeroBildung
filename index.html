@@ -107,6 +107,7 @@ legend { padding: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing
 
 .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .ref { font-family: var(--f-mono); font-size: 12px; background: var(--marker); color: var(--marker-ink); padding: 3px 8px; border-radius: 3px; }
+.ref.x { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink-soft); border-radius: 3px; }
 .cat { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
 .q { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0; text-wrap: pretty; }
 
@@ -176,6 +177,8 @@ sub, sup { line-height: 0; }
 .modsw label + label span { border-left: 1.5px solid var(--ink); }
 .modsw input:checked + span { background: var(--ink); color: var(--on-ink); }
 .modsw input:focus-visible + span { outline: 3px solid var(--marker); outline-offset: -4px; }
+.ovbtn { display: inline-flex; margin-top: 14px; font-weight: 600; font-size: 16px; color: var(--ink); background: var(--marker-soft); border: 1.5px solid var(--ink); border-radius: 6px; padding: 10px 14px; text-decoration: none; }
+.ovbtn:hover, .ovbtn:focus-visible { background: var(--marker); outline: none; }
 @keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } .flash-back { animation: none; } }
 </style>
@@ -185,6 +188,7 @@ sub, sup { line-height: 0; }
     <div class="eyebrow" id="eyebrow">AERO-Bildung · Modul 3</div>
     <h1 id="title"><span>Elektronik</span>-Grundlagen</h1>
     <p class="lead" id="lead"></p>
+    <a class="ovbtn" id="ovBtn" href="modul4-uebersicht.html" hidden>Lernübersicht Modul 4 öffnen →</a>
   </header>
 
   <nav class="modsw" id="modSeg" aria-label="Modul wählen">
@@ -214,6 +218,7 @@ sub, sup { line-height: 0; }
       </div>
     </fieldset>
     <label class="check"><input type="checkbox" id="shuffleQ" checked> Mischen</label>
+    <label class="check" id="extraWrap" hidden><input type="checkbox" id="useExtra" checked> Ergänzungen einbeziehen (nicht aus deinen Notizen)</label>
     <label class="check" id="skipWrap" hidden><input type="checkbox" id="skipKnown" checked> Gewusste Karten überspringen</label>
     <button type="button" class="btn" id="startBtn">Quiz starten</button>
     <p class="last" id="last" hidden></p>
@@ -730,9 +735,129 @@ sub, sup { line-height: 0; }
     { c: "bez", n: "Seite 4", f: "Halbleiterbezeichnung: zweiter Buchstabe", a: "Bauelement: A = Diode, B = Kapazitätsdiode, C = NF-Transistor.", d: ["Beispiel: BA = Silizium-Diode, BC = Silizium-NF-Transistor."] }
   ];
 
+  // ---- Seiten 7 bis 10 und Ergänzungen (x: 1 = nicht aus den Notizen, nach EASA-Lehrplan ergänzt) ----
+  CATS4.halbw = "Halbleiterwiderstände";
+  CATS4.trans = "Transistoren";
+  CATS4.ic = "IC & Operationsverstärker";
+  CATS4.lp = "Leiterplatten";
+  CATS4.servo = "Servomechanismen";
+
+  Q4.push(
+    // Halbleiterwiderstände (Seite 7)
+    { c: "halbw", n: "Seite 7", q: "Was ist ein NTC?", a: ["Ein Heißleiter: Temperatur steigt, Widerstand sinkt", "Ein Kaltleiter: Temperatur steigt, Widerstand steigt", "Ein spannungsabhängiger Widerstand"], e: "NTC = Heißleiter. Er leitet im heißen Zustand besser, sein Widerstand sinkt mit steigender Temperatur." },
+    { c: "halbw", n: "Seite 7", q: "Was ist ein PTC?", a: ["Ein Kaltleiter: sein Widerstand steigt mit der Temperatur stark an", "Ein Heißleiter: sein Widerstand sinkt mit der Temperatur", "Ein lichtabhängiger Widerstand"], e: "PTC = Kaltleiter. Er leitet im kalten Zustand besser. In deiner Kennlinie fällt R zuerst leicht und steigt dann steil an." },
+    { c: "halbw", n: "Seite 7", q: "Wofür wird ein NTC laut deinen Notizen eingesetzt?", a: ["Als Fühler in der Mess- und Regeltechnik (Temperatur)", "Als Blitzschutz im Flugzeug", "Als Gleichrichter"], e: "NTCs dienen als Temperaturfühler in der Mess- und Regeltechnik." },
+    { c: "halbw", n: "Seite 7", q: "Wofür steht VDR?", a: ["Voltage Dependent Resistor, ein spannungsabhängiger Widerstand (Varistor)", "Variable Diode Resistor, eine regelbare Diode", "Voltage Drop Regulator, ein Spannungsregler"], e: "VDR = Voltage Dependent Resistor, auch Varistor genannt." },
+    { c: "halbw", n: "Seite 7", q: "Wie ändert sich der Widerstand eines VDR, wenn die Spannung steigt?", a: ["Er sinkt", "Er steigt", "Er bleibt gleich"], e: "U↑ R↓: Bei hoher Spannung wird der VDR niederohmig und leitet den Strom ab." },
+    { c: "halbw", n: "Seite 7", q: "Wofür wird ein VDR eingesetzt?", a: ["Zum Schutz vor Überspannung, z. B. Blitzschutz im Flugzeug", "Zur Temperaturmessung", "Zur Erzeugung von Licht"], e: "VDR: Schutz überspannungsempfindlicher Bauteile und Überspannungsableitung, zum Beispiel Blitzschutz im Flugzeug." },
+    { c: "halbw", n: "Seite 7", q: "Wie sieht die I-U-Kennlinie eines VDR aus?", a: ["Symmetrisch: bei kleiner Spannung kaum Strom, ab einer bestimmten Spannung steiler Anstieg in beiden Richtungen", "Wie eine Diode: Strom nur in einer Richtung", "Eine Gerade durch den Nullpunkt"], e: "Der VDR verhält sich in beiden Polaritäten gleich. Deshalb ist die Kennlinie punktsymmetrisch." },
+    { c: "halbw", n: "Seite 7", q: "Woran unterscheidest du die Schaltzeichen von NTC und VDR?", a: ["Beim NTC steht ϑ (Temperatur), beim VDR steht U (Spannung)", "Der NTC hat einen Pfeil zur Diode, der VDR nicht", "Es gibt keinen Unterschied"], e: "Beide haben den schrägen Strich durch den Widerstand. Die Beschriftung zeigt, wovon der Widerstand abhängt: ϑ für Temperatur, U für Spannung." },
+    { c: "halbw", n: "Ergänzung", x: 1, q: "Wie wird ein VDR zum Überspannungsschutz in die Schaltung eingebaut?", a: ["Parallel zum zu schützenden Bauteil", "In Reihe vor das zu schützende Bauteil", "Nur in die Masseleitung"], e: "Parallel geschaltet ist er bei normaler Spannung hochohmig. Bei Überspannung wird er niederohmig und leitet die Spitze am Bauteil vorbei ab." },
+
+    // Transistoren (Seite 8, 9)
+    { c: "trans", n: "Seite 6", q: "Zwischen welchen Anschlüssen liegen in der Transistorschaltung auf Seite 6 Eingang und Ausgang?", a: ["Eingang zwischen Basis und Emitter, Ausgang zwischen Kollektor und Emitter", "Eingang zwischen Kollektor und Emitter, Ausgang zwischen Basis und Emitter", "Eingang und Ausgang beide zwischen Basis und Kollektor"], e: "Der Emitter ist beiden Kreisen gemeinsam (Emitterschaltung). Der Eingangskreis treibt I<sub>B</sub>, der Ausgangskreis führt I<sub>C</sub>." },
+    { c: "trans", n: "Seite 6", q: "Wie heißt das Verhältnis B = I<sub>C</sub> / I<sub>B</sub> in deinen Notizen?", a: ["Gleichstromverhältnis (Gleichstromverstärkung)", "Basisverhältnis", "Emitterfaktor"], e: "B ist das Gleichstromverhältnis, also die Gleichstromverstärkung des Transistors." },
+    { c: "trans", n: "Seite 6", q: "Was zeigen die beiden Diagramme U<sub>B</sub> (Eingang an der Basis) und U<sub>CE</sub> auf Seite 6?", a: ["Eine kleine Spannungsänderung am Eingang ergibt eine große Änderung von U<sub>CE</sub> am Ausgang: Der Transistor verstärkt", "Die Ausgangsspannung ist immer kleiner als die Eingangsspannung", "Der Transistor wandelt Gleichspannung in Wechselspannung um"], e: "Das kleine Eingangssignal steuert den Basisstrom. Über B = I<sub>C</sub> / I<sub>B</sub> ändert sich der Kollektorstrom stark, und U<sub>CE</sub> schwankt deutlich mehr als das Eingangssignal. Wo U<sub>CE</sub> unten bei etwa 0 V abgeflacht ist, ist der Transistor übersteuert (Sättigung)." },
+    { c: "trans", n: "Seite 6", q: "Was ist der Gleichspannungsanteil im Eingangssignal U<sub>B</sub> (Spannung an der Basis)?", a: ["Die Gleichspannung, um die das Wechselsignal schwankt (Arbeitspunkt)", "Die Spitzenspannung des Signals", "Die Spannung am Kollektor"], e: "Das Wechselsignal sitzt auf einer Gleichspannung. Sie hält die Basis-Emitter-Strecke über der Schwelle von etwa 0,7 V (Silizium), damit beide Halbwellen verstärkt werden." },
+    { c: "trans", n: "Ergänzung", x: 1, q: "Welche Phasenlage haben Eingangs- und Ausgangssignal bei der Emitterschaltung?", a: ["Sie sind um 180° verschoben, das Signal wird invertiert", "Sie sind in Phase", "Sie sind um 90° verschoben"], e: "Steigt die Eingangsspannung, steigen I<sub>B</sub> und damit I<sub>C</sub>, an R<sub>C</sub> fällt mehr ab und U<sub>CE</sub> sinkt. Deshalb ist der Ausgang um 180° gedreht. Achtung: In der Skizze auf Seite 6 sind U<sub>B</sub> und U<sub>CE</sub> gleichphasig gezeichnet. Das zeigt nur die Verstärkung, in Wirklichkeit ist U<sub>CE</sub> gegenphasig." },
+    { c: "trans", n: "Seite 8", q: "Welche zwei Bauarten bipolarer Transistoren gibt es?", a: ["NPN und PNP", "N-Kanal und P-Kanal", "PN und NP"], e: "Bipolare Transistoren gibt es als NPN und PNP. N-Kanal und P-Kanal gehören zu den Feldeffekttransistoren." },
+    { c: "trans", n: "Seite 8", q: "Wie heißen die drei Anschlüsse eines bipolaren Transistors?", a: ["Basis, Kollektor, Emitter", "Anode, Kathode, Gate", "Source, Drain, Gate"], e: "B = Basis, C = Kollektor, E = Emitter." },
+    { c: "trans", n: "Seite 8", q: "Welche Stromgleichung gilt am Transistor?", a: ["I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>", "I<sub>C</sub> = I<sub>B</sub> + I<sub>E</sub>", "I<sub>B</sub> = I<sub>C</sub> + I<sub>E</sub>"], e: "Der Emitterstrom ist die Summe aus Basis- und Kollektorstrom (Knotenregel)." },
+    { c: "trans", n: "Seite 8", q: "Was gibt B = I<sub>C</sub> / I<sub>B</sub> an?", a: ["Die Stromverstärkung des Transistors", "Den Basiswiderstand", "Die Betriebsspannung"], e: "B ist der Stromverstärkungsfaktor (Gleichstromverhältnis): wie viel größer der Kollektorstrom als der Basisstrom ist." },
+    { c: "trans", n: "Seite 8", q: "Ein Transistor hat B = 200 und I<sub>B</sub> = 0,1 mA. Wie groß ist I<sub>C</sub>?", a: ["20 mA", "2 mA", "200 mA"], e: "I<sub>C</sub> = B · I<sub>B</sub> = 200 · 0,1 mA = 20 mA." },
+    { c: "trans", n: "Seite 8", q: "I<sub>B</sub> = 0,1 mA, I<sub>C</sub> = 20 mA. Wie groß ist I<sub>E</sub>?", a: ["20,1 mA", "19,9 mA", "2 mA"], e: "I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub> = 0,1 mA + 20 mA = 20,1 mA." },
+    { c: "trans", n: "Seite 8", q: "Woran erkennst du im Schaltzeichen einen NPN-Transistor?", a: ["Der Pfeil am Emitter zeigt nach außen (von der Basis weg)", "Der Pfeil am Emitter zeigt zur Basis hin", "Der Pfeil sitzt am Kollektor"], e: "NPN: Pfeil zeigt von der Basis zum Emitter. Das ist die Durchlassrichtung der Basis-Emitter-Diode." },
+    { c: "trans", n: "Seite 8", q: "Woran erkennst du im Schaltzeichen einen PNP-Transistor?", a: ["Der Pfeil am Emitter zeigt zur Basis hin", "Der Pfeil am Emitter zeigt nach außen", "Er hat keinen Pfeil"], e: "PNP: Pfeil zeigt vom Emitter zur Basis." },
+    { c: "trans", n: "Seite 8", q: "Wie ist ein NPN-Transistor im Betrieb gepolt?", a: ["Kollektor an Plus, Emitter an Minus", "Kollektor an Minus, Emitter an Plus", "Basis an Minus, Kollektor an Minus"], e: "NPN: C an +, E an −. Beim PNP ist es umgekehrt: C an −, E an +." },
+    { c: "trans", n: "Seite 8", q: "Welche Schichtfolge hat ein NPN-Transistor, und wo liegt die Basis?", a: ["N-P-N, die Basis ist die mittlere P-Schicht", "N-P-N, die Basis ist eine äußere N-Schicht", "P-N-P, die Basis ist die mittlere N-Schicht"], e: "Die Basis ist immer die mittlere Schicht. Beim NPN ist sie P-dotiert, beim PNP N-dotiert." },
+    { c: "trans", n: "Seite 8", q: "Wie sieht das Dioden-Ersatzschaltbild eines NPN-Transistors aus?", a: ["Zwei Dioden, deren Anoden an der Basis liegen", "Zwei Dioden, deren Kathoden an der Basis liegen", "Eine einzige Diode von Kollektor zu Emitter"], e: "Die Basis (P) bildet mit Kollektor und Emitter (N) je einen PN-Übergang. Beim PNP liegen die Kathoden an der Basis." },
+    { c: "trans", n: "Seite 8", q: "Wie wirkt ein Transistor laut deinen Notizen?", a: ["Wie ein durch den Basisstrom gesteuerter Widerstand", "Wie ein Kondensator, der Ladung speichert", "Wie eine Spannungsquelle mit fester Spannung"], e: "Der Basisstrom steuert den Widerstand R<sub>CE</sub> zwischen Kollektor und Emitter." },
+    { c: "trans", n: "Seite 9", q: "Der Basisstrom wird größer. Was passiert?", a: ["R<sub>CE</sub> sinkt, der Kollektorstrom steigt", "R<sub>CE</sub> steigt, der Kollektorstrom sinkt", "Nichts, I<sub>C</sub> hängt nicht von I<sub>B</sub> ab"], e: "Mehr Basisstrom steuert den Transistor weiter auf: R<sub>CE</sub> wird kleiner, I<sub>C</sub> = B · I<sub>B</sub> wird größer." },
+    { c: "trans", n: "Seite 9", q: "Ab welcher Basis-Emitter-Spannung fließt bei einem Siliziumtransistor merklich Basisstrom?", a: ["Etwa 0,7 V", "Etwa 0,3 V", "Etwa 5 V"], e: "Die Basis-Emitter-Strecke ist eine Si-Diode. Die Eingangskennlinie steigt ab etwa 0,7 V steil an." },
+    { c: "trans", n: "Seite 9", q: "Was zeigt die Eingangskennlinie eines Transistors?", a: ["I<sub>B</sub> abhängig von U<sub>BE</sub>", "I<sub>C</sub> abhängig von U<sub>CE</sub>", "I<sub>C</sub> abhängig von der Temperatur"], e: "Eingangskennlinie: Basisstrom über Basis-Emitter-Spannung." },
+    { c: "trans", n: "Seite 9", q: "Was zeigt das Ausgangskennlinienfeld?", a: ["I<sub>C</sub> abhängig von U<sub>CE</sub>, je eine Kurve pro Basisstrom", "I<sub>B</sub> abhängig von U<sub>BE</sub>", "U<sub>BE</sub> abhängig von der Zeit"], e: "Jede Kurve gilt für einen festen Basisstrom. Größerer I<sub>B</sub> ergibt eine höher liegende Kurve." },
+    { c: "trans", n: "Seite 9", q: "Wofür kann man einen Transistor nutzen?", a: ["Als Verstärker und als Schalter", "Als Gleichrichter und als Sicherung", "Als Speicher und als Spule"], e: "Die zwei Grundanwendungen: Verstärker und Schalter." },
+    { c: "trans", n: "Ergänzung", x: 1, q: "Ein Transistor arbeitet als Schalter. Was gilt im eingeschalteten Zustand?", a: ["Er ist voll durchgesteuert, U<sub>CE</sub> ist sehr klein", "Es fließt kein Basisstrom", "U<sub>CE</sub> ist gleich der Betriebsspannung"], e: "Eingeschaltet: genug Basisstrom, der Transistor ist gesättigt, R<sub>CE</sub> sehr klein. Ausgeschaltet: kein Basisstrom, kein Kollektorstrom, U<sub>CE</sub> ≈ U<sub>B</sub>." },
+
+    { c: "halbw", n: "Seite 7", q: "Woran erkennst du im Schaltzeichen den Unterschied zwischen NTC und PTC?", a: ["NTC: gegenläufige Pfeile ↑↓, PTC: gleichlaufende Pfeile ↑↑", "NTC hat ϑ, PTC hat U", "Der PTC hat keinen schrägen Strich"], e: "Beide tragen ϑ. Die Pfeile zeigen das Verhalten: ↑↓ heißt Temperatur steigt, R sinkt. ↑↑ heißt beide steigen." },
+    { c: "halbw", n: "Ergänzung", x: 1, q: "Wofür wird ein PTC häufig eingesetzt?", a: ["Als selbstrückstellender Überstrom- oder Übertemperaturschutz", "Als Blitzschutz", "Als Gleichrichter"], e: "Wird der PTC durch zu hohen Strom warm, steigt sein Widerstand steil an und begrenzt den Strom. Nach dem Abkühlen leitet er wieder." },
+    { c: "trans", n: "Seite 9", q: "Welche Grundschaltung zeigt das Schaltbild auf Seite 9 (R<sub>B</sub>, R<sub>C</sub>, U<sub>B</sub>, U<sub>CE</sub>)?", a: ["Emitterschaltung: Der Emitter ist gemeinsamer Bezugspunkt für Eingang und Ausgang", "Kollektorschaltung: Der Kollektor liegt am Eingang", "Basisschaltung: Das Signal wird am Emitter eingespeist"], e: "Eingang U<sub>BE</sub> über R<sub>B</sub> an der Basis, Ausgang U<sub>CE</sub> zwischen Kollektor und Emitter. Der Emitter liegt an der gemeinsamen Masse." },
+    { c: "trans", n: "Seite 9", q: "Der Transistor in der Emitterschaltung wird weiter aufgesteuert. Was passiert mit U<sub>CE</sub>?", a: ["U<sub>CE</sub> sinkt, weil an R<sub>C</sub> mehr Spannung abfällt", "U<sub>CE</sub> steigt auf U<sub>B</sub>", "U<sub>CE</sub> bleibt gleich"], e: "U<sub>B</sub> = U<sub>RC</sub> + U<sub>CE</sub>. Größerer I<sub>C</sub> ergibt mehr Spannung an R<sub>C</sub>, also bleibt weniger für U<sub>CE</sub>." },
+    { c: "trans", n: "Ergänzung", x: 1, q: "Wie heißen die Anschlüsse eines Feldeffekttransistors (FET)?", a: ["Gate, Drain, Source", "Basis, Kollektor, Emitter", "Anode, Kathode, Gate"], e: "Ein FET wird über die Spannung am Gate gesteuert und braucht nahezu keinen Steuerstrom. Der bipolare Transistor wird über den Basisstrom gesteuert." },
+
+    // Dioden – Ergänzungen
+    { c: "kenn", n: "Ergänzung", x: 1, q: "Zwei Siliziumdioden liegen in Reihe in Durchlassrichtung. Wie groß ist der Spannungsabfall ungefähr?", a: ["1,4 V", "0,7 V", "0,35 V"], e: "In Reihe addieren sich die Durchlassspannungen: 2 · 0,7 V = 1,4 V." },
+    { c: "kenn", n: "Ergänzung", x: 1, q: "Wozu schaltet man Dioden in Reihe?", a: ["Um eine höhere Sperrspannung zu erreichen", "Um einen höheren Strom zu erreichen", "Um die Schleusenspannung zu senken"], e: "In Reihe teilen sich die Dioden die Sperrspannung. Damit sie sich gleichmäßig aufteilt, schaltet man zu jeder Diode einen hochohmigen Widerstand parallel. Parallel schaltet man Dioden für mehr Strom." },
+    { c: "kenn", n: "Ergänzung", x: 1, q: "Wozu schaltet man Dioden parallel, und worauf muss man achten?", a: ["Für höheren Strom; ohne Ausgleichswiderstände teilt sich der Strom ungleich auf", "Für höhere Sperrspannung; man muss nichts beachten", "Für eine kleinere Schleusenspannung"], e: "Parallel teilen sich die Dioden den Strom. Weil ihre Kennlinien leicht verschieden sind, setzt man kleine Widerstände in Reihe zu jeder Diode." },
+    { c: "arten", n: "Ergänzung", x: 1, q: "Welche Anschlüsse hat ein Thyristor (SCR)?", a: ["Anode, Kathode und Gate", "Basis, Kollektor und Emitter", "Nur Anode und Kathode"], e: "Der Thyristor ist eine steuerbare Diode mit dem zusätzlichen Steueranschluss Gate." },
+    { c: "arten", n: "Ergänzung", x: 1, q: "Wie verhält sich ein Thyristor nach dem Zünden?", a: ["Er bleibt leitend, bis der Strom unter den Haltestrom fällt", "Er sperrt sofort, wenn der Gateimpuls endet", "Er leitet in beide Richtungen"], e: "Ein kurzer Gateimpuls zündet ihn. Danach leitet er weiter, auch ohne Gatestrom, bis der Anodenstrom unter den Haltestrom sinkt." },
+    { c: "anw", n: "Ergänzung", x: 1, q: "Was liefert ein Einweggleichrichter mit einer Diode?", a: ["Nur eine Halbwelle der Wechselspannung", "Beide Halbwellen in gleicher Richtung", "Eine reine, glatte Gleichspannung"], e: "Die Diode lässt nur eine Halbwelle durch, die andere wird gesperrt. Es entsteht pulsierende Gleichspannung." },
+    { c: "anw", n: "Ergänzung", x: 1, q: "Wie viele Dioden hat ein Brückengleichrichter (Graetz-Brücke), und was liefert er?", a: ["Vier Dioden, beide Halbwellen werden genutzt", "Zwei Dioden, nur eine Halbwelle", "Eine Diode, beide Halbwellen"], e: "Die vier Dioden lenken beide Halbwellen in dieselbe Richtung. Das ergibt eine pulsierende Gleichspannung mit doppelter Frequenz." },
+    { c: "diode", n: "Ergänzung", x: 1, q: "Du prüfst eine gute Siliziumdiode mit dem Multimeter im Diodentest. Was zeigt es an?", a: ["Durchlass etwa 0,5–0,7 V, Sperrrichtung „OL“", "In beiden Richtungen 0 V", "In beiden Richtungen „OL“"], e: "Rote Messleitung an der Anode zeigt die Durchlassspannung. Umgedreht sperrt die Diode und das Gerät zeigt „OL“ (Überlauf)." },
+    { c: "diode", n: "Ergänzung", x: 1, q: "Das Multimeter zeigt im Diodentest in beiden Richtungen fast 0 V. Was bedeutet das?", a: ["Die Diode ist kurzgeschlossen (defekt)", "Die Diode ist in Ordnung", "Die Diode ist unterbrochen"], e: "0 V in beiden Richtungen: Kurzschluss. „OL“ in beiden Richtungen: Unterbrechung. Beides heißt defekt." },
+    { c: "diode", n: "Ergänzung", x: 1, q: "Das Multimeter zeigt im Diodentest in beiden Richtungen „OL“. Was bedeutet das?", a: ["Die Diode ist unterbrochen (defekt)", "Die Diode ist in Ordnung", "Die Diode ist kurzgeschlossen"], e: "Eine gute Diode leitet in einer Richtung. Leitet sie in keiner Richtung, ist sie unterbrochen." },
+
+    // IC & Operationsverstärker (Themen von Seite 10, Inhalt ergänzt)
+    { c: "ic", n: "Ergänzung", x: 1, q: "Was ist eine integrierte Schaltung (IC)?", a: ["Viele Bauelemente wie Transistoren und Widerstände auf einem Halbleiterchip in einem Gehäuse", "Ein einzelner Leistungstransistor", "Eine Leiterplatte mit Steckverbindern"], e: "Ein IC vereint eine ganze Schaltung auf einem kleinen Siliziumplättchen (Chip)." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Welche zwei Gruppen von ICs unterscheidet man grundsätzlich?", a: ["Lineare (analoge) ICs wie Operationsverstärker und digitale ICs wie Logikgatter", "Gleichstrom-ICs und Wechselstrom-ICs", "NPN-ICs und PNP-ICs"], e: "Linear/analog: verarbeiten stufenlose Signale, z. B. Operationsverstärker. Digital: verarbeiten 0 und 1, z. B. Logikgatter." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wie berechnet man die Spannungsverstärkung v einer Verstärkerschaltung?", a: ["v = U<sub>A</sub> / U<sub>E</sub>", "v = U<sub>E</sub> / U<sub>A</sub>", "v = U<sub>A</sub> · U<sub>E</sub>"], e: "Verstärkung = Ausgangsspannung geteilt durch Eingangsspannung." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Eingangsspannung 0,1 V, Ausgangsspannung 5 V. Wie groß ist die Verstärkung?", a: ["50", "0,02", "5,1"], e: "v = U<sub>A</sub> / U<sub>E</sub> = 5 V / 0,1 V = 50." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Was verstärkt ein Differenzverstärker?", a: ["Die Differenz der beiden Eingangsspannungen", "Die Summe der beiden Eingangsspannungen", "Nur die größere der beiden Spannungen"], e: "U<sub>A</sub> hängt von U<sub>E1</sub> − U<sub>E2</sub> ab. Der Operationsverstärker hat am Eingang einen Differenzverstärker." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wie ist ein einfacher Differenzverstärker aufgebaut?", a: ["Aus zwei Transistoren mit gemeinsamem Emitterwiderstand (oder Konstantstromquelle)", "Aus einer einzelnen Diode", "Aus zwei Kondensatoren in Reihe"], e: "Zwei möglichst gleiche Transistoren teilen sich den Emitterstrom. Jeder Eingang steuert eine Basis." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "An beiden Eingängen eines Differenzverstärkers liegt dieselbe Spannung. Was passiert am Ausgang (ideal)?", a: ["Die Ausgangsspannung bleibt null, gleiche Signale werden unterdrückt", "Die Ausgangsspannung verdoppelt sich", "Der Ausgang geht an die volle Betriebsspannung"], e: "Gleichtaktsignale (an beiden Eingängen gleich) werden unterdrückt. Das nennt man Gleichtaktunterdrückung. So werden Störungen ausgeblendet." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Welche Anschlüsse hat ein Operationsverstärker (Dreieck-Symbol)?", a: ["Zwei Eingänge (+ nichtinvertierend, − invertierend), einen Ausgang und die Versorgung", "Einen Eingang und zwei Ausgänge", "Basis, Kollektor und Emitter"], e: "Im Symbol: zwei Eingänge links (U<sub>E1</sub>, U<sub>E2</sub>), Ausgang U<sub>A</sub> an der Spitze, Versorgung U<sub>B</sub> oben/unten." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Ein Operationsverstärker ohne Gegenkopplung: Am +Eingang liegt etwas mehr Spannung als am −Eingang. Was macht der Ausgang?", a: ["Er geht an die positive Grenze, nahe der Versorgungsspannung", "Er zeigt genau die Differenz der Eingänge", "Er geht auf null"], e: "Die Leerlaufverstärkung ist riesig. Schon eine kleine Differenz treibt den Ausgang bis an die Versorgungsgrenze. Größer als U<sub>B</sub> kann U<sub>A</sub> nicht werden." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Welche Eigenschaften hat ein idealer Operationsverstärker?", a: ["Unendlich große Verstärkung und Eingangswiderstand, Ausgangswiderstand null", "Verstärkung 1, Eingangswiderstand null", "Kleine Verstärkung, sehr großer Ausgangswiderstand"], e: "Ideal: V<sub>0</sub> → ∞, R<sub>E</sub> → ∞ (zieht keinen Eingangsstrom), R<sub>A</sub> → 0." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wie groß ist die Leerlaufverstärkung V<sub>0</sub> eines realen Operationsverstärkers typischerweise?", a: ["Etwa 100 000 (10<sup>5</sup>) oder mehr", "Etwa 10", "Genau 1"], e: "Typisch 10<sup>5</sup> bis 10<sup>6</sup>. Die gewünschte Verstärkung stellt man mit einer Gegenkopplung über Widerstände ein." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Was ist ein Kennwert eines Operationsverstärkers?", a: ["Gleichtaktunterdrückung (CMRR)", "Schleusenspannung", "Kapazität in µF"], e: "Wichtige Kennwerte: Leerlaufverstärkung, Eingangs- und Ausgangswiderstand, Gleichtaktunterdrückung, Offsetspannung, Anstiegsgeschwindigkeit (Slew Rate)." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wann liefert ein UND-Gatter (AND) eine 1?", a: ["Nur wenn alle Eingänge 1 sind", "Wenn mindestens ein Eingang 1 ist", "Wenn alle Eingänge 0 sind"], e: "AND: Ausgang 1 nur, wenn A und B gleich 1 sind." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wann liefert ein ODER-Gatter (OR) eine 1?", a: ["Wenn mindestens ein Eingang 1 ist", "Nur wenn alle Eingänge 1 sind", "Nur wenn alle Eingänge 0 sind"], e: "OR: Ausgang 1, sobald A oder B (oder beide) 1 sind." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Was macht ein NICHT-Gatter (NOT, Inverter)?", a: ["Es kehrt das Eingangssignal um: aus 1 wird 0, aus 0 wird 1", "Es gibt das Eingangssignal unverändert weiter", "Es verdoppelt das Eingangssignal"], e: "NOT invertiert den Eingang." },
+
+    { c: "ic", n: "Ergänzung", x: 1, q: "Ein OPV hat V<sub>0</sub> = 100 000, die Differenz der Eingänge ist 10 µV. Wie groß ist U<sub>A</sub> (Versorgung ±15 V)?", a: ["1 V", "10 V", "0,1 V"], e: "U<sub>A</sub> = V<sub>0</sub> · (U<sub>E+</sub> − U<sub>E−</sub>) = 100 000 · 10 µV = 1 V. Das gilt nur, solange U<sub>A</sub> unter der Versorgungsgrenze bleibt." },
+    { c: "ic", n: "Ergänzung", x: 1, q: "Wie ist die Gleichtaktunterdrückung (CMRR) eines Differenzverstärkers definiert?", a: ["Differenzverstärkung geteilt durch Gleichtaktverstärkung (V<sub>D</sub> / V<sub>G</sub>)", "Ausgangsspannung geteilt durch Betriebsspannung", "Gleichtaktverstärkung mal Differenzverstärkung"], e: "Ein guter Differenzverstärker hat ein großes V<sub>D</sub> und ein sehr kleines V<sub>G</sub>, also eine hohe CMRR. Weitere Kennwerte: Eingangswiderstand, Offsetspannung, Temperaturdrift. Eine Konstantstromquelle statt des Emitterwiderstands verbessert die CMRR." },
+
+    // Leiterplatten
+    { c: "lp", n: "Ergänzung", x: 1, q: "Wie ist eine Leiterplatte grundsätzlich aufgebaut?", a: ["Isolierendes Trägermaterial mit Leiterbahnen aus Kupfer", "Kupferplatte mit Leiterbahnen aus Kunststoff", "Halbleiterchip mit Golddrähten"], e: "Typisch ist glasfaserverstärktes Epoxidharz (FR4) als Träger. Darauf liegen geätzte Kupferleiterbahnen." },
+    { c: "lp", n: "Ergänzung", x: 1, q: "Was ist eine Multilayer-Leiterplatte?", a: ["Mehrere Kupferlagen, durch Isolierschichten getrennt und über Durchkontaktierungen verbunden", "Eine Leiterplatte mit Bauteilen nur auf einer Seite", "Mehrere lose übereinandergelegte Platinen"], e: "Mehrlagige Platinen sparen Platz. Die Lagen werden über Durchkontaktierungen (Vias) verbunden." },
+    { c: "lp", n: "Ergänzung", x: 1, q: "Wie unterscheiden sich bedrahtete Bauteile (THT) und SMD-Bauteile?", a: ["THT werden durch Bohrungen gesteckt, SMD direkt auf die Oberfläche gelötet", "THT werden geklebt, SMD geschraubt", "Es gibt keinen Unterschied"], e: "THT = Through Hole Technology. SMD = Surface Mounted Device." },
+    { c: "lp", n: "Ergänzung", x: 1, q: "Wozu dient der Lötstopplack auf einer Leiterplatte?", a: ["Er schützt die Leiterbahnen und verhindert ungewollte Lötbrücken", "Er leitet den Strom zwischen den Lagen", "Er kühlt die Bauteile"], e: "Der (meist grüne) Lötstopplack deckt alles ab, wo nicht gelötet werden soll." },
+
+    // Servomechanismen
+    { c: "servo", n: "Ergänzung", x: 1, q: "Was unterscheidet einen geschlossenen Regelkreis von einem offenen?", a: ["Der geschlossene hat eine Rückführung des Istwerts, der offene nicht", "Der offene hat eine Rückführung, der geschlossene nicht", "Der geschlossene arbeitet nur mit Gleichstrom"], e: "Offen (Steuerung): keine Rückmeldung. Geschlossen (Regelung): Der Istwert wird zurückgeführt und mit dem Sollwert verglichen." },
+    { c: "servo", n: "Ergänzung", x: 1, q: "Was ist die Rückführung (Feedback) in einem Servosystem?", a: ["Die Rückmeldung des Istwerts an den Vergleicher", "Die Stromversorgung des Motors", "Ein Not-Aus-Schalter"], e: "Über die Rückführung erfährt das System, wo der Ausgang gerade steht." },
+    { c: "servo", n: "Ergänzung", x: 1, q: "Wie entsteht im Servosystem das Fehlersignal?", a: ["Aus der Differenz zwischen Sollwert und Istwert", "Aus der Summe von Sollwert und Istwert", "Aus der Versorgungsspannung"], e: "Fehlersignal = Sollwert − Istwert. Solange es nicht null ist, läuft der Antrieb und führt den Ausgang dem Sollwert nach (Follow-up). Ist es null, ist die Stellung erreicht und der Antrieb stoppt." },
+    { c: "servo", n: "Ergänzung", x: 1, q: "Was macht ein analoger Messwandler (Transducer) im Servosystem?", a: ["Er wandelt eine physikalische Größe wie Weg oder Winkel in ein elektrisches Signal", "Er wandelt Gleichstrom in Wechselstrom", "Er speichert die Sollwerte"], e: "Beispiel: Ein Potentiometer liefert eine Spannung proportional zur Stellung." },
+    { c: "servo", n: "Ergänzung", x: 1, q: "Wofür werden Synchros (Drehmelder) im Flugzeug genutzt?", a: ["Um Winkelstellungen elektrisch zu übertragen, z. B. zu einer Anzeige", "Um die Bordspannung gleichzurichten", "Um Funkwellen zu empfangen"], e: "Ein Sender-Synchro gibt eine Winkelstellung weiter, ein Empfänger-Synchro stellt sich auf denselben Winkel ein. Resolver liefern Sinus- und Kosinus-Signale des Winkels." }
+,
+    { c: "servo", n: "Ergänzung", x: 1, q: "Was unterscheidet ein Torque-Synchro-System von einem Control-Synchro-System?", a: ["Torque: Der Empfänger dreht die Last (z. B. Zeiger) direkt. Control: Ein Steuertransformator liefert ein Fehlersignal für Servoverstärker und Motor", "Torque arbeitet mit Gleichstrom, Control mit Wechselstrom", "Beide sind gleich, nur die Baugröße unterscheidet sich"], e: "Torque-Synchros eignen sich nur für kleine Lasten. Beim Control-System erzeugt der Steuertransformator eine Fehlerspannung, ein Servomotor dreht nach, bis sie null ist. Ein Differential-Synchro addiert oder subtrahiert zwei Winkel." },
+    { c: "servo", n: "Ergänzung", x: 1, q: "Wie arbeitet ein kapazitiver Geber, z. B. in der Tankinhaltsmessung?", a: ["Die Kapazität der Sonde ändert sich mit dem Füllstand, weil Kraftstoff ein anderes Dielektrikum als Luft ist", "Ein Schwimmer verstellt ein Potentiometer", "Die Sonde misst den Widerstand des Kraftstoffs"], e: "Kapazitive Geber wandeln Füllstand oder Weg in eine Kapazitätsänderung. Induktive Geber, z. B. ein LVDT, wandeln Weg in eine Änderung der Induktivität oder Kopplung." }
+  );
+
+  CARDS4.push(
+    { c: "halbw", n: "Seite 7", f: "NTC und PTC", a: "NTC: Heißleiter, Temperatur ↑ → R ↓. PTC: Kaltleiter, Temperatur ↑ → R ↑ (steiler Anstieg).", d: ["Schaltzeichen: Widerstand mit schrägem Strich und ϑ.", "NTC: Fühler in der Mess- und Regeltechnik."] },
+    { c: "halbw", n: "Seite 7", f: "VDR (Varistor)", a: "Voltage Dependent Resistor: spannungsabhängiger Widerstand. U ↑ → R ↓.", d: ["Kennlinie symmetrisch in beiden Richtungen.", "Schutz überspannungsempfindlicher Bauteile, Überspannungsableitung (Blitzschutz im Flugzeug).", "Ergänzung: Er wird parallel zum zu schützenden Bauteil geschaltet."] },
+    { c: "trans", n: "Seite 8", f: "Bipolarer Transistor: Grundlagen", a: "NPN oder PNP. Anschlüsse Basis, Kollektor, Emitter. I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>, B = I<sub>C</sub> / I<sub>B</sub>.", m: "Der Transistor wirkt wie ein durch den Basisstrom gesteuerter Widerstand." },
+    { c: "trans", n: "Seite 8", f: "Schaltzeichen NPN und PNP", a: "NPN: Pfeil am Emitter zeigt nach außen (von Basis zu Emitter). PNP: Pfeil zeigt nach innen (von Emitter zu Basis).", d: ["NPN: C an +, E an −. PNP: C an −, E an +.", "Ersatzschaltbild: zwei Dioden. NPN: Anoden an der Basis. PNP: Kathoden an der Basis."] },
+    { c: "trans", n: "Seite 6", f: "Transistor als Verstärker", a: "Eingang zwischen Basis und Emitter, Ausgang zwischen Kollektor und Emitter (Emitter gemeinsam). Ein kleines Eingangssignal ergibt eine große Änderung von U<sub>CE</sub>.", d: ["Das Eingangssignal sitzt auf einem Gleichspannungsanteil (Arbeitspunkt).", "B = I<sub>C</sub> / I<sub>B</sub> heißt Gleichstromverhältnis.", "Ergänzung: In der Emitterschaltung ist der Ausgang um 180° phasenverschoben."] },
+    { c: "trans", n: "Seite 9", f: "Kennlinien des Transistors", a: "Eingangskennlinie: I<sub>B</sub> über U<sub>BE</sub>, Anstieg ab etwa 0,7 V. Ausgangskennlinienfeld: I<sub>C</sub> über U<sub>CE</sub>, eine Kurve pro Basisstrom." },
+    { c: "trans", n: "Seite 9", f: "Anwendungen des Transistors", a: "Verstärker und Schalter.", d: ["Ergänzung Schalter: EIN = durchgesteuert, U<sub>CE</sub> sehr klein. AUS = kein Basisstrom, kein Kollektorstrom."] },
+    { c: "kenn", n: "Ergänzung", x: 1, f: "Dioden in Reihe und parallel", a: "Reihe: höhere Sperrspannung, Durchlassspannungen addieren sich (2 × 0,7 V = 1,4 V). Parallel: höherer Strom.", d: ["Reihe: hochohmige Ausgleichswiderstände parallel zu jeder Diode, damit sich die Sperrspannung gleichmäßig aufteilt.", "Parallel: kleine Ausgleichswiderstände in Reihe zu jeder Diode, damit sich der Strom gleichmäßig aufteilt."] },
+    { c: "arten", n: "Ergänzung", x: 1, f: "Thyristor (SCR)", a: "Steuerbare Diode mit Anode, Kathode und Gate. Ein Gateimpuls zündet ihn, er leitet dann weiter, bis der Strom unter den Haltestrom fällt." },
+    { c: "anw", n: "Ergänzung", x: 1, f: "Gleichrichter", a: "Einweg: eine Diode, nur eine Halbwelle. Brücke (Graetz): vier Dioden, beide Halbwellen.", d: ["Ergebnis ist pulsierende Gleichspannung, geglättet wird mit einem Kondensator."] },
+    { c: "diode", n: "Ergänzung", x: 1, f: "Diode prüfen mit dem Multimeter", a: "Diodentest: gut = Durchlass etwa 0,5–0,7 V, Sperr „OL“.", d: ["0 V in beiden Richtungen: Kurzschluss.", "„OL“ in beiden Richtungen: Unterbrechung."] },
+    { c: "ic", n: "Ergänzung", x: 1, f: "Integrierte Schaltung (IC)", a: "Viele Bauelemente auf einem Halbleiterchip. Linear/analog (z. B. Operationsverstärker) oder digital (Logikgatter).", d: ["Verstärkung: v = U<sub>A</sub> / U<sub>E</sub>."] },
+    { c: "ic", n: "Ergänzung", x: 1, f: "Differenzverstärker", a: "Verstärkt die Differenz zweier Eingangsspannungen. Aufbau: zwei Transistoren mit gemeinsamem Emitterwiderstand.", d: ["Gleiche Spannung an beiden Eingängen wird unterdrückt (Gleichtaktunterdrückung).", "Kennwerte: Differenzverstärkung V<sub>D</sub>, Gleichtaktverstärkung V<sub>G</sub>, CMRR = V<sub>D</sub> / V<sub>G</sub>."] },
+    { c: "ic", n: "Ergänzung", x: 1, f: "Operationsverstärker", a: "Zwei Eingänge (+, −), ein Ausgang, Versorgung U<sub>B</sub>. Ohne Gegenkopplung geht der Ausgang schon bei kleiner Differenz an die Versorgungsgrenze.", d: ["Ideal: Verstärkung ∞, Eingangswiderstand ∞, Ausgangswiderstand 0.", "Real: V<sub>0</sub> ≈ 10<sup>5</sup>. Kennwerte: Gleichtaktunterdrückung, Offsetspannung, Slew Rate."] },
+    { c: "ic", n: "Ergänzung", x: 1, f: "Logikgatter", a: "AND: 1 nur wenn alle Eingänge 1. OR: 1 wenn mindestens ein Eingang 1. NOT: kehrt um." },
+    { c: "lp", n: "Ergänzung", x: 1, f: "Leiterplatte: Aufbau", a: "Isolierender Träger (z. B. FR4) mit Kupferleiterbahnen, Lötstopplack darüber.", d: ["Multilayer: mehrere Lagen, verbunden über Durchkontaktierungen.", "Bauteile: THT durch Bohrungen, SMD auf der Oberfläche."] },
+    { c: "servo", n: "Ergänzung", x: 1, f: "Offener und geschlossener Regelkreis", a: "Offen: keine Rückführung. Geschlossen: Istwert wird zurückgeführt und mit dem Sollwert verglichen.", d: ["Fehlersignal = Sollwert − Istwert. Der Ausgang folgt dem Sollwert (Follow-up). Bei Fehlersignal null stoppt der Antrieb."] },
+    { c: "servo", n: "Ergänzung", x: 1, f: "Messwandler und Synchros", a: "Analoge Messwandler wandeln Weg oder Winkel in ein elektrisches Signal. Synchros übertragen Winkelstellungen elektrisch.", d: ["Resolver: liefern Sinus- und Kosinus-Signal des Winkels.", "Torque-Synchro: Empfänger dreht kleine Lasten (Zeiger) direkt. Control-Synchro: liefert ein Fehlersignal für Servoverstärker und Motor. Differential-Synchro: addiert oder subtrahiert zwei Winkel.", "Kapazitive Geber (z. B. Tankinhalt) und induktive Geber (z. B. LVDT) wandeln Füllstand oder Weg in ein elektrisches Signal."] }
+  );
+
   var MODS = {
     "3": { cats: CATS, q: Q, cards: CARDS, eyebrow: "AERO-Bildung · Modul 3", title: "<span>Elektronik</span>-Grundlagen", kc: "elq-cards", kl: "elq-last", foot: null },
-    "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 5) und vom Tafelbild. Das gelbe Etikett nennt die Seite oder „Tafel“. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
+    "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 10) und vom Tafelbild. Das gelbe Etikett nennt die Seite oder „Tafel“. Einträge mit umrandetem Etikett „Ergänzung“ stammen nicht aus deinen Notizen, sondern sind nach dem EASA-Part-66-Lehrplan (B1) ergänzt. Du kannst sie in der Auswahl ausblenden. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
   };
   var MOD = MODS["3"];
   var $ = function (id) { return document.getElementById(id); };
@@ -763,7 +888,7 @@ sub, sup { line-height: 0; }
   function loadKnown() { try { known = JSON.parse(lsGet(MOD.kc) || "{}") || {}; } catch (e) { known = {}; } }
   function saveKnown() { lsSet(MOD.kc, JSON.stringify(known)); }
   function mode() { return $("modeCards").checked ? "cards" : "quiz"; }
-  function source() { return mode() === "cards" ? CARDS : Q; }
+  function source() { var L = mode() === "cards" ? CARDS : Q; return $("useExtra").checked ? L : L.filter(function (q) { return !q.x; }); }
 
   // Themen-Chips
   var chips = $("chips");
@@ -798,7 +923,7 @@ sub, sup { line-height: 0; }
     $("last").hidden = cards || !lsGet(MOD.kl);
     if (cards) {
       var cats = selectedCats();
-      var pool = CARDS.filter(function (q) { return cats.indexOf(q.c) > -1; });
+      var pool = source().filter(function (q) { return cats.indexOf(q.c) > -1; });
       var k = pool.filter(function (q) { return known[q.id]; }).length;
       $("cardStat").innerHTML = 'Gewusst: <strong>' + k + ' von ' + pool.length + '</strong> Lernkarten der gewählten Themen';
     }
@@ -807,6 +932,7 @@ sub, sup { line-height: 0; }
   }
   chips.addEventListener("change", refreshStart);
   $("modeSeg").addEventListener("change", refreshStart);
+  $("useExtra").addEventListener("change", refreshStart);
   $("resetCards").addEventListener("click", function () {
     if (!resetArmed) {
       resetArmed = true;
@@ -828,9 +954,11 @@ sub, sup { line-height: 0; }
     $("title").innerHTML = MOD.title;
     $("foot").innerHTML = MOD.foot || foot3;
     document.title = "Elektronik-Quiz Modul " + key;
+    $("extraWrap").hidden = !Q.some(function (q) { return q.x; });
     loadKnown(); setLead(); buildChips(); refreshStart(); showLast();
     show("start");
     lsSet("elq-mod", key);
+    $("ovBtn").hidden = key !== "4";
   }
   $("modSeg").addEventListener("change", function (e) { applyMod(e.target.value); });
 
@@ -882,7 +1010,7 @@ sub, sup { line-height: 0; }
     cFlipped = false;
     $("flash").classList.remove("is-flipped");
     $("flash").setAttribute("aria-expanded", "false");
-    $("cRef").textContent = (typeof cCur.n === "number" ? "Notiz " : "") + cCur.n;
+    $("cRef").textContent = (typeof cCur.n === "number" ? "Notiz " : "") + cCur.n; $("cRef").classList.toggle("x", !!cCur.x);
     $("cCat").textContent = CATS[cCur.c];
     $("cQ").innerHTML = cCur.f;
     $("cA").innerHTML = cCur.a;
@@ -956,7 +1084,7 @@ sub, sup { line-height: 0; }
     var pct = Math.round(100 * idx / deck.length);
     $("bar").style.width = pct + "%";
     $("barWrap").setAttribute("aria-valuenow", String(pct));
-    $("ref").textContent = (typeof current.n === "number" ? "Notiz " : "") + current.n;
+    $("ref").textContent = (typeof current.n === "number" ? "Notiz " : "") + current.n; $("ref").classList.toggle("x", !!current.x);
     $("cat").textContent = CATS[current.c];
     $("qtext").innerHTML = current.q;
     var opts = shuffle([{ t: current.a[0], ok: true }].concat(shuffle(current.a.slice(1)).slice(0, 2).map(function (t) { return { t: t, ok: false }; })));
