@@ -276,7 +276,7 @@ sub, sup { line-height: 0; }
     </div>
   </section>
 
-  <p class="foot" id="foot">Die Fragen stammen aus deinen Notizen vom 5. bis 12. Oktober 2026. Das gelbe Etikett nennt den Punkt (Notiz 1 bis 34) oder die Seite in den Notizen. Am Computer: Im Quiz wählen die Tasten 1 bis 4 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt der Karteikarten wird nur in diesem Browser gespeichert.</p>
+  <p class="foot" id="foot">Die Fragen stammen aus deinen Notizen vom 5. bis 12. Oktober 2026. Das gelbe Etikett nennt den Punkt (Notiz 1 bis 34) oder die Seite in den Notizen. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt der Karteikarten wird nur in diesem Browser gespeichert.</p>
 </main>
 
 <script>
@@ -732,7 +732,7 @@ sub, sup { line-height: 0; }
 
   var MODS = {
     "3": { cats: CATS, q: Q, cards: CARDS, eyebrow: "AERO-Bildung · Modul 3", title: "<span>Elektronik</span>-Grundlagen", kc: "elq-cards", kl: "elq-last", foot: null },
-    "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 5) und vom Tafelbild. Das gelbe Etikett nennt die Seite oder „Tafel“. Am Computer: Im Quiz wählen die Tasten 1 bis 4 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
+    "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 5) und vom Tafelbild. Das gelbe Etikett nennt die Seite oder „Tafel“. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
   };
   var MOD = MODS["3"];
   var $ = function (id) { return document.getElementById(id); };
@@ -754,7 +754,7 @@ sub, sup { line-height: 0; }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function strip(h) { return h.replace(/<[^>]+>/g, "").replace(/&gt;/g, ">").replace(/&lt;/g, "<"); }
 
-  function setLead() { $("lead").textContent = Q.length + " Quizfragen und " + CARDS.length + " Lernkarten aus deinen Notizen. Im Quiz kreuzt du an, mit den Lernkarten wiederholst du das Wissen selbst."; }
+  function setLead() { $("lead").textContent = Q.length + " Quizfragen und " + CARDS.length + " Lernkarten aus deinen Notizen. Im Quiz wählst du wie in der Prüfung aus drei Antworten, mit den Lernkarten wiederholst du das Wissen selbst."; }
 
   // Stabile Kennung je Karte, damit der Fortschritt auch nach Updates erhalten bleibt
   function hid(s) { var h = 5381; for (var i = 0; i < s.length; i++) { h = ((h << 5) + h + s.charCodeAt(i)) | 0; } return "k" + (h >>> 0).toString(36); }
@@ -959,7 +959,7 @@ sub, sup { line-height: 0; }
     $("ref").textContent = (typeof current.n === "number" ? "Notiz " : "") + current.n;
     $("cat").textContent = CATS[current.c];
     $("qtext").innerHTML = current.q;
-    var opts = shuffle(current.a.map(function (t, i) { return { t: t, ok: i === 0 }; }));
+    var opts = shuffle([{ t: current.a[0], ok: true }].concat(shuffle(current.a.slice(1)).slice(0, 2).map(function (t) { return { t: t, ok: false }; })));
     current.order = opts;
     var ul = $("opts");
     ul.innerHTML = "";
@@ -1047,7 +1047,7 @@ sub, sup { line-height: 0; }
 
   document.addEventListener("keydown", function (e) {
     if ($("quiz").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
-    var n = "1234".indexOf(e.key);
+    var n = "123".indexOf(e.key);
     if (n > -1 && !locked) { pick(n); }
     else if (e.key === "ArrowRight" && locked) { next(); }
   });
