@@ -892,7 +892,9 @@ sub, sup { line-height: 0; }
     arten: "Schaltzeichen & Diodenarten",
     bauteil: "Bauteile & Anwendungen",
     trans: "Transistoren",
-    opv: "Regelung & Operationsverstärker"
+    opv: "Regelung & Operationsverstärker",
+    lp: "Leiterplatten",
+    syn: "Synchros"
   };
 
   var QT = [
@@ -905,7 +907,7 @@ sub, sup { line-height: 0; }
     { c: "arten", n: "Frage 7", q: "Ein Diodensymbol mit Pfeilen, die zur Diode hin zeigen, ist in Sperrrichtung angeschlossen. Was ist das und wie verhält es sich?", a: ["Fotodiode: Sie wird leitend, wenn Licht einfällt", "LED: Sie leuchtet, sobald Strom fließt", "Z-Diode: Sie leitet ab der Z-Spannung", "Fotodiode: Sie sperrt, wenn Licht einfällt"], e: "Pfeile zur Diode hin = Lichteinfall = Fotodiode. Sie wird in Sperrrichtung betrieben (Minus an Anode, Plus an Kathode) und mit Lichteinfall leitend." },
     { c: "arten", n: "Frage 8", q: "Welche Diode hat einen abgeknickten Kathodenstrich im Schaltzeichen?", a: ["Z-Diode (Zener-Diode)", "Fotodiode", "Leuchtdiode (LED)", "Germaniumdiode"], e: "Der abgeknickte Strich (wie ein Z) kennzeichnet die Z-Diode bzw. Zener-Diode." },
     { c: "arten", n: "Frage 9", q: "Was kennzeichnet der Ring auf dem Gehäuse einer Diode?", a: ["Die Kathode", "Die Anode", "Die maximale Sperrspannung", "Den Halbleiterwerkstoff"], e: "Der Ring liegt immer auf der Kathodenseite." },
-    { c: "arten", n: "Frage 10", q: "Was geben der 1. und der 2. Buchstabe einer Diodenbezeichnung an?", a: ["1. Buchstabe: Halbleiterwerkstoff, 2. Buchstabe: Art des Bauelements", "1. Buchstabe: Art, 2. Buchstabe: Halbleiterwerkstoff", "1. Buchstabe: Hersteller, 2. Buchstabe: Baujahr", "1. Buchstabe: Gehäuseform, 2. Buchstabe: Leistung"], e: "1. Buchstabe = Halbleiterwerkstoff (z. B. A Germanium, B Silizium), 2. Buchstabe = Art (z. B. A Diode, Z Z-Diode)." },
+    { c: "arten", n: "Frage 10", q: "Was geben der 1. und der 2. Buchstabe einer Diodenbezeichnung an?", a: ["1. Buchstabe: Halbleiterwerkstoff, 2. Buchstabe: Art des Bauelements", "1. Buchstabe: Art, 2. Buchstabe: Halbleiterwerkstoff", "1. Buchstabe: Hersteller, 2. Buchstabe: Baujahr", "1. Buchstabe: Gehäuseform, 2. Buchstabe: Leistung"], e: "1. Buchstabe = Halbleiterwerkstoff (z. B. A Germanium, B Silizium), 2. Buchstabe = Art (z. B. A Diode, Z Z-Diode). Beispiele aus deinen Notizen: AA, AB, BA, BC." },
     { c: "bauteil", n: "Frage 11", q: "Wofür wird ein VDR eingesetzt?", a: ["Zur Überspannungsableitung", "Zur Temperaturmessung", "Als Lichtsensor", "Zur Gleichrichtung"], e: "VDR = spannungsabhängiger Widerstand (Varistor). Steigt die Spannung, sinkt der Widerstand, so wird Überspannung abgeleitet." },
     { c: "trans", n: "Frage 11", q: "Wofür wird ein Transistor eingesetzt?", a: ["Als Schalter oder Verstärker", "Nur als Gleichrichter", "Zur Überspannungsableitung", "Als Lichtquelle"], e: "Transistoren arbeiten als Schalter oder als Verstärker." },
     { c: "bauteil", n: "Frage 12", q: "Welche Anwendungen hat eine Diode?", a: ["Entkopplung, Freilauf, Begrenzer, Gleichrichter", "Verstärker, Schalter, Oszillator, Speicher", "Nur Gleichrichter", "Spannungserhöhung, Frequenzmessung, Speicherung"], e: "Typische Diodenanwendungen: Entkopplungsdiode, Freilaufdiode, Spannungsbegrenzer und Gleichrichter." },
@@ -914,7 +916,11 @@ sub, sup { line-height: 0; }
     { c: "opv", n: "Frage 15", q: "Was kennzeichnet eine Regelung?", a: ["Geschlossener Regelkreis mit Rückführung (Feedback-Signal)", "Offener Wirkungsablauf ohne Rückführung", "Ein Schalter ohne Messung", "Eine reine Verstärkung ohne Vergleich"], e: "Regelung = geschlossener Regelkreis. Der Istwert wird als Feedback-Signal zurückgeführt und mit dem Sollwert verglichen. Ohne Rückführung spricht man von Steuerung." },
     { c: "opv", n: "Frage 16", q: "Wie hoch ist die Verstärkung eines idealen Verstärkers?", a: ["Unendlich", "Genau 1", "Etwa 100", "Null"], e: "Ein idealer Verstärker (Operationsverstärker) verstärkt bis ins Unendliche." },
     { c: "opv", n: "Frage 17", q: "Die Spannung am invertierenden Eingang steigt. Was macht die Ausgangsspannung?", a: ["Sie geht ins Negative (Richtung −U<sub>B</sub>)", "Sie steigt ins Positive", "Sie bleibt gleich", "Sie verdoppelt sich"], e: "Invertierender Eingang (−): Steigt er, geht der Ausgang in Richtung negativer Versorgungsspannung." },
-    { c: "opv", n: "Frage 18", q: "Welche Bandbreite haben Operationsverstärker laut Unterlagen?", a: ["Eine sehr hohe Bandbreite (etwa 10<sup>8</sup> Hz)", "Eine sehr kleine Bandbreite (etwa 10 Hz)", "Sie arbeiten nur mit Gleichspannung", "Genau 50 Hz"], e: "Operationsverstärker haben eine sehr hohe Bandbreite, in deinen Notizen etwa 10<sup>8</sup> Hz. Ideal wäre sie unendlich." }
+    { c: "opv", n: "Frage 18", q: "Welche Bandbreite haben Operationsverstärker laut Unterlagen?", a: ["Eine sehr hohe Bandbreite (etwa 10<sup>8</sup> Hz)", "Eine sehr kleine Bandbreite (etwa 10 Hz)", "Sie arbeiten nur mit Gleichspannung", "Genau 50 Hz"], e: "Operationsverstärker haben eine sehr hohe Bandbreite, in deinen Notizen etwa 10<sup>8</sup> Hz. Ideal wäre sie unendlich." },
+    { c: "lp", n: "Frage 19", q: "Wie werden die Leiterbahnen einer Leiterplatte in der Regel hergestellt?", a: ["Fotolithografisch", "Durch Aufkleben von Kupferdraht", "Durch Gießen", "Durch Aufdampfen von Silizium"], e: "Die Herstellung der Leiterbahnen erfolgt in der Regel fotolithografisch." },
+    { c: "lp", n: "Frage 20", q: "Wie nennt man eine Leiterplatte mit Leiterbahnen auf Vorder- und Rückseite?", a: ["Doppellayer", "Einlayer", "Multilayer mit acht Lagen", "Flexlayer"], e: "Leiterbahnen auf Vorder- und Rückseite: Doppellayer. Bei mehr als zwei Lagen spricht man von Multilayer." },
+    { c: "syn", n: "Frage 21", q: "Wofür stehen TX und RX bei Synchros?", a: ["TX = Torque Synchro Transmitter (sendet), RX = Torque Synchro Receiver (empfängt)", "TX = Torque Synchro Receiver (empfängt), RX = Torque Synchro Transmitter (sendet)", "TX = Transformer, RX = Resolver", "TX = Temperatur-Geber, RX = Regler"], e: "TX ist der Torque Synchro Transmitter, er sendet die Winkelstellung. RX ist der Torque Synchro Receiver, er empfängt sie." },
+    { c: "syn", n: "Frage 21", q: "Was macht ein Torque Synchro Receiver (RX)?", a: ["Er empfängt", "Er sendet", "Er verstärkt", "Er gleichrichtet"], e: "RX = Receiver = empfängt. TX = Transmitter = sendet." }
   ];
 
   var CARDST = [
@@ -927,7 +933,7 @@ sub, sup { line-height: 0; }
     { c: "arten", n: "Frage 7", f: "Fotodiode", a: "Pfeile zur Diode hin. Betrieb in Sperrrichtung (− an Anode, + an Kathode). Wird leitend, wenn Licht einfällt." },
     { c: "arten", n: "Frage 8", f: "Abgeknickter Kathodenstrich", a: "Z-Diode bzw. Zener-Diode." },
     { c: "arten", n: "Frage 9", f: "Ring auf dem Diodengehäuse", a: "Kennzeichnet die Kathode." },
-    { c: "arten", n: "Frage 10", f: "Buchstaben der Diodenbezeichnung", a: "1. Buchstabe: Halbleiterwerkstoff. 2. Buchstabe: Art." },
+    { c: "arten", n: "Frage 10", f: "Buchstaben der Diodenbezeichnung", a: "1. Buchstabe: Halbleiterwerkstoff. 2. Buchstabe: Art.", d: ["Beispiele: AA, AB, BA, BC."] },
     { c: "bauteil", n: "Frage 11", f: "VDR", a: "Zur Überspannungsableitung." },
     { c: "trans", n: "Frage 11", f: "Einsatz des Transistors", a: "Als Schalter oder Verstärker." },
     { c: "bauteil", n: "Frage 12", f: "Anwendungen der Diode", a: "Entkopplung, Freilauf, Begrenzer, Gleichrichter." },
@@ -936,12 +942,15 @@ sub, sup { line-height: 0; }
     { c: "opv", n: "Frage 15", f: "Regelung", a: "Geschlossener Regelkreis mit Feedback-Signal." },
     { c: "opv", n: "Frage 16", f: "Idealer Verstärker", a: "Verstärkt bis ins Unendliche." },
     { c: "opv", n: "Frage 17", f: "Invertierender Eingang steigt", a: "Die Ausgangsspannung geht ins Negative." },
-    { c: "opv", n: "Frage 18", f: "Bandbreite des Operationsverstärkers", a: "Sehr hoch, etwa 10<sup>8</sup> Hz." }
+    { c: "opv", n: "Frage 18", f: "Bandbreite des Operationsverstärkers", a: "Sehr hoch, etwa 10<sup>8</sup> Hz." },
+    { c: "lp", n: "Frage 19", f: "Herstellung der Leiterbahnen", a: "In der Regel fotolithografisch." },
+    { c: "lp", n: "Frage 20", f: "Leiterbahnen auf Vorder- und Rückseite", a: "Doppellayer." },
+    { c: "syn", n: "Frage 21", f: "TX und RX", a: "TX = Torque Synchro Transmitter, sendet. RX = Torque Synchro Receiver, empfängt.", m: "T = Transmitter = sendet, R = Receiver = empfängt" }
   ];
 
   var MODS = {
     "3": { cats: CATS, q: Q, cards: CARDS, eyebrow: "AERO-Bildung · Modul 3", title: "<span>Elektronik</span>-Grundlagen", kc: "elq-cards", kl: "elq-last", foot: null },
-    "t": { cats: CATST, q: QT, cards: CARDST, eyebrow: "AERO-Bildung · Modul 4 · Testfragen", title: "<span>Test</span>fragen", kc: "elqt-cards", kl: "elqt-last", foot: "Die 18 Testfragen stammen aus deinem Blatt „Modul 4 – Testfragen“ vom 14. Oktober 2026 (Seite 11). Die falschen Antwortmöglichkeiten im Quiz sind ergänzt. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird nur in diesem Browser gespeichert." },
+    "t": { cats: CATST, q: QT, cards: CARDST, eyebrow: "AERO-Bildung · Modul 4 · Testfragen", title: "<span>Test</span>fragen", kc: "elqt-cards", kl: "elqt-last", foot: "Die 21 Testfragen stammen aus deinem Blatt „Modul 4 – Testfragen“ vom 14. Oktober 2026 (Seiten 11 und 12). Die falschen Antwortmöglichkeiten im Quiz sind ergänzt. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird nur in diesem Browser gespeichert." },
     "4": { cats: CATS4, q: Q4, cards: CARDS4, eyebrow: "AERO-Bildung · Modul 4", title: "<span>Halbleiter</span> &amp; Dioden", kc: "elq4-cards", kl: "elq4-last", foot: "Die Fragen stammen aus deinen Notizen vom 14. Oktober 2026 (Seiten 1 bis 10) und vom Tafelbild. Das gelbe Etikett nennt die Seite oder „Tafel“. Einträge mit umrandetem Etikett „Ergänzung“ stammen nicht aus deinen Notizen, sondern sind nach dem EASA-Part-66-Lehrplan (B1) ergänzt. Du kannst sie in der Auswahl ausblenden. Am Computer: Im Quiz wählen die Tasten 1 bis 3 die Antwort, Pfeil rechts geht weiter. Bei den Karteikarten dreht die Leertaste die Karte um, Pfeil links heißt „Nochmal“, Pfeil rechts „Gewusst“. Der Fortschritt wird je Modul nur in diesem Browser gespeichert." }
   };
   var MOD = MODS["3"];
