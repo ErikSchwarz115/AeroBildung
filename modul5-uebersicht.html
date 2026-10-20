@@ -104,13 +104,13 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
   <header>
     <div class="eyebrow">AERO-Bildung · EASA Part-66 B1 · Modul 5</div>
     <h1><span>Digital</span>technik &amp; Displays</h1>
-    <p class="lead">Alles aus deinen Notizen vom 16. und 19. Oktober 2026, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
+    <p class="lead">Alles aus deinen Notizen vom 16., 19. und 20. Oktober 2026, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
   </header>
 
   <a class="back" href="./">← Zum Quiz, zu den Karteikarten und zum Test</a>
 
   <nav class="toc" aria-label="Inhalt">
-    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">Flash &amp; SAR</a><a href="#formeln">Auf einen Blick</a>
+    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">A/D-Wandler</a><a href="#busse">Bussysteme</a><a href="#signale">Signalformen</a><a href="#osi">OSI</a><a href="#arinc">ARINC 429</a><a href="#logik">Logik</a><a href="#formeln">Auf einen Blick</a>
   </nav>
 
   <section id="pruefung">
@@ -122,8 +122,8 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <tr><td class="num">5.1</td><td>Elektronische Instrumentensysteme</td><td class="num">1</td><td><span class="st ok">✓ Notizen</span></td></tr>
         <tr><td class="num">5.2</td><td>Zahlensysteme</td><td class="num">1</td><td><span class="st ok">✓ Notizen</span></td></tr>
         <tr><td class="num">5.3</td><td>Datenumwandlung</td><td class="num">1</td><td><span class="st ok">✓ Notizen</span></td></tr>
-        <tr><td class="num">5.4</td><td>Datenbusse</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.5 a</td><td>Logikschaltungen: Identifikation und Anwendungen</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
+        <tr><td class="num">5.4</td><td>Datenbusse</td><td class="num">2</td><td><span class="st ok">✓ Notizen</span></td></tr>
+        <tr><td class="num">5.5 a</td><td>Logikschaltungen: Identifikation und Anwendungen</td><td class="num">2</td><td><span class="st ok">✓ Notizen</span></td></tr>
         <tr><td class="num">5.6 a</td><td>Computerterminologie und -technologie</td><td class="num">2</td><td><span class="st open">teilweise (Bit, Byte)</span></td></tr>
         <tr><td class="num">5.10</td><td>Faseroptik</td><td class="num">1</td><td><span class="st open">offen</span></td></tr>
         <tr><td class="num">5.11</td><td>Elektronische Anzeigen</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
@@ -134,7 +134,7 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
       </tbody>
     </table></div>
     <p>Für B1 nicht gefordert (N/A): 5.5 b Logische Schaltpläne, 5.6 b Arbeitsweise von Computern, 5.7 Mikroprozessoren, 5.8 Integrierte Schaltungen, 5.9 Multiplexing.</p>
-    <p>Level 1 heißt: Begriffe kennen und einfach beschreiben. Level 2 heißt: Zusammenhänge verstehen und anwenden. Die offenen Level-2-Themen kommen mit deinen nächsten Notizen dazu.</p>
+    <p>Level 1 heißt: Begriffe kennen und einfach beschreiben. Level 2 heißt: Zusammenhänge verstehen und anwenden. Für die Level-2-Themen 5.4 und 5.5 a sind Wahrheitstabellen, IEC-Symbole, SSM-Codes und Paritätsbeispiele ergänzt, weil Part-66 dort Verstehen und Anwenden verlangt. Die übrigen offenen Themen kommen mit deinen nächsten Notizen dazu.</p>
   </section>
 
   <section id="basict">
@@ -360,11 +360,15 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <figcaption>Ein 20-Hz-Signal, mit 20 Hz abgetastet: Alle Punkte liegen auf der Nulllinie. Erkannt wird eine flache Linie.</figcaption>
       </figure>
     </div>
+    <h3>Abtastrate und Hertz</h3>
+    <p class="src">Seite 7</p>
+    <div class="formula">Abtastrate = 1 / Sampledauer [s] &nbsp;&nbsp; Hertz = 1/s</div>
+    <p>Beispiel: Sampledauer 0,025 s → 1 / 0,025 s = 40 Hz. Das reicht für Signale bis 20 Hz.</p>
     <div class="merk">Mindestens doppelt so oft abtasten wie die höchste Frequenz.</div>
   </section>
 
   <section id="adu">
-    <h2>A/D-Wandler: Flash und SAR <span class="lvl">5.3 · LEVEL 1</span></h2>
+    <h2>A/D-Wandler: Flash, SAR, Single Slope <span class="lvl">5.3 · LEVEL 1</span></h2>
     <p class="src">Testblatt Fragen 8 und 9 · Erklärungen ergänzt</p>
     <p>Part-66 verlangt bei 5.3 auch die Arten von Wandlern und ihre Grenzen. Dein Testblatt fragt nach zwei Bauarten.</p>
     <div class="erg">
@@ -398,7 +402,302 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
     </table></div>
     <div class="formula">Ergebnis: 1011<sub>2</sub> = 11</div>
     <p><strong>Einsatz laut deinem Testblatt:</strong> Triebwerksüberwachung, FCC (Flight Control Computer), ADC (Air Data Computer) und Überwachung von Batterien.</p>
-    <div class="merk">Flash = parallel und schnell. SAR = Bit für Bit wie eine Balkenwaage.</div>
+    <h3>Single Slope (Ramp Type ADC)</h3>
+    <p class="src">Seite 7 · Flash-ADU = Parallelverfahren</p>
+    <div class="erg">
+      <ul>
+        <li>Eine Rampenspannung steigt von 0 V gleichmäßig an, gleichzeitig zählt ein Zähler die Takte.</li>
+        <li>Erreicht die Rampe die Eingangsspannung, schaltet der Komparator und stoppt den Zähler. Der Zählerstand ist der Digitalwert.</li>
+        <li>Vorteil: einfach und billig, nur ein Komparator. Nachteil: langsam, die Wandelzeit hängt von der Spannung ab (bei 8 Bit bis zu 255 Takte).</li>
+      </ul>
+    </div>
+    <div class="merk">Flash = parallel und schnell. SAR = Bit für Bit wie eine Balkenwaage. Single Slope = Rampe hoch und mitzählen.</div>
+  </section>
+
+  <section id="busse">
+    <h2>Bussysteme <span class="lvl">5.4 · LEVEL 2</span></h2>
+    <p class="src">Seiten 8 und 9</p>
+    <p>Ein Sensor misst eine analoge Größe. Der A/D-Wandler macht daraus Binärdaten, der Bus bringt sie zum Rechner, zum Beispiel zum Air Data Computer. Ein D/A-Wandler steuert am Ende wieder ein Stellglied an.</p>
+    <div class="formula">Sensor → A/D → Bus (z. B. 0100) → Rechner → D/A → Stellglied</div>
+    <p><strong>Achtung Abkürzung:</strong> In deiner Skizze ist ADC der Air Data Computer. ADC heißt aber auch Analog-Digital-Converter. Den Wandler hast du als A/D eingezeichnet.</p>
+    <h3>Unidirektional und bidirektional</h3>
+    <div class="fig"><figure>
+<svg viewBox="0 0 340 250" width="340" role="img" aria-label="Oben unidirektional: ein Sender, zwei Empfänger, Pfeile nur in eine Richtung. Unten bidirektional: drei Geräte, Pfeile in beide Richtungen">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="currentColor" stroke-width="1.6"/></marker></defs>
+<g style="color:var(--ink)">
+<text class="tm" x="10" y="14">UNIDIREKTIONAL · ARINC 429</text>
+<rect class="boxm" x="10" y="40" width="90" height="36" rx="4"/><text class="t" x="55" y="63" text-anchor="middle">Sender</text>
+<rect class="box" x="220" y="24" width="110" height="34" rx="4"/><text class="t" x="275" y="46" text-anchor="middle">Empfänger 1</text>
+<rect class="box" x="220" y="70" width="110" height="34" rx="4"/><text class="t" x="275" y="92" text-anchor="middle">Empfänger 2</text>
+<path class="s" d="M 100 58 L 160 58 L 160 41 L 216 41" marker-end="url(#ah)"/>
+<path class="s" d="M 160 58 L 160 87 L 216 87" marker-end="url(#ah)"/>
+<text class="tm" x="10" y="146">BIDIREKTIONAL · RS-232</text>
+<rect class="boxm" x="10" y="166" width="90" height="44" rx="4"/><text class="t" x="55" y="185" text-anchor="middle">Sender</text><text class="t" x="55" y="202" text-anchor="middle">Empfänger</text>
+<rect class="boxm" x="220" y="160" width="110" height="34" rx="4"/><text class="t" x="275" y="182" text-anchor="middle">Sender/Empf.</text>
+<rect class="boxm" x="220" y="206" width="110" height="34" rx="4"/><text class="t" x="275" y="228" text-anchor="middle">Sender/Empf.</text>
+<path class="s" d="M 104 188 L 160 188 L 160 177 L 216 177" marker-start="url(#ah)" marker-end="url(#ah)"/>
+<path class="s" d="M 160 188 L 160 223 L 216 223" marker-end="url(#ah)"/>
+</g></svg>
+      <figcaption>Unidirektional: ein Sender, Daten nur in eine Richtung. Bidirektional: jedes Gerät sendet und empfängt.</figcaption>
+    </figure></div>
+    <ul>
+      <li><strong>Unidirektional:</strong> Datenübertragung nur in eine Richtung, 1 Sender. Beispiel: ARINC 429.</li>
+      <li><strong>Bidirektional:</strong> Datenübertragung in beide Richtungen. Beispiel: RS-232.</li>
+    </ul>
+    <h3>Seriell und parallel</h3>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Seriell</th><th>Parallel</th></tr></thead>
+      <tbody>
+        <tr><td>Leitungen</td><td>eine</td><td>mehrere</td></tr>
+        <tr><td>Bits</td><td>nacheinander, wie eine einspurige Straße</td><td>alle gleichzeitig</td></tr>
+        <tr><td>Vorteil</td><td>wenige Leitungen, wenig Gewicht</td><td>schneller</td></tr>
+        <tr><td>Beispiele</td><td>ARINC 429, RS-232</td><td>interne CPU-Systeme</td></tr>
+      </tbody>
+    </table></div>
+    <div class="merk">Uni = eine Richtung, bi = beide. Seriell = nacheinander, parallel = gleichzeitig.</div>
+  </section>
+
+  <section id="signale">
+    <h2>Signalformen und RS-232 <span class="lvl">5.4 · LEVEL 2</span></h2>
+    <p class="src">Seiten 10, 11 und 12</p>
+    <h3>NRZ (Non-Return-to-Zero)</h3>
+    <p>Der Pegel bleibt die ganze Bitzeit stehen und kehrt zwischen den Bits nicht auf null zurück. RS-232 arbeitet so.</p>
+    <ul>
+      <li><strong>NRZ-L (Level):</strong> Der Pegel zählt. Hoch = 1, tief = 0. Vertauschte Leitungen drehen alle Bits um.</li>
+      <li><strong>NRZ-M (Mark):</strong> Wechsel bei jeder 1, bei 0 bleibt der Pegel. Mark = 1, aus der Telegrafie: der Strich auf dem Papierstreifen. Polarität egal, aber lange Nullfolgen ohne Wechsel lassen den Takt verloren gehen.</li>
+      <li><strong>NRZ-S (Space):</strong> Wechsel bei jeder 0. Schwachstelle: lange Einsfolgen.</li>
+    </ul>
+    <div class="fig"><figure>
+<svg viewBox="0 0 340 250" width="340" role="img" aria-label="Bitfolge 1 0 1 1 0 als NRZ-L, NRZ-M und NRZ-S, Start tief. Rote Punkte markieren die Pegelwechsel">
+<line class="gd" x1="70" y1="22" x2="70" y2="240"/>
+<text class="tb" x="96" y="18" text-anchor="middle">1</text>
+<line class="gd" x1="122" y1="22" x2="122" y2="240"/>
+<text class="tb" x="148" y="18" text-anchor="middle">0</text>
+<line class="gd" x1="174" y1="22" x2="174" y2="240"/>
+<text class="tb" x="200" y="18" text-anchor="middle">1</text>
+<line class="gd" x1="226" y1="22" x2="226" y2="240"/>
+<text class="tb" x="252" y="18" text-anchor="middle">1</text>
+<line class="gd" x1="278" y1="22" x2="278" y2="240"/>
+<text class="tb" x="304" y="18" text-anchor="middle">0</text>
+<line class="gd" x1="330" y1="22" x2="330" y2="240"/>
+<text class="tm" x="2" y="59">NRZ-L</text>
+<path class="s" d="M 54 70 L 70 70 L 70 40 L 122 40 L 122 40 L 122 70 L 174 70 L 174 70 L 174 40 L 226 40 L 278 40 L 278 40 L 278 70 L 330 70"/>
+<circle class="dot" cx="70" cy="55" r="4"/>
+<circle class="dot" cx="122" cy="55" r="4"/>
+<circle class="dot" cx="174" cy="55" r="4"/>
+<circle class="dot" cx="278" cy="55" r="4"/>
+<text class="tm" x="2" y="129">NRZ-M</text>
+<path class="s" d="M 54 140 L 70 140 L 70 110 L 122 110 L 174 110 L 174 110 L 174 140 L 226 140 L 226 140 L 226 110 L 278 110 L 330 110"/>
+<circle class="dot" cx="70" cy="125" r="4"/>
+<circle class="dot" cx="174" cy="125" r="4"/>
+<circle class="dot" cx="226" cy="125" r="4"/>
+<text class="tm" x="2" y="199">NRZ-S</text>
+<path class="s" d="M 54 210 L 122 210 L 122 210 L 122 180 L 174 180 L 226 180 L 278 180 L 278 180 L 278 210 L 330 210"/>
+<circle class="dot" cx="122" cy="195" r="4"/>
+<circle class="dot" cx="278" cy="195" r="4"/>
+</svg>
+      <figcaption>Beispiel 1 0 1 1 0, Start tief. L: H T H H T · M: H H T H H · S: T H H H T. Rote Punkte = Pegelwechsel.</figcaption>
+    </figure></div>
+    <div class="merk">L = Höhe zählt. M = Wechsel bei 1. S = Wechsel bei 0.</div>
+    <h3>RZ (Return-to-Zero)</h3>
+    <p>In jeder Bitzeit kehrt der Pegel auf null zurück. In deiner Skizze ist die 1 ein positiver und die 0 ein negativer Impuls. Das nennt man bipolares RZ.</p>
+    <div class="fig"><figure>
+<svg viewBox="0 0 340 150" width="340" role="img" aria-label="Bipolares RZ-Signal für 1 0 1 0: positive Impulse für 1, negative für 0, dazwischen jeweils null">
+<line class="ax" x1="20" y1="75" x2="330" y2="75"/>
+<text class="tm" x="296" y="69">NULL</text>
+<text class="tb" x="47" y="27" text-anchor="middle">1</text>
+<text class="tb" x="117" y="135" text-anchor="middle">0</text>
+<text class="tb" x="187" y="27" text-anchor="middle">1</text>
+<text class="tb" x="257" y="135" text-anchor="middle">0</text>
+<path class="s" d="M 20 75 L 30 75 L 30 35 L 65 35 L 65 75 L 100 75 L 100 75 L 100 115 L 135 115 L 135 75 L 170 75 L 170 75 L 170 35 L 205 35 L 205 75 L 240 75 L 240 75 L 240 115 L 275 115 L 275 75 L 310 75"/>
+<text class="tm" x="296" y="39">HI</text><text class="tm" x="296" y="119">LO</text>
+</svg>
+      <figcaption>Bipolares RZ für 1 0 1 0: Nach jedem Impuls zurück auf null.</figcaption>
+    </figure></div>
+    <div class="erg">
+      <p>ARINC 429 arbeitet mit bipolarem RZ: HI ≈ +10 V, NULL = 0 V, LO ≈ −10 V. Weil jedes Bit zur Null zurückkehrt, erkennt der Empfänger jeden Bitbeginn selbst. Eine eigene Taktleitung ist nicht nötig.</p>
+    </div>
+    <h3>RS-232</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Logischer Wert</th><th>Spannung</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td class="num">+3 V bis +15 V</td></tr>
+        <tr><td>1</td><td class="num">−3 V bis −15 V</td></tr>
+      </tbody>
+    </table></div>
+    <p>Signalform: NRZ. RS-232 ist seriell und bidirektional.</p>
+    <div class="erg"><p>Zwischen −3 V und +3 V ist der Pegel undefiniert. Dieser Abstand schützt gegen Störungen.</p></div>
+    <div class="merk">RS-232: Die 1 ist negativ.</div>
+  </section>
+
+  <section id="osi">
+    <h2>OSI-Modell <span class="lvl">5.4 · LEVEL 2</span></h2>
+    <p class="src">Seite 11</p>
+    <p>Das OSI-Modell teilt die Datenübertragung in 7 Schichten. Jede Schicht arbeitet unabhängig von der Schicht darunter oder darüber. Sie nutzt nur deren feste Schnittstelle, deshalb kann man eine Schicht austauschen, ohne die anderen zu ändern.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Nr.</th><th>Schicht</th><th>Merksatz</th></tr></thead>
+      <tbody>
+        <tr><td class="num">7</td><td>Anwendung</td><td>Alle</td></tr>
+        <tr><td class="num">6</td><td>Darstellung</td><td>Deutschen</td></tr>
+        <tr><td class="num">5</td><td>Sitzung</td><td>Schüler</td></tr>
+        <tr><td class="num">4</td><td>Transport</td><td>Trinken</td></tr>
+        <tr><td class="num">3</td><td>Vermittlung</td><td>Verschiedene</td></tr>
+        <tr><td class="num">2</td><td>Sicherung</td><td>Sorten</td></tr>
+        <tr><td class="num">1</td><td>Bitübertragung</td><td>Bier</td></tr>
+      </tbody>
+    </table></div>
+    <div class="erg"><p>Schicht 1 ist alles Physikalische: Kabel, Stecker, Spannungspegel und Signalform (NRZ, RZ). Schicht 2 kümmert sich um die Fehlererkennung, zum Beispiel mit einem Paritätsbit.</p></div>
+    <div class="merk">Alle Deutschen Schüler Trinken Verschiedene Sorten Bier (7 → 1).</div>
+  </section>
+
+  <section id="arinc">
+    <h2>ARINC 429 <span class="lvl">5.4 · LEVEL 2</span></h2>
+    <p class="src">Seite 12 · Erklärungen aus unseren Chats ergänzt</p>
+    <p>Ein ARINC-429-Wort hat 32 Bits in fünf festen Feldern. Bit 32 steht links, Bit 1 rechts.</p>
+    <div class="tbl"><table class="bits">
+      <thead><tr><th>P</th><th>SSM</th><th>Daten</th><th>SDI</th><th>Label</th></tr></thead>
+      <tbody>
+        <tr><td>32</td><td>31–30</td><td>29–11</td><td>10–9</td><td>8–1</td></tr>
+        <tr class="hl"><td>heil?</td><td>stimmt's?</td><td>wie viel?</td><td>wer?</td><td>was?</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Label (Bit 1–8)</h3>
+    <p>Das Label sagt, welcher Parameter im Wort steht, z. B. 203 = barometrische Höhe. Es wird <strong>oktal</strong> angegeben. Die erste Oktalziffer bekommt nur 2 Bits, die beiden anderen je 3 Bits. Deshalb ist das höchste Label 377<sub>8</sub>.</p>
+    <div class="formula">100<sub>8</sub> → 1 = 01 · 0 = 000 · 0 = 000 → 01 000 000</div>
+    <p class="fix">In deiner Skizze steht beim mittleren Block 001. Die mittlere 0 ergibt 000. Außerdem hat die erste Ziffer nur 2 Bits, sonst wären es 9.</p>
+    <h3>SDI (Bit 9–10)</h3>
+    <p>Source/Destination Identifier: Er sagt, von welchem System das Wort kommt oder für welches es bestimmt ist. Systeme gibt es oft doppelt (ADIRU 1, 2, 3), und alle senden dasselbe Label.</p>
+    <div class="erg"><p>Typische Belegung: 00 = alle, 01 = System 1, 10 = System 2, 11 = System 3. Wird das SDI nicht gebraucht, können Bit 9 und 10 auch Daten tragen.</p></div>
+    <h3>Daten (Bit 11–29)</h3>
+    <p>Der eigentliche Messwert, als <strong>BNR</strong> (binär) oder <strong>BCD</strong> (Dezimalziffern, z. B. für Frequenzanzeigen). Bei BNR ist Bit 29 das Vorzeichen.</p>
+    <p class="fix">In deinen Notizen steht „BNC“. Gemeint ist BCD (Binary Coded Decimal).</p>
+    <h3>SSM (Bit 30–31)</h3>
+    <p>Sign/Status Matrix, wie ein Stempel auf dem Brief: bei BNR „Kann ich dem Wert trauen?“, bei BCD „In welche Richtung?“.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Bits</th><th>BNR</th><th>BCD</th></tr></thead>
+      <tbody>
+        <tr><td class="num">11</td><td>Normal Operation</td><td>minus, Süd, West, links</td></tr>
+        <tr><td class="num">10</td><td>Functional Test</td><td>Functional Test</td></tr>
+        <tr><td class="num">01</td><td>No Computed Data</td><td>No Computed Data</td></tr>
+        <tr><td class="num">00</td><td>Failure Warning</td><td>plus, Nord, Ost, rechts</td></tr>
+      </tbody>
+    </table></div>
+    <p>Bei Failure Warning zeigt das Display keinen falschen Wert an, sondern ein Fehler-Flag.</p>
+    <h3>Paritätsbit (Bit 32)</h3>
+    <p>ARINC 429 nutzt <strong>ungerade Parität</strong>. Der Sender zählt die Einsen in Bit 1 bis 31 und setzt Bit 32 so, dass die Gesamtzahl ungerade wird. Der Empfänger zählt alle 32 Bits nach: ungerade = in Ordnung, gerade = Wort verwerfen.</p>
+    <p class="fix">In deinen Notizen steht „Bit 1 bis 32“. Gezählt wird Bit 1 bis 31, Bit 32 ist das Ergebnis.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Einsen in Bit 1–31</th><th>P (Bit 32)</th><th>Einsen gesamt</th></tr></thead>
+      <tbody>
+        <tr><td class="num">6 (gerade)</td><td class="num">1</td><td class="num">7 ✓</td></tr>
+        <tr><td class="num">7 (ungerade)</td><td class="num">0</td><td class="num">7 ✓</td></tr>
+      </tbody>
+    </table></div>
+    <p>Warum? Durch Störungen (Radar, Funk, Blitz), lange Kabelwege oder schlechte Kontakte kann ein Bit kippen. Ein verworfenes Wort ist harmlos, weil die Werte ständig neu gesendet werden. Grenze: Kippen zwei Bits gleichzeitig, fällt es nicht auf. Ob der Wert selbst gültig ist, sagt das SSM, nicht die Parität.</p>
+    <div class="erg">
+      <h3>Eckdaten</h3>
+      <ul>
+        <li>Seriell, unidirektional, bipolares RZ. 1 Sender, bis zu 20 Empfänger.</li>
+        <li>12,5 kbit/s (Low Speed) oder 100 kbit/s (High Speed).</li>
+        <li>Gesendet wird zuerst das Label mit Bit 8 zuerst, dann Bit 9 bis 32 mit dem LSB zuerst.</li>
+        <li>Zwischen zwei Wörtern liegen mindestens 4 Bitzeiten Pause.</li>
+        <li>BNR-Labels liegen meist im Bereich 1xx bis 3xx, BCD meist bei 0xx. Das ist eine Konvention der Label-Tabelle, keine Regel.</li>
+      </ul>
+      <h3>Wo welcher Standard</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Standard</th><th>Art</th><th>Beispiele</th></tr></thead>
+        <tbody>
+          <tr><td>ARINC 429</td><td>unidirektional, 12,5/100 kbit/s</td><td>A320, A330, A340, 737, 747-400, 757, 767, E-Jets, CRJ, ATR 72</td></tr>
+          <tr><td>ARINC 629</td><td>bidirektional, 2 Mbit/s</td><td>Boeing 777</td></tr>
+          <tr><td>ARINC 664 (AFDX)</td><td>Ethernet, 100 Mbit/s</td><td>A380, A350, A400M, 787</td></tr>
+        </tbody>
+      </table></div>
+      <p>Weitere ARINC-Standards: 653 Software-Partitionierung, 717 Flugdatenschreiber, 708 Wetterradar, 424 Navigationsdatenbank, 600 Gehäuse und Stecker. Militärflugzeuge nutzen meist MIL-STD-1553.</p>
+    </div>
+    <div class="merk">Label = was, SDI = wer, Daten = wie viel, SSM = stimmt's, Parität = heil angekommen.</div>
+  </section>
+
+  <section id="logik">
+    <h2>Logikschaltungen <span class="lvl">5.5 a · LEVEL 2</span></h2>
+    <p class="src">Seite 13 · Wahrheitstabelle und Anwendungen ergänzt</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Gatter</th><th>Formel</th><th>Ausgang 1, wenn …</th></tr></thead>
+      <tbody>
+        <tr><td>UND (AND)</td><td class="num">A ∧ B</td><td>alle Eingänge 1</td></tr>
+        <tr><td>ODER (OR)</td><td class="num">A ∨ B</td><td>mindestens ein Eingang 1</td></tr>
+        <tr><td>NICHT (NOT)</td><td class="num">Ā</td><td>Eingang 0</td></tr>
+        <tr><td>NAND</td><td class="num"><span style="text-decoration:overline">A ∧ B</span></td><td>nicht alle Eingänge 1</td></tr>
+        <tr><td>NOR</td><td class="num"><span style="text-decoration:overline">A ∨ B</span></td><td>alle Eingänge 0</td></tr>
+        <tr><td>XOR</td><td class="num">(A ∧ B̄) ∨ (Ā ∧ B)</td><td>Eingänge verschieden</td></tr>
+        <tr><td>Äquivalenz (XNOR)</td><td class="num">(A ∧ B) ∨ (Ā ∧ B̄)</td><td>Eingänge gleich</td></tr>
+      </tbody>
+    </table></div>
+    <div class="fig"><figure>
+<svg viewBox="0 0 340 200" width="340" role="img" aria-label="Gattersymbole UND, ODER, NICHT, NAND, NOR, XOR und XNOR">
+<path class="s" d="M 26 20 L 40 20 A 14 14 0 0 1 40 48 L 26 48 Z"/>
+<line class="s" x1="14" y1="27" x2="28" y2="27"/>
+<line class="s" x1="14" y1="41" x2="28" y2="41"/>
+<line class="s" x1="54" y1="34" x2="66" y2="34"/>
+<text class="tb" x="44" y="70" text-anchor="middle">UND</text>
+<path class="s" d="M 106 20 Q 128 20 138 34 Q 128 48 106 48 Q 114 34 106 20 Z"/>
+<line class="s" x1="96" y1="27" x2="110" y2="27"/>
+<line class="s" x1="96" y1="41" x2="110" y2="41"/>
+<line class="s" x1="138" y1="34" x2="150" y2="34"/>
+<text class="tb" x="126" y="70" text-anchor="middle">ODER</text>
+<path class="s" d="M 190 20 L 218 34 L 190 48 Z"/>
+<line class="s" x1="178" y1="34" x2="190" y2="34"/>
+<circle cx="222" cy="34" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+<line class="s" x1="226" y1="34" x2="238" y2="34"/>
+<text class="tb" x="208" y="70" text-anchor="middle">NICHT</text>
+<path class="s" d="M 272 20 L 286 20 A 14 14 0 0 1 286 48 L 272 48 Z"/>
+<line class="s" x1="260" y1="27" x2="274" y2="27"/>
+<line class="s" x1="260" y1="41" x2="274" y2="41"/>
+<circle cx="304" cy="34" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+<line class="s" x1="308" y1="34" x2="320" y2="34"/>
+<text class="tb" x="290" y="70" text-anchor="middle">NAND</text>
+<path class="s" d="M 24 112 Q 46 112 56 126 Q 46 140 24 140 Q 32 126 24 112 Z"/>
+<line class="s" x1="14" y1="119" x2="28" y2="119"/>
+<line class="s" x1="14" y1="133" x2="28" y2="133"/>
+<circle cx="60" cy="126" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+<line class="s" x1="64" y1="126" x2="76" y2="126"/>
+<text class="tb" x="44" y="162" text-anchor="middle">NOR</text>
+<path class="s" d="M 106 112 Q 128 112 138 126 Q 128 140 106 140 Q 114 126 106 112 Z"/>
+<path class="s" d="M 100 112 Q 108 126 100 140"/>
+<line class="s" x1="96" y1="119" x2="110" y2="119"/>
+<line class="s" x1="96" y1="133" x2="110" y2="133"/>
+<line class="s" x1="138" y1="126" x2="150" y2="126"/>
+<text class="tb" x="126" y="162" text-anchor="middle">XOR</text>
+<path class="s" d="M 188 112 Q 210 112 220 126 Q 210 140 188 140 Q 196 126 188 112 Z"/>
+<path class="s" d="M 182 112 Q 190 126 182 140"/>
+<line class="s" x1="178" y1="119" x2="192" y2="119"/>
+<line class="s" x1="178" y1="133" x2="192" y2="133"/>
+<circle cx="224" cy="126" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>
+<line class="s" x1="228" y1="126" x2="240" y2="126"/>
+<text class="tb" x="208" y="162" text-anchor="middle">XNOR</text>
+</svg>
+      <figcaption>Symbole wie in deinen Notizen (US-Norm). Kreis am Ausgang = negiert, gebogene Eingangsseite = ODER-Familie, doppelter Bogen = XOR/XNOR.</figcaption>
+    </figure></div>
+    <div class="erg">
+      <h3>Wahrheitstabelle</h3>
+      <div class="tbl"><table class="bits">
+        <thead><tr><th>A</th><th>B</th><th>UND</th><th>ODER</th><th>NAND</th><th>NOR</th><th>XOR</th><th>XNOR</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table></div>
+      <h3>IEC-Symbole (Kästen, in Europa üblich)</h3>
+      <p>&amp; = UND · ≥1 = ODER · 1 = NICHT (mit Kreis) · =1 = XOR · = = Äquivalenz. NAND und NOR haben zusätzlich den Kreis am Ausgang.</p>
+      <h3>Universalgatter und Anwendungen</h3>
+      <ul>
+        <li>NAND und NOR sind Universalgatter: Aus jedem allein lässt sich jede andere Funktion bauen.</li>
+        <li>UND: Warnhupe, wenn das Fahrwerk nicht ausgefahren ist und gleichzeitig der Schubhebel im Leerlauf steht.</li>
+        <li>ODER: Türwarnung, sobald irgendeine Tür offen ist.</li>
+      </ul>
+    </div>
+    <div class="merk">UND: alle. ODER: mindestens einer. XOR: verschieden. XNOR: gleich. Kreis = umgekehrt.</div>
   </section>
 
   <section id="formeln">
@@ -420,11 +719,21 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <tr><td>Mindest-Abtastrate</td><td class="num">2 · f<sub>max</sub></td></tr>
         <tr><td>Flash-ADU Komparatoren</td><td class="num">2<sup>n</sup> − 1</td></tr>
         <tr><td>SAR Schritte</td><td class="num">n</td></tr>
+        <tr><td>Abtastrate</td><td class="num">1 / Sampledauer [s] = Hz</td></tr>
+        <tr><td>Unidirektional / bidirektional</td><td>ARINC 429 / RS-232</td></tr>
+        <tr><td>Seriell / parallel</td><td>ARINC 429, RS-232 / CPU-intern</td></tr>
+        <tr><td>NRZ-L / NRZ-M / NRZ-S</td><td>Pegel zählt / Wechsel bei 1 / Wechsel bei 0</td></tr>
+        <tr><td>RS-232</td><td class="num">0 = +3…+15 V, 1 = −3…−15 V</td></tr>
+        <tr><td>OSI-Modell</td><td>7 Schichten, Anwendung bis Bitübertragung</td></tr>
+        <tr><td>ARINC-429-Wort</td><td class="num">P 32 · SSM 31–30 · Daten 29–11 · SDI 10–9 · Label 8–1</td></tr>
+        <tr><td>ARINC-429-Parität</td><td>ungerade</td></tr>
+        <tr><td>Höchstes Label</td><td class="num">377<sub>8</sub></td></tr>
+        <tr><td>XOR / XNOR</td><td>verschieden / gleich</td></tr>
       </tbody>
     </table></div>
   </section>
 
-  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16. und 19. Oktober 2026 (Seiten 1 bis 6) und dein Testblatt (Seite 7). Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
+  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16., 19. und 20. Oktober 2026 (Seiten 1 bis 13), dein Testblatt und Erklärungen aus unseren Chats zu ARINC 429 und NRZ. Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
 </div>
 
 </body></html>
