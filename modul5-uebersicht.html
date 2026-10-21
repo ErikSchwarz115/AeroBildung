@@ -63,6 +63,8 @@ sub, sup { line-height: 0; }
 .merk::before { content: "Merksatz "; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; display: block; color: var(--ink-soft); }
 .fix { border-left: 4px solid var(--red); padding: 6px 12px; }
 .fix::before { content: "Korrektur zu deinen Notizen"; display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+.fixs { border-left: 4px solid var(--red); padding: 6px 12px; }
+.fixs::before { content: "Fehler im Skript"; display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
 .erg { border: 1.5px dashed var(--ink-soft); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
 .erg::before { content: "Ergänzung · nicht aus deinen Notizen"; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
 .src { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
@@ -104,13 +106,13 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
   <header>
     <div class="eyebrow">AERO-Bildung · EASA Part-66 B1 · Modul 5</div>
     <h1><span>Digital</span>technik &amp; Displays</h1>
-    <p class="lead">Alles aus deinen Notizen vom 16., 19. und 20. Oktober 2026, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
+    <p class="lead">Alles aus deinen Notizen vom 16., 19. und 20. Oktober 2026 und aus deinem Skript „CAT-B1 Modul 5“, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
   </header>
 
   <a class="back" href="./">← Zum Quiz, zu den Karteikarten und zum Test</a>
 
   <nav class="toc" aria-label="Inhalt">
-    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">A/D-Wandler</a><a href="#busse">Bussysteme</a><a href="#signale">Signalformen</a><a href="#osi">OSI</a><a href="#arinc">ARINC 429</a><a href="#logik">Logik</a><a href="#formeln">Auf einen Blick</a>
+    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">A/D-Wandler</a><a href="#busse">Bussysteme</a><a href="#signale">Signalformen</a><a href="#osi">OSI</a><a href="#arinc">ARINC 429</a><a href="#logik">Logik</a><a href="#computer">Computer</a><a href="#faseroptik">Faseroptik</a><a href="#anzeigen">Anzeigen</a><a href="#esd">ESD</a><a href="#software">Software</a><a href="#emv">EMV</a><a href="#systeme">Systeme</a><a href="#skriptfehler">Fehler im Skript</a><a href="#formeln">Auf einen Blick</a>
   </nav>
 
   <section id="pruefung">
@@ -124,17 +126,17 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <tr><td class="num">5.3</td><td>Datenumwandlung</td><td class="num">1</td><td><span class="st ok">✓ Notizen</span></td></tr>
         <tr><td class="num">5.4</td><td>Datenbusse</td><td class="num">2</td><td><span class="st ok">✓ Notizen</span></td></tr>
         <tr><td class="num">5.5 a</td><td>Logikschaltungen: Identifikation und Anwendungen</td><td class="num">2</td><td><span class="st ok">✓ Notizen</span></td></tr>
-        <tr><td class="num">5.6 a</td><td>Computerterminologie und -technologie</td><td class="num">2</td><td><span class="st open">teilweise (Bit, Byte)</span></td></tr>
-        <tr><td class="num">5.10</td><td>Faseroptik</td><td class="num">1</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.11</td><td>Elektronische Anzeigen</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.12</td><td>Elektrostatisch empfindliche Komponenten</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.13</td><td>Software-Management-Kontrolle</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.14</td><td>Elektromagnetische Umgebung</td><td class="num">2</td><td><span class="st open">offen</span></td></tr>
-        <tr><td class="num">5.15</td><td>Typische elektronische/digitale Luftfahrzeugsysteme</td><td class="num">1</td><td><span class="st open">teilweise (ECAM, EICAS)</span></td></tr>
+        <tr><td class="num">5.6 a</td><td>Computerterminologie und -technologie</td><td class="num">2</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.10</td><td>Faseroptik</td><td class="num">1</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.11</td><td>Elektronische Anzeigen</td><td class="num">2</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.12</td><td>Elektrostatisch empfindliche Komponenten</td><td class="num">2</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.13</td><td>Software-Management-Kontrolle</td><td class="num">2</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.14</td><td>Elektromagnetische Umgebung</td><td class="num">2</td><td><span class="st ok">✓ Skript</span></td></tr>
+        <tr><td class="num">5.15</td><td>Typische elektronische/digitale Luftfahrzeugsysteme</td><td class="num">1</td><td><span class="st ok">✓ Notizen + Skript</span></td></tr>
       </tbody>
     </table></div>
     <p>Für B1 nicht gefordert (N/A): 5.5 b Logische Schaltpläne, 5.6 b Arbeitsweise von Computern, 5.7 Mikroprozessoren, 5.8 Integrierte Schaltungen, 5.9 Multiplexing.</p>
-    <p>Level 1 heißt: Begriffe kennen und einfach beschreiben. Level 2 heißt: Zusammenhänge verstehen und anwenden. Für die Level-2-Themen 5.4 und 5.5 a sind Wahrheitstabellen, IEC-Symbole, SSM-Codes und Paritätsbeispiele ergänzt, weil Part-66 dort Verstehen und Anwenden verlangt. Die übrigen offenen Themen kommen mit deinen nächsten Notizen dazu.</p>
+    <p>Level 1 heißt: Begriffe kennen und einfach beschreiben. Level 2 heißt: Zusammenhänge verstehen und anwenden. Mit deinem Skript sind jetzt alle Untermodule abgedeckt.</p>
   </section>
 
   <section id="basict">
@@ -700,6 +702,219 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
     <div class="merk">UND: alle. ODER: mindestens einer. XOR: verschieden. XNOR: gleich. Kreis = umgekehrt.</div>
   </section>
 
+  <section id="skriptfehler">
+    <h2>Fehler im Skript</h2>
+    <p class="src">Skript „CAT-B1 Modul 5“, AERO-Bildung, Januar 2025</p>
+    <p>Beim Einarbeiten sind mir vier Stellen aufgefallen, die nicht stimmen oder veraltet sind. Die Fragen auf der Lernseite verwenden die richtige Fassung.</p>
+    <p class="fixs"><strong>S. 153, Gradientenfaser:</strong> Im Skript steht, die Brechzahl „steigt von innen nach außen“. Richtig ist: Sie <em>nimmt</em> nach außen <em>ab</em>. Nur so wird das Licht zur Mitte zurückgelenkt und läuft außen schneller.</p>
+    <p class="fixs"><strong>S. 105, ARINC 629:</strong> Im Skript steht, er werde in der Boeing 777, im A330 und im A340 eingesetzt. Tatsächlich ist ARINC 629 praktisch nur aus der Boeing 777 bekannt, A330 und A340 arbeiten mit ARINC 429. Für die Prüfung: „Boeing 777“ ist immer richtig.</p>
+    <p class="fixs"><strong>S. 149, ARINC 636:</strong> Im Skript steht 1 Mbit/s. ARINC 636 beruht auf FDDI und arbeitet mit 100 Mbit/s (so steht es auch auf S. 105 bei FDDI).</p>
+    <p class="fixs"><strong>S. 198, DO-178B/ED-12B:</strong> Das ist die alte Fassung. Aktuell gilt DO-178C/ED-12C. In der Prüfung reicht meist „DO-178“.</p>
+  </section>
+
+  <section id="computer">
+    <h2>Computer und Speicher <span class="lvl">5.6 a · LEVEL 2</span></h2>
+    <p class="src">Skript S. 140 bis 147</p>
+    <p>Ein Computer arbeitet nach dem <strong>EVA-Prinzip</strong>: Eingabe, Verarbeitung, Ausgabe. Programme und Daten liegen in Halbleiterspeichern.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Speicher</th><th>Flüchtig?</th><th>Merkmal</th></tr></thead>
+      <tbody>
+        <tr><td><strong>DRAM</strong></td><td>ja</td><td>Kondensatoren, braucht ständig Refresh</td></tr>
+        <tr><td><strong>SRAM</strong></td><td>ja</td><td>Flipflops, kein Refresh, schnell</td></tr>
+        <tr><td>Masken-ROM</td><td>nein</td><td>im Werk fest programmiert, nur für große Stückzahlen</td></tr>
+        <tr><td>OTP-PROM</td><td>nein</td><td>einmal programmierbar, Sicherungen werden durchgebrannt</td></tr>
+        <tr><td><strong>EPROM</strong></td><td>nein</td><td>mit UV-Licht durch ein Fenster löschbar</td></tr>
+        <tr><td><strong>EEPROM / Flash</strong></td><td>nein</td><td>elektrisch löschbar, schreibt etwa 1000-mal langsamer als es liest</td></tr>
+      </tbody>
+    </table></div>
+    <div class="merk">RAM vergisst beim Abschalten, ROM behält. 1 KByte = 2<sup>10</sup> = 1024 Byte.</div>
+    <ul>
+      <li><strong>Betriebssystem:</strong> verbindet Hardware und Anwendungsprogramme.</li>
+      <li><strong>Firmware:</strong> steuert die Grundfunktionen einer Hardware-Komponente.</li>
+      <li><strong>Befehlssatz:</strong> alle Befehle, die ein bestimmter Prozessortyp versteht.</li>
+    </ul>
+  </section>
+
+  <section id="faseroptik">
+    <h2>Faseroptik <span class="lvl">5.10 · LEVEL 1</span></h2>
+    <p class="src">Skript S. 148 bis 163</p>
+    <div class="fig">
+      <figure>
+        <svg viewBox="0 0 340 120" width="340" role="img" aria-label="Lichtwellenleiter im Schnitt: Mantel oben und unten, Kern in der Mitte, Lichtstrahl wird im Zickzack an der Grenze zum Mantel reflektiert">
+          <rect class="box" x="10" y="14" width="320" height="92" rx="4"/>
+          <rect class="boxm" x="10" y="38" width="320" height="44"/>
+          <polyline class="c" points="10,60 50,40 110,80 170,40 230,80 290,40 330,60"/>
+          <text class="tm" x="16" y="30">MANTEL · kleinerer Brechungsindex</text>
+          <text class="tm" x="16" y="100">MANTEL</text>
+          <text class="tb" x="250" y="66">KERN</text>
+        </svg>
+        <figcaption>Das Licht wird an der Grenze zum Mantel total reflektiert und bleibt im Kern.</figcaption>
+      </figure>
+    </div>
+    <ul>
+      <li>Elektrisches Signal → Sender (LED oder Laser) → Glasfaser → Empfänger (Fotodiode) → elektrisches Signal.</li>
+      <li>Der <strong>Kern</strong> hat einen höheren Brechungsindex als der <strong>Mantel</strong>. Am Mantel findet die Reflexion statt.</li>
+      <li>Licht muss innerhalb des Akzeptanzkegels eintreten (numerische Apertur), sonst geht es verloren.</li>
+    </ul>
+    <div class="merk">Kern dichter als Mantel. Licht bleibt durch Totalreflexion drin.</div>
+    <h3>Vor- und Nachteile</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
+      <tbody>
+        <tr><td>Keine elektromagnetischen Störungen (EMI, HIRF, Blitz)</td><td>Teurer in Material und Montage</td></tr>
+        <tr><td>Kein Übersprechen, keine Masseprobleme</td><td>Bruchempfindlich, Biegeradius beachten</td></tr>
+        <tr><td>Geringe Dämpfung, sehr hohe Datenrate</td><td>Spezialwerkzeug und geschultes Personal</td></tr>
+        <tr><td>Leicht, darf neben Stromleitungen liegen</td><td>Stecker müssen sehr sauber und genau sein</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Fasertypen</h3>
+    <ul>
+      <li><strong>Modendispersion:</strong> Strahlen laufen verschieden lange Wege, der Impuls wird breiter.</li>
+      <li><strong>Gradientenfaser:</strong> Brechzahl nimmt nach außen ab, die langen Wege werden schneller.</li>
+      <li><strong>Monomodefaser:</strong> Kern nur wenige Wellenlängen dick, nur ein Weg. Schwer einzukoppeln.</li>
+      <li>Weitere Verluste: Streuung und Absorption im Glas.</li>
+    </ul>
+    <h3>Im Flugzeug</h3>
+    <ul>
+      <li>Außenhülle <strong>violett</strong>, flammhemmend, wenig giftiger Rauch.</li>
+      <li>Stecker nach ARINC 404 und 600, auch Hybrid-Stecker mit Licht- und Kupferkontakten.</li>
+      <li>Steckerdämpfung durch Versatz, Luftspalt, Kippwinkel und Schmutz. Stirnflächen mit dem Mikroskop prüfen.</li>
+      <li>Spleiß: Fusionsspleiß (schmelzen) oder mechanischer Spleiß (kleben). Danach Dämpfungsprüfung.</li>
+    </ul>
+    <div class="erg">
+      <p>Im Part-66-Lehrplan stehen auch Koppler und Terminals, im Skript fehlen sie. Ein <strong>Sternkoppler</strong> verteilt das Licht auf alle Teilnehmer, ein <strong>T-Koppler</strong> zweigt an einer Stelle ab. Das <strong>Control Terminal</strong> steuert den Bus, die <strong>Remote Terminals</strong> sind die Teilnehmer, wie bei MIL-STD-1553 (Glasfaser-Version: MIL-STD-1773).</p>
+    </div>
+  </section>
+
+  <section id="anzeigen">
+    <h2>Elektronische Anzeigen <span class="lvl">5.11 · LEVEL 2</span></h2>
+    <p class="src">Skript S. 164 bis 181</p>
+    <h3>CRT (Bildröhre)</h3>
+    <ol>
+      <li>Geheizte <strong>Kathode</strong> sendet Elektronen aus.</li>
+      <li><strong>Wehnelt-Zylinder</strong> formt den Strahl und steuert die Helligkeit.</li>
+      <li><strong>Anode</strong> beschleunigt mit mehreren 10 000 V, die Fokussiereinheit bündelt.</li>
+      <li><strong>Ablenkspulen</strong> führen den Strahl Zeile für Zeile über den Schirm.</li>
+      <li><strong>Phosphor</strong> wandelt den Strahl in Licht um.</li>
+    </ol>
+    <p>Farbe: drei Strahlen für Rot, Grün, Blau (additiv). Die Lochmaske sorgt dafür, dass jeder Strahl nur seinen Leuchtpunkt trifft. Nachteil im Cockpit: schwer, Hochspannung, schlechte EMV.</p>
+    <h3>LCD</h3>
+    <ul>
+      <li>Flüssigkristalle zwischen zwei gekreuzten Polarisationsfiltern.</li>
+      <li>TN ohne Spannung: Kristalle drehen das Licht, Punkt ist <strong>hell</strong>. Mit Spannung: keine Drehung, Punkt ist <strong>dunkel</strong>.</li>
+      <li><strong>TFT / AMLCD:</strong> ein Transistor pro Pixel. Schnell, kontrastreich, keine Störlinien. Heute Standard im Cockpit.</li>
+      <li>Das Licht ist polarisiert. Deshalb im Cockpit keine polarisierten Sonnenbrillen.</li>
+    </ul>
+    <h3>LED</h3>
+    <ul>
+      <li>Elektronen rekombinieren am pn-Übergang und geben ein Photon ab. Die Bandlücke bestimmt die Farbe.</li>
+      <li>Wärme durch zu hohen Strom verkürzt die Lebensdauer. Zu hohe Spannung zerstört die LED.</li>
+      <li>Vorteile: stoßfest, langlebig, sparsam, schnell schaltbar.</li>
+    </ul>
+    <div class="merk">CRT: Strahl auf Phosphor. LCD: Licht wird gedreht. LED: Rekombination.</div>
+  </section>
+
+  <section id="esd">
+    <h2>ESD-empfindliche Bauteile <span class="lvl">5.12 · LEVEL 2</span></h2>
+    <p class="src">Skript S. 182 bis 195</p>
+    <ul>
+      <li><strong>ESDS</strong> = Electrostatic Discharge Sensitive. Besonders gefährdet sind MOS- und CMOS-Bauteile, teils schon ab etwa 10 V.</li>
+      <li>Man erkennt sie nicht an der Bauform. Deshalb gilt jede Avionik als ESD-empfindlich.</li>
+      <li>Ladung entsteht schon durch Berührung und Trennen zweier Stoffe (triboelektrischer Effekt).</li>
+    </ul>
+    <div class="tbl"><table>
+      <thead><tr><th>Schaden</th><th>Folge</th></tr></thead>
+      <tbody>
+        <tr><td>Direkter Totalausfall</td><td>Bauteil sofort kaputt, fällt beim Test auf</td></tr>
+        <tr><td><strong>Verborgener (latenter) Schaden</strong></td><td>Besteht den Test, fällt später im Betrieb aus. Am gefährlichsten.</td></tr>
+        <tr><td>Störung</td><td>Datenverlust oder falsch gespeicherte Daten</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Schutz</h3>
+    <ul>
+      <li><strong>Erden:</strong> Handgelenkband über <strong>1 MΩ</strong>, täglich testen. Alternativ Fersenbänder an beiden Füßen.</li>
+      <li><strong>Abschirmen:</strong> grauer, metallisierter Beutel (Faradayscher Käfig). Die rosa Tüte lädt sich nur selbst nicht auf und schirmt nicht ab.</li>
+      <li><strong>Neutralisieren:</strong> Ionisator für Isolatoren wie Kunststoff. Ersetzt Erdung nicht.</li>
+      <li>Beutel nur am geerdeten ESD-Arbeitsplatz öffnen. Kaffeebecher und Kunststoffe weg vom Arbeitsplatz.</li>
+    </ul>
+    <div class="merk">Erden, Abschirmen, Neutralisieren. Handgelenkband = 1 MΩ.</div>
+  </section>
+
+  <section id="software">
+    <h2>Software-Management <span class="lvl">5.13 · LEVEL 2</span></h2>
+    <p class="src">Skript S. 196 bis 200</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Level</th><th>Folge bei einem Fehler</th></tr></thead>
+      <tbody>
+        <tr><td class="num"><strong>A</strong></td><td>katastrophal (z. B. Flugsteuerung, Triebwerk)</td></tr>
+        <tr><td class="num">B</td><td>gefährlich</td></tr>
+        <tr><td class="num">C</td><td>erheblich</td></tr>
+        <tr><td class="num">D</td><td>gering</td></tr>
+        <tr><td class="num"><strong>E</strong></td><td>keine Auswirkung auf die Sicherheit (z. B. Entertainment)</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>Zertifizierung nach <strong>DO-178 / ED-12</strong>.</li>
+      <li>Softwareänderungen gelten wie Hardwareänderungen: nur mit Genehmigung der Design Organisation und nach dem <strong>Configuration Management Plan (CMP)</strong>.</li>
+    </ul>
+    <h3>Field Loadable Software (FLS)</h3>
+    <p>Wird geladen, ohne das Gerät auszubauen, nach dem Wartungshandbuch, zum Beispiel mit einem Data Loader.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Art</th><th>Bedeutung</th><th>Beispiele</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LSAP</strong></td><td>Flugzeugteil mit Zulassungsdokumentation</td><td>EEC, DFDAU, FGC, APU-ECU</td></tr>
+        <tr><td><strong>UMS</strong></td><td>Betreiber darf ohne Behörde ändern</td><td>IFE, ACMS</td></tr>
+        <tr><td><strong>OSS</strong></td><td>Optionen innerhalb der Herstellergrenzen</td><td>IMA</td></tr>
+        <tr><td><strong>DFLD</strong></td><td>Datenbanken laden</td><td>FMC (alle 28 Tage), TAWS, IMA</td></tr>
+      </tbody>
+    </table></div>
+    <p>Geladene Daten prüft man mit <strong>Prüfsumme (Checksum)</strong> oder <strong>CRC</strong>.</p>
+    <div class="merk">A = Absturzgefahr, E = Entertainment. Ändern nur mit Genehmigung.</div>
+  </section>
+
+  <section id="emv">
+    <h2>Elektromagnetische Umgebung <span class="lvl">5.14 · LEVEL 2</span></h2>
+    <p class="src">Skript S. 201 bis 215</p>
+    <ul>
+      <li><strong>EMI</strong> (Electromagnetic Interference): die Störung selbst.</li>
+      <li><strong>EMV / EMC</strong>: ein Gerät stört nicht und lässt sich nicht stören.</li>
+      <li><strong>HIRF</strong> (High Intensity Radiated Fields): starke Felder von Radar und Sendern von außen.</li>
+    </ul>
+    <p>Ein EMV-Problem braucht immer drei Dinge: <strong>Störquelle</strong>, <strong>Kopplungsweg</strong> (Leitung oder Strahlung) und <strong>gestörten Empfänger</strong>. Fällt eines weg, ist das Problem gelöst.</p>
+    <h3>Warum Rechtecksignale stören</h3>
+    <div class="formula">Rechteck = f (V) + 3f (V/3) + 5f (V/5) + 7f (V/7) + …</div>
+    <p>Steile Flanken enthalten viele Harmonische bis in den MHz-Bereich. Deshalb Flanken nicht steiler als nötig.</p>
+    <h3>Gegenmaßnahmen</h3>
+    <ul>
+      <li>Leitungen verdrillen und abschirmen, Strom- und Signalleitungen getrennt verlegen.</li>
+      <li>Masseleitungen kurz halten, Kabelabstände nach Handbuch einhalten.</li>
+      <li>Störquellen in geerdete Metallgehäuse, Löschdioden an Relais.</li>
+      <li>Wo möglich Glasfaser verwenden.</li>
+      <li><strong>Bonding</strong> mit wenigen Milliohm (etwa 1 bis 3 mΩ). Schützt auch vor HIRF und Blitz.</li>
+    </ul>
+    <p>Folgen schlechter EMV: falsche Anzeigen, Fehlalarme, Pfeiftöne im Audio, Streifen auf Bildschirmen, schlechter Funk- und Radarempfang.</p>
+    <div class="merk">Quelle, Weg, Empfänger. Bonding = Milliohm, Handgelenkband = Megaohm.</div>
+  </section>
+
+  <section id="systeme">
+    <h2>Typische Flugzeugsysteme <span class="lvl">5.15 · LEVEL 1</span></h2>
+    <p class="src">Skript S. 216 bis 238</p>
+    <div class="tbl"><table>
+      <thead><tr><th>System</th><th>Kurz erklärt</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ACARS</strong></td><td>Digitaler Datenfunk Flugzeug–Boden über VHF oder SATCOM. Downlink vom Flugzeug, Uplink vom Boden.</td></tr>
+        <tr><td><strong>EFIS</strong></td><td>Glascockpit mit PFD, ND und MFD. Die Display Processor Unit (Symbolgenerator) erzeugt die Bilder.</td></tr>
+        <tr><td><strong>EICAS / ECAM</strong></td><td>Triebwerksanzeigen und Crew-Warnungen. Weniger Einzelinstrumente, weniger Workload.</td></tr>
+        <tr><td><strong>Fly-by-Wire</strong></td><td>Steuerbefehle als elektrische Signale über Computer an die Ruderantriebe. Zuerst A320 (1988). Leichter, redundant, mit Backup.</td></tr>
+        <tr><td><strong>FMS</strong></td><td>FMC, Displays, Datenbank, CDU. Plant Route, Höhe und Treibstoff. Datenbank alle 28 Tage neu.</td></tr>
+        <tr><td><strong>GPS</strong></td><td>Mindestens 24 Satelliten in 20 200 km Höhe. 3 Satelliten: 2D, 4 Satelliten: 3D mit Höhe.</td></tr>
+        <tr><td><strong>INS / IRS</strong></td><td>Kreisel, Beschleunigungsmesser, Rechner und Uhr. Ohne Funksignale. Strap-down mit Laserkreiseln.</td></tr>
+        <tr><td><strong>TCAS</strong></td><td>Fragt Transponder anderer Flugzeuge ab. TCAS I: Verkehrsinfo (TA). TCAS II: zusätzlich Steigen oder Sinken (RA).</td></tr>
+      </tbody>
+    </table></div>
+    <div class="merk">ACARS funkt, EFIS zeigt, FMS plant, IRS rechnet, TCAS warnt.</div>
+  </section>
+
   <section id="formeln">
     <h2>Auf einen Blick</h2>
     <div class="tbl"><table>
@@ -729,11 +944,24 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <tr><td>ARINC-429-Parität</td><td>ungerade</td></tr>
         <tr><td>Höchstes Label</td><td class="num">377<sub>8</sub></td></tr>
         <tr><td>XOR / XNOR</td><td>verschieden / gleich</td></tr>
+        <tr><td>BCD 27</td><td><span class="num">0010 0111</span></td></tr>
+        <tr><td>RAM / ROM</td><td>flüchtig / nicht flüchtig</td></tr>
+        <tr><td>1 KByte</td><td><span class="num">1024 Byte</span></td></tr>
+        <tr><td>LWL-Prinzip</td><td>Totalreflexion, Kern dichter als Mantel</td></tr>
+        <tr><td>LWL im Flugzeug</td><td>violette Hülle</td></tr>
+        <tr><td>LCD ohne Spannung (TN)</td><td>hell</td></tr>
+        <tr><td>Handgelenkband</td><td><span class="num">1 MΩ</span></td></tr>
+        <tr><td>Bonding</td><td><span class="num">1–3 mΩ</span></td></tr>
+        <tr><td>ESD-Schutz</td><td>Erden, Abschirmen, Neutralisieren</td></tr>
+        <tr><td>Software-Level</td><td>A katastrophal … E keine Auswirkung</td></tr>
+        <tr><td>FMS-Datenbank</td><td>alle 28 Tage</td></tr>
+        <tr><td>GPS 3D-Fix</td><td>mindestens 4 Satelliten</td></tr>
+        <tr><td>TCAS II</td><td>vertikale Ausweichempfehlung (RA)</td></tr>
       </tbody>
     </table></div>
   </section>
 
-  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16., 19. und 20. Oktober 2026 (Seiten 1 bis 13), dein Testblatt und Erklärungen aus unseren Chats zu ARINC 429 und NRZ. Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
+  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16., 19. und 20. Oktober 2026 (Seiten 1 bis 13), dein Testblatt, dein Skript „CAT-B1 Modul 5“ (AERO-Bildung, Januar 2025) und Erklärungen aus unseren Chats zu ARINC 429 und NRZ. Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
 </div>
 
 </body></html>
