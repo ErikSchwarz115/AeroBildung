@@ -65,6 +65,12 @@ sub, sup { line-height: 0; }
 .fix::before { content: "Korrektur zu deinen Notizen"; display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
 .fixs { border-left: 4px solid var(--red); padding: 6px 12px; }
 .fixs::before { content: "Fehler im Skript"; display: block; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+.gxs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.gx { border: 1.5px solid var(--line); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.gx h3 { margin: 0; }
+.gx p { font-size: 14px; }
+.ttx th { font-size: 11px; letter-spacing: .02em; text-transform: none; white-space: normal; }
+.ttx td:last-child { background: var(--marker-soft); font-weight: 600; }
 .erg { border: 1.5px dashed var(--ink-soft); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
 .erg::before { content: "Ergänzung · nicht aus deinen Notizen"; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
 .src { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
@@ -106,13 +112,13 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
   <header>
     <div class="eyebrow">AERO-Bildung · EASA Part-66 B1 · Modul 5</div>
     <h1><span>Digital</span>technik &amp; Displays</h1>
-    <p class="lead">Alles aus deinen Notizen vom 16., 19. und 20. Oktober 2026 und aus deinem Skript „CAT-B1 Modul 5“, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
+    <p class="lead">Alles aus deinen Notizen vom 16. bis 21. Oktober 2026 und aus deinem Skript „CAT-B1 Modul 5“, verständlich erklärt und nach den Part-66-Untermodulen geordnet. Gelbe Kästen sind Merksätze. Gestrichelte Kästen sind Ergänzungen, die nicht in deinen Notizen stehen.</p>
   </header>
 
   <a class="back" href="./">← Zum Quiz, zu den Karteikarten und zum Test</a>
 
   <nav class="toc" aria-label="Inhalt">
-    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">A/D-Wandler</a><a href="#busse">Bussysteme</a><a href="#signale">Signalformen</a><a href="#osi">OSI</a><a href="#arinc">ARINC 429</a><a href="#logik">Logik</a><a href="#computer">Computer</a><a href="#faseroptik">Faseroptik</a><a href="#anzeigen">Anzeigen</a><a href="#esd">ESD</a><a href="#software">Software</a><a href="#emv">EMV</a><a href="#systeme">Systeme</a><a href="#skriptfehler">Fehler im Skript</a><a href="#formeln">Auf einen Blick</a>
+    <a href="#pruefung">Prüfung</a><a href="#basict">Basic T</a><a href="#displays">Displays</a><a href="#zahlen">Zahlensysteme</a><a href="#komplement">Komplement</a><a href="#wandlung">Signalkette</a><a href="#aliasing">Aliasing</a><a href="#adu">A/D-Wandler</a><a href="#busse">Bussysteme</a><a href="#signale">Signalformen</a><a href="#osi">OSI</a><a href="#arinc">ARINC 429</a><a href="#logik">Logik</a><a href="#wahrheit">Wahrheitstabellen</a><a href="#kodierer">Encoder &amp; Decoder</a><a href="#computer">Computer</a><a href="#faseroptik">Faseroptik</a><a href="#anzeigen">Anzeigen</a><a href="#esd">ESD</a><a href="#software">Software</a><a href="#emv">EMV</a><a href="#systeme">Systeme</a><a href="#skriptfehler">Fehler im Skript</a><a href="#formeln">Auf einen Blick</a>
   </nav>
 
   <section id="pruefung">
@@ -712,6 +718,101 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
     <p class="fixs"><strong>S. 198, DO-178B/ED-12B:</strong> Das ist die alte Fassung. Aktuell gilt DO-178C/ED-12C. In der Prüfung reicht meist „DO-178“.</p>
   </section>
 
+  <section id="wahrheit">
+    <h2>Wahrheitstabellen mit Beispielen <span class="lvl">5.5 a · LEVEL 2</span></h2>
+    <p class="src">Testblatt Frage 18 · Beispiele ergänzt</p>
+    <p>Eine Wahrheitstabelle zeigt für jede Kombination der Eingänge den Ausgang. Bei 2 Eingängen gibt es 4 Zeilen, bei 3 Eingängen 8 Zeilen, allgemein <strong>2<sup>n</sup></strong>.</p>
+    <h3>So erkennst du das Gatter in 5 Sekunden</h3>
+    <ol>
+      <li>Schau nur auf die Spalte X.</li>
+      <li>Nur eine 1 ganz unten (bei 1 1) → <strong>UND</strong>. Nur eine 1 ganz oben (bei 0 0) → <strong>NOR</strong>.</li>
+      <li>Nur eine 0 ganz oben → <strong>ODER</strong>. Nur eine 0 ganz unten → <strong>NAND</strong>.</li>
+      <li>1 in der Mitte (0 1 1 0) → <strong>XOR</strong>. 1 außen (1 0 0 1) → <strong>XNOR</strong>.</li>
+    </ol>
+    <div class="merk">X-Spalte von oben: UND 0001 · ODER 0111 · NAND 1110 · NOR 1000 · XOR 0110 · XNOR 1001</div>
+    <h3>Beispiele aus dem Flugzeug</h3>
+    <p>NICHT: Der Weight-on-Wheels-Sensor meldet 1 = Gewicht auf den Rädern. Ein NICHT macht daraus „in der Luft“: 1 → 0, 0 → 1.</p>
+    <div class="gxs"><div class="gx"><h3>Fahrwerkswarnung <span class="lvl">UND</span></h3><p>Die Hupe kommt nur, wenn <strong>beide</strong> Bedingungen erfüllt sind.</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Fahrwerk nicht unten</th><th>B: Schub Leerlauf</th><th>Hupe</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div></div><div class="gx"><h3>Türwarnung <span class="lvl">ODER</span></h3><p><strong>Eine</strong> offene Tür reicht für die Warnung.</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Tür 1 offen</th><th>B: Tür 2 offen</th><th>Warnung</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div></div><div class="gx"><h3>Pumpenwarnung <span class="lvl">NAND</span></h3><p>Ruhig nur, wenn <strong>beide</strong> laufen. Sonst Warnung.</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Pumpe 1 läuft</th><th>B: Pumpe 2 läuft</th><th>Warnung</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div></div><div class="gx"><h3>Notstromturbine (RAT) <span class="lvl">NOR</span></h3><p>Nur wenn <strong>weder</strong> Generator 1 <strong>noch</strong> 2 liefert. (vereinfacht)</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Generator 1 liefert</th><th>B: Generator 2 liefert</th><th>RAT aus</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div></div><div class="gx"><h3>Vergleich zweier Kanäle <span class="lvl">XOR</span></h3><p>Meldung, wenn die Kanäle <strong>verschieden</strong> sind.</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Kanal 1</th><th>B: Kanal 2</th><th>DISAGREE</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div></div><div class="gx"><h3>Übereinstimmung <span class="lvl">XNOR</span></h3><p>1, wenn beide Kanäle <strong>gleich</strong> sind.</p><div class="tbl"><table class="bits ttx"><thead><tr><th>A: Kanal 1</th><th>B: Kanal 2</th><th>AGREE</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table></div></div></div>
+    <h3>Schaltungen aus mehreren Gattern</h3>
+    <p>Immer zuerst die Klammer, dann das Gatter außen.</p>
+    <div class="formula">X = (A ∧ B) ∨ C &nbsp; bei A = 1, B = 0, C = 1 → (1 ∧ 0) ∨ 1 = 0 ∨ 1 = 1</div>
+    <div class="tbl"><table class="bits">
+      <thead><tr><th>A</th><th>B</th><th>C</th><th>A ∧ B</th><th>X = (A ∧ B) ∨ C</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr class="hl"><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      </tbody>
+    </table></div>
+    <p>Tipp: Für die Zwischenspalte (hier A ∧ B) eine eigene Spalte anlegen. Dann ist jede Zeile ein einfacher Schritt.</p>
+    <div class="erg">
+      <h3>Ersatzschaltungen (De Morgan)</h3>
+      <ul>
+        <li>NAND = ODER mit negierten Eingängen: <span class="num">NICHT(A ∧ B) = Ā ∨ B̄</span></li>
+        <li>NOR = UND mit negierten Eingängen: <span class="num">NICHT(A ∨ B) = Ā ∧ B̄</span></li>
+      </ul>
+      <p>Merksatz: Strich teilen, Zeichen tauschen.</p>
+    </div>
+  </section>
+
+  <section id="kodierer">
+    <h2>Encoder und Decoder <span class="lvl">5.5 a · LEVEL 2</span></h2>
+    <p class="src">Testblatt Fragen 19 und 20 · Skript S. 136 bis 139</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Eingänge</th><th>Ausgänge</th><th>Was passiert</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Encoder</strong> (Kodierer)</td><td>viele, z. B. 7</td><td>wenige, z. B. 3 Bit</td><td>Die aktive Leitung wird zur Binärzahl</td></tr>
+        <tr><td><strong>Decoder</strong> (Dekodierer)</td><td>wenige, n Bit</td><td>viele, 2<sup>n</sup></td><td>Eine Binärzahl schaltet genau einen Ausgang ein</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Encoder: 7 Eingänge, 3 Ausgänge</h3>
+    <div class="tbl"><table class="bits">
+      <thead><tr><th>Aktiver Eingang</th><th>Q2</th><th>Q1</th><th>Q0</th></tr></thead>
+      <tbody>
+        <tr><td>keiner</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+        <tr><td>2</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td>3</td><td>0</td><td>1</td><td>1</td></tr>
+        <tr><td>4</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr class="hl"><td>5</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>6</td><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td>7</td><td>1</td><td>1</td><td>1</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Decoder: 1-aus-4 (2 Eingänge, 4 Ausgänge)</h3>
+    <div class="tbl"><table class="bits">
+      <thead><tr><th>A1</th><th>A0</th><th>Y0</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr class="hl"><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+      </tbody>
+    </table></div>
+    <p>Anwendungen: Encoder bei Zifferntastaturen (Taste → BCD). Decoder bei Ziffernanzeigen (BCD → Segment) und bei der Auswahl von Speicherbausteinen im Computer.</p>
+    <div class="merk">Encoder: viele rein, Binärzahl raus. Decoder: Binärzahl rein, genau ein Ausgang an.</div>
+    <div class="erg">
+      <h3>Flipflops (Notizen S. 14 und 15, für B1 kein Pflichtstoff)</h3>
+      <p>Ein Flipflop speichert 1 Bit. RS-Flipflop aus zwei NOR-Gattern:</p>
+      <div class="tbl"><table class="bits">
+        <thead><tr><th>S</th><th>R</th><th>Q<sup>n+1</sup></th><th>Bedeutung</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>Q<sup>n</sup></td><td>speichern</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>setzen</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>rücksetzen</td></tr>
+          <tr><td>1</td><td>1</td><td>–</td><td>verboten</td></tr>
+        </tbody>
+      </table></div>
+      <p>D-Flipflop: übernimmt den Dateneingang nur mit dem Takt, sonst speichert es (Taktflankensteuerung). JK-Flipflop: bei J = K = 1 kippt der Ausgang (toggeln). T-Flipflop: kippt bei jedem Takt.</p>
+      <p class="fix">In deiner RS-Tabelle auf S. 14 heißen zwei Spalten Q₁<sup>n+1</sup>. Die erste ist der alte Zustand Q<sup>n</sup>, erst die zweite der neue Zustand Q<sup>n+1</sup>. Die Werte stimmen.</p>
+    </div>
+  </section>
+
   <section id="computer">
     <h2>Computer und Speicher <span class="lvl">5.6 a · LEVEL 2</span></h2>
     <p class="src">Skript S. 140 bis 147</p>
@@ -733,6 +834,16 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
       <li><strong>Firmware:</strong> steuert die Grundfunktionen einer Hardware-Komponente.</li>
       <li><strong>Befehlssatz:</strong> alle Befehle, die ein bestimmter Prozessortyp versteht.</li>
     </ul>
+    <h3>Drei Busse im PC</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Bus</th><th>Richtung</th><th>Aufgabe</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Datenbus</strong></td><td>bidirektional</td><td>Daten lesen und schreiben</td></tr>
+        <tr><td><strong>Adressbus</strong></td><td>unidirektional</td><td>CPU wählt die Speicherstelle</td></tr>
+        <tr><td><strong>Steuerbus</strong></td><td>bidirektional</td><td>Steuersignale wie Lesen, Schreiben, Takt</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src">Notizen S. 16 · Testblatt Fragen 21 bis 24</p>
   </section>
 
   <section id="faseroptik">
@@ -757,6 +868,7 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
       <li>Licht muss innerhalb des Akzeptanzkegels eintreten (numerische Apertur), sonst geht es verloren.</li>
     </ul>
     <div class="merk">Kern dichter als Mantel. Licht bleibt durch Totalreflexion drin.</div>
+    <p class="fix">In deiner Skizze auf S. 17 steht „Äußerer Kern (Glas)“. Die äußere Glasschicht heißt <strong>Mantel</strong> (Cladding).</p>
     <h3>Vor- und Nachteile</h3>
     <div class="tbl"><table>
       <thead><tr><th>Vorteile</th><th>Nachteile</th></tr></thead>
@@ -771,7 +883,8 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
     <ul>
       <li><strong>Modendispersion:</strong> Strahlen laufen verschieden lange Wege, der Impuls wird breiter.</li>
       <li><strong>Gradientenfaser:</strong> Brechzahl nimmt nach außen ab, die langen Wege werden schneller.</li>
-      <li><strong>Monomodefaser:</strong> Kern nur wenige Wellenlängen dick, nur ein Weg. Schwer einzukoppeln.</li>
+      <li><strong>Monomodefaser (Singlemode):</strong> Kern nur wenige Wellenlängen dick, nur ein Weg. Für <strong>lange Strecken</strong>, schwer einzukoppeln.</li>
+      <li><strong>Multimode:</strong> dickerer Kern, viele Wege. Für <strong>kurze Strecken</strong>, im Flugzeug üblich.</li>
       <li>Weitere Verluste: Streuung und Absorption im Glas.</li>
     </ul>
     <h3>Im Flugzeug</h3>
@@ -844,13 +957,13 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
     <h2>Software-Management <span class="lvl">5.13 · LEVEL 2</span></h2>
     <p class="src">Skript S. 196 bis 200</p>
     <div class="tbl"><table>
-      <thead><tr><th>Level</th><th>Folge bei einem Fehler</th></tr></thead>
+      <thead><tr><th>Level</th><th>Folge bei einem Fehler</th><th>Wahrscheinlichkeit pro Flugstunde</th></tr></thead>
       <tbody>
-        <tr><td class="num"><strong>A</strong></td><td>katastrophal (z. B. Flugsteuerung, Triebwerk)</td></tr>
-        <tr><td class="num">B</td><td>gefährlich</td></tr>
-        <tr><td class="num">C</td><td>erheblich</td></tr>
-        <tr><td class="num">D</td><td>gering</td></tr>
-        <tr><td class="num"><strong>E</strong></td><td>keine Auswirkung auf die Sicherheit (z. B. Entertainment)</td></tr>
+        <tr><td class="num"><strong>A</strong></td><td>katastrophal (z. B. Flugsteuerung, Triebwerk)</td><td class="num"><strong>&lt; 10<sup>−9</sup></strong></td></tr>
+        <tr><td class="num">B</td><td>gefährlich</td><td class="num">10<sup>−7</sup> bis 10<sup>−9</sup></td></tr>
+        <tr><td class="num">C</td><td>erheblich</td><td class="num">10<sup>−5</sup> bis 10<sup>−7</sup></td></tr>
+        <tr><td class="num">D</td><td>gering</td><td class="num">&gt; 10<sup>−5</sup></td></tr>
+        <tr><td class="num"><strong>E</strong></td><td>keine Auswirkung auf die Sicherheit (z. B. Entertainment)</td><td class="num">–</td></tr>
       </tbody>
     </table></div>
     <ul>
@@ -957,11 +1070,18 @@ svg .tarea { fill: var(--marker-soft); stroke: var(--ink); stroke-width: 1.6; st
         <tr><td>FMS-Datenbank</td><td>alle 28 Tage</td></tr>
         <tr><td>GPS 3D-Fix</td><td>mindestens 4 Satelliten</td></tr>
         <tr><td>TCAS II</td><td>vertikale Ausweichempfehlung (RA)</td></tr>
+        <tr><td>ASCII</td><td>7 Bit = 128 Zeichen</td></tr>
+        <tr><td>Wahrheitstabelle</td><td>2<sup>n</sup> Zeilen</td></tr>
+        <tr><td>Encoder</td><td>7 Eingänge → 3 Bit</td></tr>
+        <tr><td>Decoder</td><td>n Eingänge → 2<sup>n</sup> Ausgänge</td></tr>
+        <tr><td>Busse im PC</td><td>Daten (bi), Adresse (uni), Steuer (bi)</td></tr>
+        <tr><td>Singlemode / Multimode</td><td>lange / kurze Strecken</td></tr>
+        <tr><td>Level A</td><td>&lt; 10<sup>−9</sup> pro Flugstunde</td></tr>
       </tbody>
     </table></div>
   </section>
 
-  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16., 19. und 20. Oktober 2026 (Seiten 1 bis 13), dein Testblatt, dein Skript „CAT-B1 Modul 5“ (AERO-Bildung, Januar 2025) und Erklärungen aus unseren Chats zu ARINC 429 und NRZ. Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
+  <p class="foot">Quelle: deine Mitschrift Modul 5 vom 16. bis 21. Oktober 2026 (Seiten 1 bis 18), deine Testblätter (Fragen 1 bis 28), dein Skript „CAT-B1 Modul 5“ (AERO-Bildung, Januar 2025) und Erklärungen aus unseren Chats zu ARINC 429 und NRZ. Gliederung und Level nach EASA Part-66, Anhang III, Modul 5 für B1 (Verordnung 1142/2018). Gleiche die Ergänzungen mit deinem Buch ab.</p>
 </div>
 
 </body></html>
