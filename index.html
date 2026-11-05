@@ -203,6 +203,22 @@ sub, sup { line-height: 0; }
 .xp .fx { font-family: var(--f-mono); font-size: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; overflow-x: auto; }
 .xp mark { background: var(--marker); color: var(--marker-ink); padding: 0 2px; border-radius: 2px; }
 .xp a { color: var(--ink); font-weight: 600; }
+.pwc { gap: 12px; }
+.pwc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.pwc summary::-webkit-details-marker { display: none; }
+.pwc summary h2::after { content: " +"; color: var(--ink-soft); }
+.pwc[open] summary h2::after { content: " –"; }
+.pwc .meta { font-family: var(--f-mono); font-size: 13px; color: var(--ink-soft); }
+.pwl { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.pwl li { display: grid; grid-template-columns: 3.2em 1fr 64px 1.8em; gap: 8px; align-items: center; font-size: 14px; }
+.pwl .no { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
+.pwl .nm { min-width: 0; overflow-wrap: anywhere; }
+.pwl .bw { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.pwl .bw i { display: block; height: 100%; background: var(--ink); }
+.pwl b { font-family: var(--f-mono); text-align: right; }
+.pwl li.hot .nm { background: var(--marker-soft); border-radius: 3px; padding: 0 4px; font-weight: 600; }
+.pwc .pwn { margin: 12px 0 0; font-size: 13px; color: var(--ink-soft); }
+.pwc .pwn a { color: var(--ink); font-weight: 600; }
 @media (max-width: 420px) { .rs { grid-template-columns: 1fr; } }
 @keyframes reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } .flash-back { animation: none; } }
@@ -224,6 +240,12 @@ sub, sup { line-height: 0; }
     <label class="m"><input type="radio" name="mod" value="10"><span>Modul 10</span></label>
   </nav>
 
+  <details class="card pwc" id="pw">
+    <summary><h2>Prüfung B1.1</h2><span class="meta" id="pwMeta"></span></summary>
+    <ul class="pwl" id="pwList"></ul>
+    <p class="pwn">Fragen pro Thema laut EASA (AMC1 Appendix II, Part-66). Gelb: die zwei größten Brocken. Bestanden ab 75 %. <a href="pruefung-b1.html">Alle Module ansehen →</a></p>
+  </details>
+
   <section id="start" class="card" aria-label="Lernen einrichten">
     <fieldset>
       <legend>Modus</legend>
@@ -244,7 +266,7 @@ sub, sup { line-height: 0; }
         <label><input type="radio" name="count" value="0" checked><span>Alle</span></label>
         <label><input type="radio" name="count" value="10"><span>10</span></label>
         <label><input type="radio" name="count" value="20"><span>20</span></label>
-        <label><input type="radio" name="count" value="45"><span>45 · Prüfung</span></label>
+        <label><input type="radio" name="count" value="45" id="cntExam"><span id="cntExamL">45 · Prüfung</span></label>
       </div>
     </fieldset>
     <label class="check"><input type="checkbox" id="shuffleQ" checked> Mischen</label>
@@ -1091,9 +1113,23 @@ sub, sup { line-height: 0; }
     lsSet("elq-mod", key);
     var ov = MODS[BASE].ov; $("ovBtn").hidden = !ov; if (ov) { $("ovBtn").href = ov; $("ovBtn").textContent = "Lernübersicht Modul " + BASE + " öffnen →"; }
   }
+  var PW = {"3":{"t":"Elektrotechnik","n":52,"z":"65 min","s":[["3.1","Elektronentheorie",2],["3.2","Statische Elektrizität & Leitung",3],["3.3","Elektrische Begriffe",2],["3.4","Erzeugung von Elektrizität",2],["3.5","DC-Quellen",3],["3.6","DC-Kreise",2],["3.7","Widerstand",5],["3.8","Leistung",3],["3.9","Kondensator",4],["3.10","Magnetismus",4],["3.11","Induktivität",4],["3.12","DC-Motor/Generator",3],["3.13","AC-Theorie",3],["3.14","R-, C-, L-Kreise",3],["3.15","Transformatoren",3],["3.16","Filter",1],["3.17","AC-Generatoren",3],["3.18","AC-Motoren",2]]},"4":{"t":"Elektronik","n":20,"z":"25 min","s":[["4.1.1","Dioden",8],["4.1.2","Transistoren",4],["4.1.3","Integrierte Schaltungen",3],["4.2","Leiterplatten",2],["4.3","Servomechanismen",3]]},"5":{"t":"Digitaltechnik","n":40,"z":"50 min","s":[["5.1","Elektronische Instrumentensysteme",4],["5.2","Zahlensysteme",3],["5.3","Datenumwandlung",3],["5.4","Datenbusse",3],["5.5","Logikschaltungen",3],["5.6","Computerstruktur",4],["5.10","Faseroptik",3],["5.11","Elektronische Anzeigen",2],["5.12","ESD",4],["5.13","Software-Management",3],["5.14","Elektromagnetische Umgebung",3],["5.15","Typische Luftfahrzeugsysteme",5]]},"8":{"t":"Aerodynamik","n":24,"z":"30 min","s":[["8.1","Physik der Atmosphäre",2],["8.2","Aerodynamik",9],["8.3","Flugtheorie",7],["8.4","Hochgeschwindigkeit",4],["8.5","Flugstabilität & Dynamik",2]]},"10":{"t":"Luftrecht","n":44,"z":"55 min","s":[["10.1","Rechtsrahmen",5],["10.2","Freigabeberechtigtes Personal",7],["10.3","Part-145-Betriebe",6],["10.4","Unabhängiges Freigabepersonal",4],["10.5","Flugbetrieb",4],["10.6","Zulassung von LFZ & Teilen",4],["10.7","Aufrechterhaltung der Lufttüchtigkeit",7],["10.8","Aufsicht",3],["10.9","Außerhalb EU-Recht",3],["10.10","Cybersecurity",1]]}};
+  function renderPW(base) {
+    var p = PW[base]; $("pw").hidden = !p;
+    if (!p) return;
+    var mx = 0, vals = [];
+    p.s.forEach(function (r) { if (r[2] > mx) mx = r[2]; if (vals.indexOf(r[2]) < 0) vals.push(r[2]); });
+    vals.sort(function (a, b) { return b - a; }); var top = vals.slice(0, 2);
+    $("pwMeta").textContent = p.n + " Fragen · " + p.z + " · min. " + Math.ceil(p.n * 0.75) + " richtig";
+    $("pwList").innerHTML = p.s.map(function (r) {
+      return '<li' + (top.indexOf(r[2]) > -1 && r[2] > 1 ? ' class="hot"' : '') + '><span class="no">' + r[0] + '</span><span class="nm">' + r[1].replace(/&/g, '&amp;') + '</span><span class="bw"><i style="width:' + Math.round(100 * r[2] / mx) + '%"></i></span><b>' + r[2] + '</b></li>';
+    }).join("");
+    $("cntExam").value = String(p.n); $("cntExamL").textContent = p.n + " · Prüfung";
+  }
   function wanted() { var tk = MODS[BASE].test; return ($("modeTest").checked && tk) ? tk : BASE; }
   function applyMod(base) {
     BASE = base;
+    renderPW(base);
     $("modeTestWrap").hidden = !MODS[base].test;
     if (!MODS[base].test && $("modeTest").checked) $("modeQuiz").checked = true;
     activate(wanted());
